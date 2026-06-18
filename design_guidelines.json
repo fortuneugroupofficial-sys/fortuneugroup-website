@@ -1,0 +1,104 @@
+{
+  "project_name": "Fortune U Group - Premium Financial Services",
+  "domain": "www.fortuneugroup.in",
+  "theme_settings": {
+    "theme": "light",
+    "archetype": "Archetype 1: Organic & Earthy (Adapted for Trust/Wealth Management)",
+    "rationale": "For wealth management, users need absolute trust, clarity, and a sense of growth. We avoid dark-mode 'crypto-bro' aesthetics and instead use a highly polished, light-themed 'Old Money Tech' approach. Pure whites, deep navy for authority, and vibrant green for growth markers."
+  },
+  "color_system": {
+    "primary": "#0A2540",
+    "primary_foreground": "#FFFFFF",
+    "secondary": "#10B981",
+    "secondary_foreground": "#FFFFFF",
+    "background": "#FAFAFA",
+    "surface": "#FFFFFF",
+    "muted": "#F1F5F9",
+    "muted_foreground": "#475569",
+    "border": "#E2E8F0",
+    "accent": "#059669",
+    "rules": [
+      "Never use pure black or grey; always use slate/blue-tinted greys (#0F172A for darkest text).",
+      "Use #10B981 (Green) exclusively for positive growth indicators, primary CTAs (like WhatsApp or 'Start Journey'), and calculator success charts.",
+      "Primary Blue (#0A2540) is for structural elements: headings, footers, and primary navigation.",
+      "Backgrounds should alternate between #FFFFFF and #FAFAFA to create subtle sectioning."
+    ]
+  },
+  "typography": {
+    "pairing_strategy": "The 'Old Money Tech' / Premium Business",
+    "heading_font": "Outfit",
+    "body_font": "Plus Jakarta Sans",
+    "rules": [
+      "NEVER use Inter, Roboto, or Open Sans for headings.",
+      "H1 (Hero): text-5xl md:text-6xl tracking-tight leading-tight font-semibold text-[#0A2540].",
+      "H2 (Sections): text-3xl md:text-4xl tracking-tight font-medium.",
+      "Overlines/Labels: text-xs tracking-[0.2em] uppercase font-bold text-[#10B981].",
+      "Body: text-base leading-relaxed text-[#475569]."
+    ]
+  },
+  "layout_and_spacing": {
+    "philosophy": "Generous Spacing + Bento Grid Protocol",
+    "spacing_scale": "Use extreme padding for premium feel. Sections must use py-24 or py-32. Internal card padding must be p-8.",
+    "grids": {
+      "marketing": "Mode A 'Tetris Grid' for Services showcase (grid-cols-1 md:grid-cols-12 gap-8 with asymmetrical spans).",
+      "dashboard": "Mode B 'Control Room Grid' for Admin Panel and Calculators (tight gap-6, height stretch)."
+    },
+    "borders_and_radius": "Subtle roundness. max rounded-xl for large containers, rounded-md for inputs. 1px solid borders (#E2E8F0) with shadow-sm. No heavy dropshadows."
+  },
+  "surfaces_and_materials": {
+    "header": "Crystal Glassmorphism: sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200 shadow-sm.",
+    "cards": "Flat background (bg-white), 1px subtle border, hover:-translate-y-1 hover:shadow-lg transition-all duration-300.",
+    "calculators": "Neumorphic tactile touch on inputs, mixing soft shadows with sharp inner borders to ground them."
+  },
+  "components_strategy": {
+    "marketing_pages": "Use pure HTML + Tailwind CSS. Avoid rigid Shadcn container wrappers to allow overlapping and bento grid asymmetry.",
+    "interactive_elements": "Heavily customized Shadcn UI. Use Shadcn for Select, Dialog, Tabs, Accordion (for FAQ), Slider (for calculators).",
+    "forms": "Use Shadcn Form + Input/Textarea. Style inputs with bg-slate-50 border-slate-200 focus:border-[#10B981] focus:ring-[#10B981].",
+    "charts": "Use Recharts or Shadcn Charts for the SIP/Retirement/Goal calculators. Colors: #10B981 for invested amount/growth, #0A2540 for base.",
+    "whatsapp_widget": "Floating fixed bottom-6 right-6 z-50 rounded-full shadow-2xl bg-[#25D366] text-white p-4 hover:scale-110 transition-transform."
+  },
+  "accessibility_and_testing": {
+    "testing_attributes": "All interactive elements MUST have data-testid attributes (e.g., data-testid='cta-whatsapp', data-testid='calc-sip-submit', data-testid='nav-services').",
+    "contrast": "Ensure minimum 4.5:1 text contrast. White text on primary blue and green must be strictly checked.",
+    "motion": "Respect prefers-reduced-motion. Use subtle 0.2s ease transitions for hover states."
+  },
+  "media_and_images": {
+    "rules": "Never use placeholder images. Use the provided URLs.",
+    "image_urls": {
+      "hero_background_or_side": {
+        "url": "https://images.pexels.com/photos/5402587/pexels-photo-5402587.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Cheerful Indian family outdoors - Use for Home Page Hero to evoke emotional future planning."
+      },
+      "services_planning": {
+        "url": "https://images.pexels.com/photos/4308058/pexels-photo-4308058.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Couple calculating finances - Use for Goal-Based / SIP Planning sections or Tool Headers."
+      },
+      "about_professionals": {
+        "url": "https://images.unsplash.com/photo-1758518729841-308509f69a7f?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Professionals discussing charts - Use for About Us or Wealth Creation service."
+      },
+      "blog_education": {
+        "url": "https://images.unsplash.com/photo-1647510283846-ed174cc84a78?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Person reading Financial Times - Use for Financial Awareness Education or Blog hero."
+      },
+      "calculators_charts": {
+        "url": "https://images.pexels.com/photos/7947754/pexels-photo-7947754.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Blue bar graph close up - Use as decorative side image for the Tools/Calculator section."
+      },
+      "contact_building": {
+        "url": "https://images.unsplash.com/photo-1621831337128-35676ca30868?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Modern blue glass building - Use for Contact Page background or Footer accent."
+      }
+    }
+  },
+  "specific_page_instructions": {
+    "global": "Implement a Language Toggle (EN/TE) in the top nav (data-testid='lang-toggle'). Stick to English copy for MVP, but wire up the state context.",
+    "home": "Hero must have dual CTAs: 'Start Your Investment Journey' (Primary Blue) and 'WhatsApp Consultation' (Accent Green). Use a clean, non-distracting gradient overlay on the hero image (bg-white/80 to transparent).",
+    "services": "Display 8 services using an asymmetrical Bento Grid. Icons must be from @phosphor-icons/react (Duotone style).",
+    "tools": "SIP, Retirement, and Goal calculators. Must be highly interactive using Shadcn Sliders for inputs and Recharts for visualizing the wealth curve.",
+    "lead_forms": "Incorporate Free Consultation, SIP Planning, and Insurance Guidance forms across the site. Use clear, high-converting layouts (Left: Value Prop text, Right: Clean Shadcn Form).",
+    "admin_panel": "Strict Dashboard Layout (Control Room grid). Include sidebar navigation for Leads, Blogs, Testimonials, FAQs. Use Shadcn Tables for data display."
+  },
+  "icons_library": "@phosphor-icons/react",
+  "instructions_to_main_agent": "Read this JSON strictly. Initialize the React app, configure Tailwind with the specified colors and fonts (Outfit & Plus Jakarta Sans via Google Fonts). Build out the marketing pages using pure Tailwind layouts (generous py-24 padding, bento grids). Implement the floating WhatsApp button and language toggle context. Build calculators using Shadcn sliders and Recharts. Finally, create a standard layout for the Admin Dashboard. Do not use any image placeholders; rely entirely on the URLs provided in the media_and_images object. Ensure all data-testid tags are present."
+}
