@@ -30,6 +30,56 @@ db = client[os.environ["DB_NAME"]]
 JWT_SECRET = os.environ["JWT_SECRET"]
 JWT_ALGORITHM = "HS256"
 
+# ----- Object storage -----
+STORAGE_URL = "https://integrations.emergentagent.com/objstore/api/v1/storage"
+APP_NAME = "fortuneu"
+_storage_key = None
+
+def _init_storage():
+    global _storage_key
+    if _storage_key:
+        return _storage_key
+    key = os.environ.get("EMERGENT_LLM_KEY", "")
+    if not key:
+        return None
+    import requests as _rq
+    try:
+        r = _rq.post(f"{STORAGE_URL}/init", json={"emergent_key": key}, timeout=20)
+        r.raise_for_status()
+        _storage_key = r.json()["storage_key"]
+        return _storage_key
+    except Exception as e:
+        print("storage init failed:", e)
+        return None
+
+def _put(path: str, data: bytes, ct: str):
+    import requests as _rq
+    k = _init_storage()
+    if not k:
+        raise HTTPException(500, "Storage unavailable")
+    r = _rq.put(f"{STORAGE_URL}/objects/{path}", headers={"X-Storage-Key": k, "Content-Type": ct}, data=data, timeout=60)
+    if r.status_code == 403:
+        global _storage_key
+        _storage_key = None
+        k = _init_storage()
+        r = _rq.put(f"{STORAGE_URL}/objects/{path}", headers={"X-Storage-Key": k, "Content-Type": ct}, data=data, timeout=60)
+    r.raise_for_status()
+    return r.json()
+
+def _get(path: str):
+    import requests as _rq
+    k = _init_storage()
+    if not k:
+        raise HTTPException(500, "Storage unavailable")
+    r = _rq.get(f"{STORAGE_URL}/objects/{path}", headers={"X-Storage-Key": k}, timeout=60)
+    if r.status_code == 403:
+        global _storage_key
+        _storage_key = None
+        k = _init_storage()
+        r = _rq.get(f"{STORAGE_URL}/objects/{path}", headers={"X-Storage-Key": k}, timeout=60)
+    r.raise_for_status()
+    return r.content, r.headers.get("Content-Type", "application/octet-stream")
+
 app = FastAPI(title="Fortune U Group API")
 api_router = APIRouter(prefix="/api")
 security = HTTPBearer(auto_error=False)
