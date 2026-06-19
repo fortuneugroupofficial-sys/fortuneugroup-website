@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X, MessageCircle, ArrowUpRight } from "lucide-react";
+import { Menu, X, MessageCircle, ArrowUpRight, Phone } from "lucide-react";
 import { useLang } from "../context/LangContext";
 import { whatsappLink, BUSINESS_EMAIL, WHATSAPP_NUMBER } from "../lib/api";
 import { Button } from "./ui/button";
@@ -54,6 +54,13 @@ export const Header = () => {
               {lang === "en" ? "EN · తె" : "తె · EN"}
             </button>
             <a
+              href={`tel:+${WHATSAPP_NUMBER}`}
+              data-testid="header-call-btn"
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-3.5 py-2 rounded-full border border-brand-line text-brand-navy hover:border-brand-navy hover:bg-brand-navy hover:text-white transition-colors"
+            >
+              <Phone className="w-4 h-4" /> Call Now
+            </a>
+            <a
               href={whatsappLink()}
               target="_blank" rel="noreferrer"
               data-testid="header-whatsapp-btn"
@@ -80,7 +87,9 @@ export const Header = () => {
                 {t(`nav.${it.key}`)}
               </NavLink>
             ))}
-            <a href={whatsappLink()} target="_blank" rel="noreferrer" className="mt-2 px-3 py-2.5 rounded-md text-sm font-semibold bg-brand-green text-white text-center">WhatsApp Consultation</a>
+            <a href={whatsappLink()} target="_blank" rel="noreferrer" className="mt-2 px-3 py-2.5 rounded-md text-sm font-semibold bg-brand-green text-white text-center" data-testid="mobile-whatsapp">WhatsApp Consultation</a>
+            <a href={`tel:+${WHATSAPP_NUMBER}`} className="px-3 py-2.5 rounded-md text-sm font-semibold bg-brand-navy text-white text-center" data-testid="mobile-call">Call Now · +{WHATSAPP_NUMBER}</a>
+            <Link to="/contact" className="px-3 py-2.5 rounded-md text-sm font-semibold border border-brand-green text-brand-deepgreen text-center" data-testid="mobile-book-consult">Book Free Consultation</Link>
           </div>
         </div>
       )}
@@ -139,15 +148,25 @@ export const Footer = () => {
 };
 
 export const WhatsAppFab = () => (
-  <a
-    href={whatsappLink()}
-    target="_blank" rel="noreferrer"
-    data-testid="floating-whatsapp-fab"
-    className="fixed bottom-6 right-6 z-50 rounded-full shadow-2xl bg-[#25D366] text-white p-4 hover:scale-110 transition-transform"
-    aria-label="WhatsApp"
-  >
-    <MessageCircle className="w-6 h-6" />
-  </a>
+  <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end" data-testid="floating-actions">
+    <a
+      href={`tel:+${WHATSAPP_NUMBER}`}
+      data-testid="floating-call-fab"
+      className="rounded-full shadow-2xl bg-brand-navy text-white p-4 hover:scale-110 transition-transform sm:hidden"
+      aria-label="Call Now"
+    >
+      <Phone className="w-6 h-6" />
+    </a>
+    <a
+      href={whatsappLink()}
+      target="_blank" rel="noreferrer"
+      data-testid="floating-whatsapp-fab"
+      className="rounded-full shadow-2xl bg-[#25D366] text-white p-4 hover:scale-110 transition-transform"
+      aria-label="WhatsApp"
+    >
+      <MessageCircle className="w-6 h-6" />
+    </a>
+  </div>
 );
 
 const Layout = ({ children }) => (
