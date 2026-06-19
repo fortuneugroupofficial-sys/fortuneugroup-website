@@ -8,6 +8,7 @@ import { Label } from "../../components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../components/ui/dialog";
 import { Plus, Trash2, Edit3 } from "lucide-react";
 import { toast } from "sonner";
+import TipTapEditor from "../../components/TipTapEditor";
 
 const empty = { title: "", excerpt: "", content: "", category: "Mutual Funds", cover_image: "", author: "Fortune U Team", published: true };
 
@@ -51,7 +52,7 @@ const Blogs = () => {
               </div>
               <div>
                 <Label className="text-xs font-semibold uppercase tracking-wider">Content</Label>
-                <Textarea rows={10} value={f.content} onChange={(e)=>setF({...f, content:e.target.value})} />
+                <TipTapEditor value={f.content} onChange={(html)=>setF({...f, content:html})} />
               </div>
               <Button onClick={save} data-testid="save-blog-btn" className="bg-brand-green hover:bg-brand-deepgreen">Save</Button>
             </div>

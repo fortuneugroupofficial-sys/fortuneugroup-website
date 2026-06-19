@@ -26,7 +26,7 @@ const BlogPost = () => {
         <h1 className="mt-3 font-display text-3xl md:text-5xl text-brand-navy font-semibold leading-tight">{post.title}</h1>
         <div className="mt-4 text-sm text-brand-mute">By {post.author} · {new Date(post.created_at).toLocaleDateString()}</div>
         {post.cover_image && <img src={post.cover_image} alt={post.title} className="mt-8 w-full rounded-2xl border border-brand-line" />}
-        <div className="mt-8 whitespace-pre-line text-brand-ink leading-relaxed text-[15px]">{post.content}</div>
+        <div className="mt-8 prose prose-sm md:prose-base max-w-none [&_img]:rounded-xl [&_img]:my-4 [&_h2]:font-display [&_h2]:text-brand-navy [&_h3]:font-display [&_blockquote]:border-l-4 [&_blockquote]:border-brand-green [&_blockquote]:pl-3 [&_blockquote]:italic [&_a]:text-brand-deepgreen [&_a]:underline whitespace-pre-line text-brand-ink leading-relaxed text-[15px]" dangerouslySetInnerHTML={{__html: post.content}} />
       </div>
     </article>
   );

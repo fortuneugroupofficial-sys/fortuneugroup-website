@@ -14,7 +14,8 @@ from typing import List, Optional, Literal
 import bcrypt
 import jwt
 import httpx
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
+import requests as rq
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, UploadFile, File
 from fastapi.responses import Response
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from starlette.middleware.cors import CORSMiddleware
@@ -478,6 +479,28 @@ async def root():
     return {"service": "Fortune U Group API", "status": "ok"}
 
 
+@api_router.post("/admin/upload")
+async def admin_upload(file: UploadFile = File(...), _: dict = Depends(get_current_admin)):
+    ext = (file.filename or "bin").rsplit(".", 1)[-1].lower()
+    ct = file.content_type or {"jpg":"image/jpeg","jpeg":"image/jpeg","png":"image/png","webp":"image/webp","gif":"image/gif"}.get(ext, "application/octet-stream")
+    data = await file.read()
+    if len(data) > 5 * 1024 * 1024:
+        raise HTTPException(413, "File too large (max 5MB)")
+    path = f"{APP_NAME}/uploads/{uuid.uuid4().hex}.{ext}"
+    result = _put(path, data, ct)
+    await db.files.insert_one({"id": gen_id(), "storage_path": result["path"], "content_type": ct, "size": result.get("size", len(data)), "is_deleted": False, "created_at": now_iso()})
+    return {"url": f"/api/files/{result['path']}", "path": result["path"]}
+
+
+@api_router.get("/files/{path:path}")
+async def serve_file(path: str):
+    record = await db.files.find_one({"storage_path": path, "is_deleted": False})
+    if not record:
+        raise HTTPException(404, "Not found")
+    data, ct = _get(path)
+    return Response(content=data, media_type=record.get("content_type", ct), headers={"Cache-Control": "public, max-age=31536000, immutable"})
+
+
 @app.get("/sitemap.xml")
 async def sitemap():
     site = os.environ.get("SITE_URL", "https://www.fortuneugroup.in").rstrip("/")
@@ -516,6 +539,9 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup():
+    # Init storage
+    try: _init_storage()
+    except Exception as e: logger.warning("storage init: %s", e)
     # Indexes
     await db.users.create_index("email", unique=True)
     await db.leads.create_index("created_at")
