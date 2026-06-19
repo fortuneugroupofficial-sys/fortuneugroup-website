@@ -1,0 +1,162 @@
+import React, { useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { Menu, X, MessageCircle, ArrowUpRight } from "lucide-react";
+import { useLang } from "../context/LangContext";
+import { whatsappLink, BUSINESS_EMAIL, WHATSAPP_NUMBER } from "../lib/api";
+import { Button } from "./ui/button";
+
+const navItems = [
+  { to: "/", key: "home" },
+  { to: "/about", key: "about" },
+  { to: "/services", key: "services" },
+  { to: "/tools", key: "tools" },
+  { to: "/blog", key: "blog" },
+  { to: "/contact", key: "contact" },
+];
+
+export const Header = () => {
+  const { t, lang, setLang } = useLang();
+  const [open, setOpen] = useState(false);
+  const loc = useLocation();
+  React.useEffect(() => { setOpen(false); }, [loc.pathname]);
+
+  return (
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-brand-line" data-testid="site-header">
+      <div className="max-w-7xl mx-auto px-5 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <Link to="/" className="flex items-center gap-2" data-testid="nav-logo">
+            <div className="w-9 h-9 rounded-md bg-brand-navy flex items-center justify-center text-white font-display font-bold">F</div>
+            <div className="leading-tight">
+              <div className="font-display font-semibold text-brand-navy text-base">Fortune U Group</div>
+              <div className="text-[10px] tracking-[0.18em] uppercase text-brand-green font-semibold">Wealth · Planning · Freedom</div>
+            </div>
+          </Link>
+          <nav className="hidden lg:flex items-center gap-1">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                data-testid={`nav-${item.key}`}
+                className={({ isActive }) =>
+                  `px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    isActive ? "text-brand-navy bg-brand-soft" : "text-brand-mute hover:text-brand-navy hover:bg-brand-soft/60"
+                  }`
+                }
+              >{t(`nav.${item.key}`)}</NavLink>
+            ))}
+          </nav>
+          <div className="flex items-center gap-2">
+            <button
+              data-testid="lang-toggle"
+              onClick={() => setLang(lang === "en" ? "te" : "en")}
+              className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-line hover:border-brand-green hover:text-brand-green transition"
+            >
+              {lang === "en" ? "EN · తె" : "తె · EN"}
+            </button>
+            <a
+              href={whatsappLink()}
+              target="_blank" rel="noreferrer"
+              data-testid="header-whatsapp-btn"
+              className="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full bg-brand-green text-white hover:bg-brand-deepgreen transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" /> WhatsApp
+            </a>
+            <Link to="/contact" className="hidden lg:inline-block">
+              <Button data-testid="header-cta-start" className="rounded-full bg-brand-navy hover:bg-brand-navy/90 text-white">
+                {t("nav.start")} <ArrowUpRight className="w-4 h-4 ml-1" />
+              </Button>
+            </Link>
+            <button className="lg:hidden p-2" onClick={() => setOpen(!open)} data-testid="mobile-menu-toggle" aria-label="menu">
+              {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+      </div>
+      {open && (
+        <div className="lg:hidden border-t border-brand-line bg-white" data-testid="mobile-menu">
+          <div className="px-5 py-4 grid gap-1">
+            {navItems.map((it) => (
+              <NavLink key={it.to} to={it.to} className="px-3 py-2.5 rounded-md text-sm font-medium hover:bg-brand-soft" data-testid={`mobile-nav-${it.key}`}>
+                {t(`nav.${it.key}`)}
+              </NavLink>
+            ))}
+            <a href={whatsappLink()} target="_blank" rel="noreferrer" className="mt-2 px-3 py-2.5 rounded-md text-sm font-semibold bg-brand-green text-white text-center">WhatsApp Consultation</a>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export const Footer = () => {
+  return (
+    <footer className="bg-brand-navy text-white mt-24" data-testid="site-footer">
+      <div className="max-w-7xl mx-auto px-5 lg:px-8 py-16 grid md:grid-cols-4 gap-10">
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-9 h-9 rounded-md bg-white text-brand-navy flex items-center justify-center font-display font-bold">F</div>
+            <div className="font-display font-semibold">Fortune U Group</div>
+          </div>
+          <p className="text-sm text-white/70 leading-relaxed">Financial Education → Financial Planning → Financial Freedom. Helping Indian families build long-term wealth.</p>
+        </div>
+        <div>
+          <h4 className="font-display font-semibold mb-3 text-sm tracking-wide">Services</h4>
+          <ul className="space-y-2 text-sm text-white/70">
+            <li><Link to="/services">Mutual Fund Distribution</Link></li>
+            <li><Link to="/services">SIP Planning</Link></li>
+            <li><Link to="/services">Goal-Based Investing</Link></li>
+            <li><Link to="/services">Retirement Planning</Link></li>
+            <li><Link to="/services">Health & Term Insurance</Link></li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="font-display font-semibold mb-3 text-sm tracking-wide">Company</h4>
+          <ul className="space-y-2 text-sm text-white/70">
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/blog">Blog</Link></li>
+            <li><Link to="/tools">Calculators</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/admin/login">Admin</Link></li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="font-display font-semibold mb-3 text-sm tracking-wide">Contact</h4>
+          <ul className="space-y-2 text-sm text-white/70">
+            <li>Email: <a className="hover:text-brand-green" href={`mailto:${BUSINESS_EMAIL}`}>{BUSINESS_EMAIL}</a></li>
+            <li>WhatsApp: +{WHATSAPP_NUMBER}</li>
+            <li>Domain: www.fortuneugroup.in</li>
+          </ul>
+        </div>
+      </div>
+      <div className="border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-5 lg:px-8 py-6 text-xs text-white/60 leading-relaxed space-y-2">
+          <p data-testid="legal-disclaimer"><strong className="text-white">Disclaimer:</strong> Mutual Fund investments are subject to market risks. Read all scheme related documents carefully. Fortune U Group provides investor education, mutual fund distribution support, and financial awareness services. Investment decisions should be taken after evaluating individual financial goals and risk profile.</p>
+          <p>© {new Date().getFullYear()} Fortune U Group. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export const WhatsAppFab = () => (
+  <a
+    href={whatsappLink()}
+    target="_blank" rel="noreferrer"
+    data-testid="floating-whatsapp-fab"
+    className="fixed bottom-6 right-6 z-50 rounded-full shadow-2xl bg-[#25D366] text-white p-4 hover:scale-110 transition-transform"
+    aria-label="WhatsApp"
+  >
+    <MessageCircle className="w-6 h-6" />
+  </a>
+);
+
+const Layout = ({ children }) => (
+  <div className="min-h-screen flex flex-col bg-brand-bg">
+    <Header />
+    <main className="flex-1">{children}</main>
+    <Footer />
+    <WhatsAppFab />
+  </div>
+);
+
+export default Layout;
