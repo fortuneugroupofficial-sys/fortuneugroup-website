@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../lib/api";
 import { ArrowLeft } from "lucide-react";
+import SEO from "../components/SEO";
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -12,6 +13,13 @@ const BlogPost = () => {
   if (!post) return <div className="max-w-3xl mx-auto px-5 py-24 text-center text-brand-mute">Loading…</div>;
   return (
     <article className="bg-white" data-testid="blog-post-page">
+      <SEO
+        title={post.title}
+        description={post.excerpt}
+        path={`/blog/${post.slug}`}
+        image={post.cover_image}
+        schema={{ "@context":"https://schema.org","@type":"BlogPosting","headline":post.title,"description":post.excerpt,"image":post.cover_image,"author":{"@type":"Organization","name":post.author||"Fortune U Team"},"datePublished":post.created_at,"dateModified":post.updated_at||post.created_at }}
+      />
       <div className="max-w-3xl mx-auto px-5 lg:px-8 py-16">
         <Link to="/blog" className="inline-flex items-center text-sm font-semibold text-brand-deepgreen hover:underline"><ArrowLeft className="w-4 h-4 mr-1" /> Back</Link>
         <div className="mt-6 text-xs tracking-[0.2em] uppercase font-bold text-brand-green">{post.category}</div>

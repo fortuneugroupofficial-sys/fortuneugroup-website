@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
+import Analytics from "./components/Analytics";
 import { LangProvider } from "./context/LangContext";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
@@ -26,6 +27,7 @@ function App() {
     <BrowserRouter>
       <LangProvider>
         <AuthProvider>
+          <Analytics />
           <Toaster position="top-right" richColors />
           <Routes>
             <Route path="/admin/login" element={<AdminLogin />} />

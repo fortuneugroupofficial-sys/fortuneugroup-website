@@ -7,6 +7,8 @@ import { Label } from "../components/ui/label";
 import { toast } from "sonner";
 import { Mail, MessageCircle, MapPin, Phone } from "lucide-react";
 import { SectionHeader } from "../components/SectionHeader";
+import SEO from "../components/SEO";
+import { useLang } from "../context/LangContext";
 
 const Field = ({ label, ...props }) => (
   <div className="space-y-1.5">
@@ -18,6 +20,7 @@ const Field = ({ label, ...props }) => (
 const Contact = () => {
   const [f, setF] = useState({ name: "", mobile: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
+  const { t } = useLang();
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {

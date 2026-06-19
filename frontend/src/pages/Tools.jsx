@@ -6,6 +6,8 @@ import { Card } from "../components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/tabs";
 import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import { SectionHeader } from "../components/SectionHeader";
+import SEO from "../components/SEO";
+import { useLang } from "../context/LangContext";
 
 const fmt = (n) => {
   if (!isFinite(n)) return "—";
@@ -166,6 +168,88 @@ const GoalCalc = () => {
   );
 };
 
+const ELSSCalc = () => {
+  const [m, setM] = useState(10000);
+  const [y, setY] = useState(5);
+  const [r, setR] = useState(13);
+  const [slab, setSlab] = useState(30);
+  const { invested, wealth, taxSavedYr, totalTaxSaved, data } = useMemo(() => {
+    const monthlyRate = r / 100 / 12;
+    const n = y * 12;
+    const fv = m * ((Math.pow(1 + monthlyRate, n) - 1) / monthlyRate) * (1 + monthlyRate);
+    const inv = m * n;
+    const yearlyInvest = Math.min(m * 12, 150000);
+    const taxSavedY = (yearlyInvest * slab) / 100;
+    const series = [];
+    for (let yr = 1; yr <= y; yr++) {
+      const nn = yr * 12;
+      const fvY = m * ((Math.pow(1 + monthlyRate, nn) - 1) / monthlyRate) * (1 + monthlyRate);
+      series.push({ year: `Y${yr}`, invested: Math.round((m*nn)/100000), wealth: Math.round(fvY/100000) });
+    }
+    return { invested: inv, wealth: fv, taxSavedYr: taxSavedY, totalTaxSaved: taxSavedY * y, data: series };
+  }, [m, y, r, slab]);
+  return (
+    <div className="grid lg:grid-cols-5 gap-6" data-testid="elss-calc">
+      <Card className="p-6 lg:col-span-2 bg-white border-brand-line">
+        <div className="space-y-6">
+          <InputRow label="Monthly Investment (₹)" value={m} onChange={setM} min={500} max={50000} step={500} testid="elss-monthly" />
+          <InputRow label="Years" value={y} onChange={setY} min={3} max={30} step={1} suffix="yrs" testid="elss-years" />
+          <InputRow label="Expected Return (% p.a.)" value={r} onChange={setR} min={6} max={20} step={0.5} suffix="%" testid="elss-rate" />
+          <InputRow label="Tax Slab (%)" value={slab} onChange={setSlab} min={5} max={30} step={5} suffix="%" testid="elss-slab" />
+          <div className="text-xs text-brand-mute bg-brand-soft/60 rounded-lg p-3 border border-brand-line">ELSS has a 3-year lock-in. Section 80C deduction is capped at ₹1.5L/yr.</div>
+        </div>
+      </Card>
+      <Card className="p-6 lg:col-span-3 bg-white border-brand-line">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <Stat label="Invested" value={fmt(invested)} />
+          <Stat label="Est. Wealth" value={fmt(wealth)} accent />
+          <Stat label="Tax Saved / Yr" value={fmt(taxSavedYr)} />
+          <Stat label={`Total Tax Saved (${y}y)`} value={fmt(totalTaxSaved)} />
+        </div>
+        <ChartBlock data={data} />
+      </Card>
+    </div>
+  );
+};
+
+const EMICalc = () => {
+  const [P, setP] = useState(3000000);
+  const [r, setR] = useState(8.5);
+  const [y, setY] = useState(20);
+  const { emi, totalInt, totalPay, data } = useMemo(() => {
+    const monthly = r / 100 / 12;
+    const n = y * 12;
+    const e = monthly === 0 ? P / n : (P * monthly * Math.pow(1 + monthly, n)) / (Math.pow(1 + monthly, n) - 1);
+    const series = [];
+    let bal = P;
+    for (let yr = 1; yr <= y; yr++) {
+      let intPaid = 0; let prinPaid = 0;
+      for (let m = 0; m < 12; m++) { const i = bal * monthly; const p = e - i; intPaid += i; prinPaid += p; bal -= p; }
+      series.push({ year: `Y${yr}`, invested: Math.round((P - Math.max(bal,0))/100000), wealth: Math.round((P + (intPaid*y))/100000/y) });
+    }
+    return { emi: e, totalInt: e * n - P, totalPay: e * n, data: series };
+  }, [P, r, y]);
+  return (
+    <div className="grid lg:grid-cols-5 gap-6" data-testid="emi-calc">
+      <Card className="p-6 lg:col-span-2 bg-white border-brand-line">
+        <div className="space-y-6">
+          <InputRow label="Loan Amount (₹)" value={P} onChange={setP} min={100000} max={50000000} step={50000} testid="emi-amt" />
+          <InputRow label="Interest Rate (% p.a.)" value={r} onChange={setR} min={5} max={20} step={0.1} suffix="%" testid="emi-rate" />
+          <InputRow label="Tenure (years)" value={y} onChange={setY} min={1} max={30} step={1} testid="emi-years" />
+        </div>
+      </Card>
+      <Card className="p-6 lg:col-span-3 bg-white border-brand-line">
+        <div className="grid grid-cols-3 gap-3">
+          <Stat label="Monthly EMI" value={fmt(emi)} accent />
+          <Stat label="Total Interest" value={fmt(totalInt)} />
+          <Stat label="Total Payment" value={fmt(totalPay)} />
+        </div>
+        <ChartBlock data={data} />
+      </Card>
+    </div>
+  );
+};
+
 const Stat = ({ label, value, accent }) => (
   <div className={`rounded-xl p-5 border ${accent ? "bg-brand-green/10 border-brand-green/30" : "bg-brand-soft/40 border-brand-line"}`}>
     <div className="text-[10px] uppercase tracking-[0.18em] font-bold text-brand-mute">{label}</div>
@@ -173,31 +257,39 @@ const Stat = ({ label, value, accent }) => (
   </div>
 );
 
-const Tools = () => (
+const Tools = () => {
+  const { t } = useLang();
+  return (
   <div data-testid="tools-page" className="bg-brand-bg">
+    <SEO title="Free Calculators · SIP, Retirement, Goal, ELSS, EMI" description="Interactive SIP, Retirement, Goal-based, ELSS Tax-Saving and Home-Loan EMI calculators. Plan your financial future in numbers." path="/tools" />
     <section className="bg-white border-b border-brand-line">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
-        <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">Free Calculators</div>
-        <h1 className="font-display text-4xl md:text-5xl tracking-tight text-brand-navy font-semibold leading-tight max-w-3xl">Plan your future in numbers. Then turn it into a plan.</h1>
-        <p className="mt-5 text-brand-mute max-w-2xl leading-relaxed">Use our interactive SIP, Retirement and Goal calculators to see exactly how much you need to invest — and what your money can become.</p>
+        <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">{t("tools.eyebrow")}</div>
+        <h1 className="font-display text-4xl md:text-5xl tracking-tight text-brand-navy font-semibold leading-tight max-w-3xl">{t("tools.title")}</h1>
+        <p className="mt-5 text-brand-mute max-w-2xl leading-relaxed">{t("tools.sub")}</p>
       </div>
     </section>
 
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         <Tabs defaultValue="sip" className="w-full" data-testid="tools-tabs">
-          <TabsList className="bg-white border border-brand-line p-1 rounded-full mx-auto flex w-fit">
-            <TabsTrigger value="sip" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-6" data-testid="tab-sip">SIP Calculator</TabsTrigger>
-            <TabsTrigger value="ret" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-6" data-testid="tab-ret">Retirement</TabsTrigger>
-            <TabsTrigger value="goal" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-6" data-testid="tab-goal">Goal</TabsTrigger>
+          <TabsList className="bg-white border border-brand-line p-1 rounded-full mx-auto flex w-fit flex-wrap">
+            <TabsTrigger value="sip" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-5" data-testid="tab-sip">SIP</TabsTrigger>
+            <TabsTrigger value="ret" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-5" data-testid="tab-ret">Retirement</TabsTrigger>
+            <TabsTrigger value="goal" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-5" data-testid="tab-goal">Goal</TabsTrigger>
+            <TabsTrigger value="elss" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-5" data-testid="tab-elss">ELSS</TabsTrigger>
+            <TabsTrigger value="emi" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-5" data-testid="tab-emi">EMI</TabsTrigger>
           </TabsList>
           <TabsContent value="sip" className="mt-8"><SIPCalc /></TabsContent>
           <TabsContent value="ret" className="mt-8"><RetirementCalc /></TabsContent>
           <TabsContent value="goal" className="mt-8"><GoalCalc /></TabsContent>
+          <TabsContent value="elss" className="mt-8"><ELSSCalc /></TabsContent>
+          <TabsContent value="emi" className="mt-8"><EMICalc /></TabsContent>
         </Tabs>
       </div>
     </section>
   </div>
-);
+  );
+};
 
 export default Tools;

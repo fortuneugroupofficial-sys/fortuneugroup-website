@@ -2,7 +2,9 @@ import React from "react";
 import { TrendingUp, Target, PiggyBank, BarChart3, Shield, Heart, GraduationCap, Briefcase } from "lucide-react";
 import { Card } from "../components/ui/card";
 import { SectionHeader } from "../components/SectionHeader";
+import SEO from "../components/SEO";
 import { SIPRequestForm, InsuranceForm } from "../components/LeadForms";
+import { useLang } from "../context/LangContext";
 
 const services = [
   { icon: TrendingUp, title: "Mutual Fund Distribution", points: ["SIP & Lumpsum Investments", "ELSS (Tax-Saving) Funds", "Equity, Hybrid, Debt Funds", "Goal-mapped portfolios"], color: "bg-brand-green/10 text-brand-deepgreen" },
@@ -15,13 +17,16 @@ const services = [
   { icon: GraduationCap, title: "Financial Awareness Education", points: ["Investing Basics", "Personal Finance", "Mutual Fund Awareness", "Smart Money Management"], color: "bg-brand-navy/10 text-brand-navy" },
 ];
 
-const Services = () => (
+const Services = () => {
+  const { t } = useLang();
+  return (
   <div data-testid="services-page" className="bg-brand-bg">
+    <SEO title="Services · Mutual Fund Distribution, SIP, Insurance & Retirement" description="Eight services: Mutual Fund Distribution, SIP Planning, Goal-Based Investing, Wealth Creation, Retirement Planning, Health & Term Insurance Guidance, Financial Education." path="/services" />
     <section className="bg-white border-b border-brand-line">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
-        <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">Our Services</div>
-        <h1 className="font-display text-4xl md:text-5xl tracking-tight text-brand-navy font-semibold leading-tight max-w-3xl">Eight ways we help Indian families build long-term wealth.</h1>
-        <p className="mt-5 text-brand-mute max-w-2xl leading-relaxed">From your first SIP to your retirement corpus — Fortune U Group is your education + planning + investment partner under one roof.</p>
+        <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">{t("services.eyebrow")}</div>
+        <h1 className="font-display text-4xl md:text-5xl tracking-tight text-brand-navy font-semibold leading-tight max-w-3xl">{t("services.title")}</h1>
+        <p className="mt-5 text-brand-mute max-w-2xl leading-relaxed">{t("services.sub")}</p>
       </div>
     </section>
 
@@ -63,6 +68,7 @@ const Services = () => (
       </div>
     </section>
   </div>
-);
+  );
+};
 
 export default Services;

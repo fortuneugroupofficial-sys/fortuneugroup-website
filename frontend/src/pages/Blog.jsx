@@ -4,6 +4,8 @@ import api from "../lib/api";
 import { Input } from "../components/ui/input";
 import { Card } from "../components/ui/card";
 import { Search, ArrowUpRight } from "lucide-react";
+import SEO from "../components/SEO";
+import { useLang } from "../context/LangContext";
 
 const categories = ["All", "Mutual Funds", "SIP Investing", "Retirement Planning", "Personal Finance", "Health Insurance", "Term Insurance", "Financial Education"];
 
@@ -11,6 +13,7 @@ const Blog = () => {
   const [posts, setPosts] = useState([]);
   const [cat, setCat] = useState("All");
   const [q, setQ] = useState("");
+  const { t } = useLang();
 
   useEffect(() => { api.get("/blogs").then(r => setPosts(r.data)); }, []);
 
@@ -27,13 +30,14 @@ const Blog = () => {
 
   return (
     <div data-testid="blog-page" className="bg-brand-bg">
+      <SEO title="Blog · Investor Education" description="Articles on Mutual Funds, SIP investing, Retirement Planning, Health & Term Insurance and Personal Finance — written for Indian investors." path="/blog" />
       <section className="bg-white border-b border-brand-line">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
-          <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">Investor Education</div>
-          <h1 className="font-display text-4xl md:text-5xl tracking-tight text-brand-navy font-semibold leading-tight max-w-3xl">Articles to help you invest smarter.</h1>
+          <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">{t("blog.eyebrow")}</div>
+          <h1 className="font-display text-4xl md:text-5xl tracking-tight text-brand-navy font-semibold leading-tight max-w-3xl">{t("blog.title")}</h1>
           <div className="mt-8 max-w-xl relative">
             <Search className="absolute left-3 top-3 w-4 h-4 text-brand-mute" />
-            <Input value={q} onChange={(e)=>setQ(e.target.value)} placeholder="Search articles…" className="pl-9 bg-brand-soft/40 border-brand-line h-11 focus-visible:ring-brand-green" data-testid="blog-search" />
+            <Input value={q} onChange={(e)=>setQ(e.target.value)} placeholder={t("blog.search")} className="pl-9 bg-brand-soft/40 border-brand-line h-11 focus-visible:ring-brand-green" data-testid="blog-search" />
           </div>
         </div>
       </section>

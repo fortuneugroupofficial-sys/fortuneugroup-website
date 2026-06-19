@@ -13,7 +13,9 @@ from typing import List, Optional, Literal
 
 import bcrypt
 import jwt
+import httpx
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
+from fastapi.responses import Response
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -49,6 +51,49 @@ def slugify(text: str) -> str:
     text = re.sub(r"[^a-z0-9\s-]", "", text)
     text = re.sub(r"[\s-]+", "-", text)
     return text[:80]
+
+
+async def send_lead_notification_email(lead_type: str, lead: dict) -> None:
+    """Send email via Resend. No-op (logs only) if RESEND_API_KEY not set — MOCKED."""
+    api_key = os.environ.get("RESEND_API_KEY", "").strip()
+    to_email = os.environ.get("LEAD_NOTIFY_TO", "").strip()
+    sender = os.environ.get("RESEND_FROM", "onboarding@resend.dev").strip()
+    if not api_key or not to_email:
+        logger.info("[MOCKED EMAIL] Lead %s notification skipped (no RESEND_API_KEY). Lead: %s", lead_type, lead.get("name"))
+        return
+    rows = "".join(
+        f"<tr><td style='padding:6px 12px;border-bottom:1px solid #E2E8F0;color:#475569'>{k}</td>"
+        f"<td style='padding:6px 12px;border-bottom:1px solid #E2E8F0;color:#0F172A'><strong>{v}</strong></td></tr>"
+        for k, v in lead.items() if k not in {"id", "status"}
+    )
+    wa = os.environ.get("WHATSAPP_NUMBER", "")
+    mob = lead.get("mobile", "")
+    wa_link = f"https://wa.me/{re.sub(r'[^0-9]','',mob)}?text=Hello%20{lead.get('name','')},%20this%20is%20Fortune%20U%20Group" if mob else f"https://wa.me/{wa}"
+    html = f"""
+    <div style="font-family:Inter,Arial,sans-serif;max-width:560px;margin:auto">
+      <div style="background:#0A2540;color:#fff;padding:24px;border-radius:12px 12px 0 0">
+        <div style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#10B981;font-weight:700">New {lead_type.upper()} Lead</div>
+        <div style="font-size:22px;font-weight:600;margin-top:8px">Fortune U Group</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-top:0;padding:18px;border-radius:0 0 12px 12px">
+        <table style="width:100%;border-collapse:collapse;font-size:14px">{rows}</table>
+        <div style="margin-top:18px;text-align:center">
+          <a href="{wa_link}" style="background:#10B981;color:#fff;padding:10px 18px;border-radius:999px;font-weight:600;text-decoration:none;font-size:13px">WhatsApp this lead</a>
+        </div>
+      </div>
+    </div>
+    """
+    try:
+        async with httpx.AsyncClient(timeout=8) as cx:
+            r = await cx.post(
+                "https://api.resend.com/emails",
+                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                json={"from": sender, "to": [to_email], "subject": f"New {lead_type} lead · {lead.get('name','')}", "html": html},
+            )
+            if r.status_code >= 300:
+                logger.warning("Resend send failed %s: %s", r.status_code, r.text[:200])
+    except Exception as e:
+        logger.warning("Resend exception: %s", e)
 
 
 def hash_password(password: str) -> str:
@@ -215,6 +260,7 @@ async def me(current: dict = Depends(get_current_admin)):
 async def create_consultation_lead(payload: dict):
     lead = ConsultationLead(**payload)
     await db.leads.insert_one(lead.model_dump())
+    await send_lead_notification_email("consultation", lead.model_dump())
     return {"success": True, "id": lead.id, "message": "Thank you! We will contact you soon."}
 
 
@@ -222,6 +268,7 @@ async def create_consultation_lead(payload: dict):
 async def create_sip_lead(payload: dict):
     lead = SIPLead(**payload)
     await db.leads.insert_one(lead.model_dump())
+    await send_lead_notification_email("sip", lead.model_dump())
     return {"success": True, "id": lead.id, "message": "Thank you! Our SIP advisor will reach out."}
 
 
@@ -229,6 +276,7 @@ async def create_sip_lead(payload: dict):
 async def create_insurance_lead(payload: dict):
     lead = InsuranceLead(**payload)
     await db.leads.insert_one(lead.model_dump())
+    await send_lead_notification_email("insurance", lead.model_dump())
     return {"success": True, "id": lead.id, "message": "Thank you! Insurance guidance request received."}
 
 
@@ -236,6 +284,7 @@ async def create_insurance_lead(payload: dict):
 async def create_contact(payload: ContactIn):
     c = Contact(**payload.model_dump())
     await db.contacts.insert_one(c.model_dump())
+    await send_lead_notification_email("contact", c.model_dump())
     return {"success": True, "id": c.id, "message": "Thanks! We will get back to you."}
 
 
@@ -427,6 +476,30 @@ async def admin_analytics(_: dict = Depends(get_current_admin)):
 @api_router.get("/")
 async def root():
     return {"service": "Fortune U Group API", "status": "ok"}
+
+
+@app.get("/sitemap.xml")
+async def sitemap():
+    site = os.environ.get("SITE_URL", "https://www.fortuneugroup.in").rstrip("/")
+    static_paths = ["/", "/about", "/services", "/tools", "/blog", "/contact"]
+    blog_docs = await db.blogs.find({"published": True}, {"_id": 0, "slug": 1, "updated_at": 1}).to_list(500)
+    today = datetime.now(timezone.utc).date().isoformat()
+    urls = []
+    for p in static_paths:
+        urls.append(f"<url><loc>{site}{p}</loc><lastmod>{today}</lastmod><changefreq>weekly</changefreq><priority>{'1.0' if p=='/' else '0.8'}</priority></url>")
+    for b in blog_docs:
+        lastmod = (b.get("updated_at") or "")[:10] or today
+        urls.append(f"<url><loc>{site}/blog/{b['slug']}</loc><lastmod>{lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>")
+    body = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{''.join(urls)}</urlset>"""
+    return Response(content=body, media_type="application/xml")
+
+
+@app.get("/robots.txt")
+async def robots():
+    site = os.environ.get("SITE_URL", "https://www.fortuneugroup.in").rstrip("/")
+    body = f"User-agent: *\nAllow: /\nDisallow: /admin\nSitemap: {site}/sitemap.xml\n"
+    return Response(content=body, media_type="text/plain")
 
 
 # ----- App setup -----

@@ -9,6 +9,7 @@ import { whatsappLink } from "../lib/api";
 import api from "../lib/api";
 import { SectionHeader } from "../components/SectionHeader";
 import { ConsultationForm } from "../components/LeadForms";
+import SEO from "../components/SEO";
 import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 
 const serviceCards = [
@@ -42,6 +43,17 @@ const Home = () => {
 
   return (
     <div data-testid="home-page">
+      <SEO
+        title="Build Your Financial Future With Confidence"
+        description="Mutual Funds · SIP Planning · Goal-Based Investing · Insurance Guidance · Retirement Planning for Indian families. Financial Education → Planning → Freedom."
+        path="/"
+        schema={{
+          "@context":"https://schema.org","@type":"FinancialService",
+          "name":"Fortune U Group","areaServed":"IN",
+          "url":"https://www.fortuneugroup.in",
+          "description":"Mutual Fund Distribution, SIP, Goal-based Investing, Retirement, Insurance Guidance and Financial Education."
+        }}
+      />
       {/* HERO */}
       <section className="relative overflow-hidden" data-testid="hero-section">
         <div className="absolute inset-0 bg-grid opacity-60" />
@@ -185,7 +197,7 @@ const Home = () => {
       <section className="py-20 lg:py-28 bg-white" data-testid="home-consult-section">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-2 gap-12 items-start">
           <div>
-            <SectionHeader eyebrow="Free Consultation" title="Tell us your goal. We'll build the plan." sub="A no-obligation, 30-minute conversation. Get clarity on where your money should go — for the next 5, 10 and 30 years." />
+          <SectionHeader eyebrow={t("home.consultEyebrow")} title={t("home.consultTitle")} sub={t("home.consultSub")} />
             <ul className="mt-8 space-y-3 text-sm text-brand-mute">
               {["Personalised goal-mapping","Tax-efficient SIP mix","Insurance gap analysis","Lifetime advisor relationship"].map((s,i)=>(
                 <li key={i} className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-brand-green mt-0.5" /> <span>{s}</span></li>
@@ -201,7 +213,7 @@ const Home = () => {
       {/* TESTIMONIALS */}
       <section className="py-20 lg:py-28 bg-brand-soft/40" data-testid="home-testimonials">
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
-          <SectionHeader eyebrow="Investor stories" title="Real families. Real journeys." align="center" />
+          <SectionHeader eyebrow={t("home.testEyebrow")} title={t("home.testTitle")} align="center" />
           <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {testimonials.slice(0,6).map((tst) => (
               <Card key={tst.id} className="p-6 bg-white border-brand-line shadow-card" data-testid={`testimonial-${tst.id}`}>
@@ -222,7 +234,7 @@ const Home = () => {
       {/* FAQ */}
       <section className="py-20 lg:py-28 bg-white" data-testid="home-faq">
         <div className="max-w-3xl mx-auto px-5 lg:px-8">
-          <SectionHeader eyebrow="Common questions" title="Investing FAQs" align="center" />
+          <SectionHeader eyebrow={t("home.faqEyebrow")} title={t("home.faqTitle")} align="center" />
           <Accordion type="single" collapsible className="mt-10">
             {faqs.map((f) => (
               <AccordionItem key={f.id} value={f.id} data-testid={`faq-${f.id}`}>
