@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, X, MessageCircle, ArrowUpRight, Phone } from "lucide-react";
 import { useLang } from "../context/LangContext";
 import { whatsappLink, BUSINESS_EMAIL, WHATSAPP_NUMBER } from "../lib/api";
+import { trackEvent } from "./Analytics";
 import { Button } from "./ui/button";
 
 const navItems = [
@@ -55,7 +56,7 @@ export const Header = () => {
             </button>
             <a
               href={`tel:+${WHATSAPP_NUMBER}`}
-              data-testid="header-call-btn"
+              onClick={()=>trackEvent("call_click",{source:"header"})} data-testid="header-call-btn"
               className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-3.5 py-2 rounded-full border border-brand-line text-brand-navy hover:border-brand-navy hover:bg-brand-navy hover:text-white transition-colors"
             >
               <Phone className="w-4 h-4" /> Call Now
@@ -63,7 +64,7 @@ export const Header = () => {
             <a
               href={whatsappLink()}
               target="_blank" rel="noreferrer"
-              data-testid="header-whatsapp-btn"
+              onClick={()=>trackEvent("whatsapp_click",{source:"header"})} data-testid="header-whatsapp-btn"
               className="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full bg-brand-green text-white hover:bg-brand-deepgreen transition-colors"
             >
               <MessageCircle className="w-4 h-4" /> WhatsApp
@@ -87,8 +88,8 @@ export const Header = () => {
                 {t(`nav.${it.key}`)}
               </NavLink>
             ))}
-            <a href={whatsappLink()} target="_blank" rel="noreferrer" className="mt-2 px-3 py-2.5 rounded-md text-sm font-semibold bg-brand-green text-white text-center" data-testid="mobile-whatsapp">WhatsApp Consultation</a>
-            <a href={`tel:+${WHATSAPP_NUMBER}`} className="px-3 py-2.5 rounded-md text-sm font-semibold bg-brand-navy text-white text-center" data-testid="mobile-call">Call Now · +{WHATSAPP_NUMBER}</a>
+            <a href={whatsappLink()} target="_blank" rel="noreferrer" className="mt-2 px-3 py-2.5 rounded-md text-sm font-semibold bg-brand-green text-white text-center" onClick={()=>trackEvent("whatsapp_click",{source:"mobile_menu"})} data-testid="mobile-whatsapp">WhatsApp Consultation</a>
+            <a href={`tel:+${WHATSAPP_NUMBER}`} className="px-3 py-2.5 rounded-md text-sm font-semibold bg-brand-navy text-white text-center" onClick={()=>trackEvent("call_click",{source:"mobile_menu"})} data-testid="mobile-call">Call Now · +{WHATSAPP_NUMBER}</a>
             <Link to="/contact" className="px-3 py-2.5 rounded-md text-sm font-semibold border border-brand-green text-brand-deepgreen text-center" data-testid="mobile-book-consult">Book Free Consultation</Link>
           </div>
         </div>
@@ -150,7 +151,7 @@ export const WhatsAppFab = () => (
   <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end" data-testid="floating-actions">
     <a
       href={`tel:+${WHATSAPP_NUMBER}`}
-      data-testid="floating-call-fab"
+      onClick={()=>trackEvent("call_click",{source:"fab"})} data-testid="floating-call-fab"
       className="rounded-full shadow-2xl bg-brand-navy text-white p-4 hover:scale-110 transition-transform sm:hidden"
       aria-label="Call Now"
     >
@@ -159,7 +160,7 @@ export const WhatsAppFab = () => (
     <a
       href={whatsappLink()}
       target="_blank" rel="noreferrer"
-      data-testid="floating-whatsapp-fab"
+      onClick={()=>trackEvent("whatsapp_click",{source:"fab"})} data-testid="floating-whatsapp-fab"
       className="rounded-full shadow-2xl bg-[#25D366] text-white p-4 hover:scale-110 transition-transform"
       aria-label="WhatsApp"
     >

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { whatsappLink, WHATSAPP_NUMBER, BUSINESS_EMAIL, submitLead } from "../lib/api";
+import { trackEvent } from "../components/Analytics";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
@@ -25,6 +26,7 @@ const Contact = () => {
     e.preventDefault(); setLoading(true);
     try {
       await submitLead("contact", f);
+      trackEvent("generate_lead", { form_type: "contact" });
       toast.success("Thanks! We'll reach out shortly.");
       setF({ name: "", mobile: "", email: "", message: "" });
     } catch { toast.error("Could not send. Please try again."); }

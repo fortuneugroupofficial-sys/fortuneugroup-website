@@ -1,8 +1,12 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const GA4_ID = process.env.REACT_APP_GA4_ID;
 
 const Analytics = () => {
+  const location = useLocation();
+
+  // Load gtag.js once
   useEffect(() => {
     if (!GA4_ID) return;
     if (document.getElementById("ga4-loader")) return;
@@ -13,9 +17,20 @@ const Analytics = () => {
     document.head.appendChild(s);
     const inline = document.createElement("script");
     inline.id = "ga4-init";
-    inline.textContent = `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${GA4_ID}');`;
+    inline.textContent = `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} window.gtag = gtag; gtag('js', new Date()); gtag('config', '${GA4_ID}', { send_page_view: false });`;
     document.head.appendChild(inline);
   }, []);
+
+  // Track SPA pageviews on route change
+  useEffect(() => {
+    if (!GA4_ID || typeof window.gtag !== "function") return;
+    window.gtag("event", "page_view", {
+      page_path: location.pathname + location.search,
+      page_location: window.location.href,
+      page_title: document.title,
+    });
+  }, [location.pathname, location.search]);
+
   return null;
 };
 
