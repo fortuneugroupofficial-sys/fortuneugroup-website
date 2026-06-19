@@ -77,7 +77,7 @@ const Home = () => {
               </div>
 
               <div className="mt-12 grid grid-cols-3 gap-6 max-w-xl">
-                {[{n:"5,000+", l:"Families Educated"}, {n:"₹120Cr+", l:"AUM Guided"}, {n:"15+ Yrs", l:"Combined Experience"}].map((s, i)=>(
+                {[{n:"1,000+", l:"Invesors Educated"}, {n:"6+ Yrs", l:"Market Experience"}, {n:"Goal Based", l:"Financial Planning"}].map((s, i)=>(
                   <div key={i} className="reveal reveal-4">
                     <div className="font-display text-2xl md:text-3xl font-semibold text-brand-navy">{s.n}</div>
                     <div className="text-xs text-brand-mute mt-1">{s.l}</div>
