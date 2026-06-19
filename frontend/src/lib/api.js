@@ -13,7 +13,7 @@ export const whatsappLink = (text) =>
  */
 export async function submitLead(type, payload) {
   const body = { type, timestamp: new Date().toISOString(), ...payload };
-  if (!SHEETS_WEBHOOK) {
+  if (!SHEETS_WEBHOOK) {console.log("FORM DATA", body);
     console.warn("[MOCKED LEAD]", body);
     await new Promise((r) => setTimeout(r, 400));
     return { ok: true, mocked: true };
