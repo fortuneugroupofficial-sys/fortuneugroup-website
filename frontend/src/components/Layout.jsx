@@ -125,7 +125,6 @@ export const Footer = () => {
             <li><Link to="/blog">Blog</Link></li>
             <li><Link to="/tools">Calculators</Link></li>
             <li><Link to="/contact">Contact</Link></li>
-            <li><Link to="/admin/login">Admin</Link></li>
           </ul>
         </div>
         <div>

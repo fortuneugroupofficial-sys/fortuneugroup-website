@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import api from "../lib/api";
+import { BLOGS } from "../data/content";
 import { Input } from "../components/ui/input";
 import { Card } from "../components/ui/card";
 import { Search, ArrowUpRight } from "lucide-react";
@@ -10,12 +10,10 @@ import { useLang } from "../context/LangContext";
 const categories = ["All", "Mutual Funds", "SIP Investing", "Retirement Planning", "Personal Finance", "Health Insurance", "Term Insurance", "Financial Education"];
 
 const Blog = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts] = useState(BLOGS);
   const [cat, setCat] = useState("All");
   const [q, setQ] = useState("");
   const { t } = useLang();
-
-  useEffect(() => { api.get("/blogs").then(r => setPosts(r.data)); }, []);
 
   const filtered = useMemo(() => {
     return posts.filter(p => {

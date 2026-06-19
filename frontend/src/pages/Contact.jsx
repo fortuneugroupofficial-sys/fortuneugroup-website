@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api, { whatsappLink, WHATSAPP_NUMBER, BUSINESS_EMAIL } from "../lib/api";
+import { whatsappLink, WHATSAPP_NUMBER, BUSINESS_EMAIL, submitLead } from "../lib/api";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
@@ -24,7 +24,7 @@ const Contact = () => {
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      await api.post("/contact", f);
+      await submitLead("contact", f);
       toast.success("Thanks! We'll reach out shortly.");
       setF({ name: "", mobile: "", email: "", message: "" });
     } catch { toast.error("Could not send. Please try again."); }

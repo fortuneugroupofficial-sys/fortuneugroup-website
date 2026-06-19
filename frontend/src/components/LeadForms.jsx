@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../lib/api";
+import { submitLead } from "../lib/api";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
@@ -20,7 +20,7 @@ export const ConsultationForm = () => {
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      await api.post("/leads/consultation", f);
+      await submitLead("consultation", f);
       toast.success("Thanks! Our advisor will contact you shortly.");
       setF({ name: "", mobile: "", email: "", city: "", financial_goal: "" });
     } catch (err) { toast.error("Something went wrong. Please try again."); }
@@ -61,7 +61,7 @@ export const SIPRequestForm = () => {
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      await api.post("/leads/sip", { ...f, monthly_income: Number(f.monthly_income), sip_budget: Number(f.sip_budget) });
+      await submitLead("sip", { ...f, monthly_income: Number(f.monthly_income), sip_budget: Number(f.sip_budget) });
       toast.success("SIP plan request received!");
       setF({ name: "", mobile: "", monthly_income: "", sip_budget: "", goal_type: "" });
     } catch { toast.error("Could not submit. Try again."); }
@@ -101,7 +101,7 @@ export const InsuranceForm = () => {
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      await api.post("/leads/insurance", { ...f, age: Number(f.age), family_members: Number(f.family_members) });
+      await submitLead("insurance", { ...f, age: Number(f.age), family_members: Number(f.family_members) });
       toast.success("Request received! Our insurance advisor will call you.");
       setF({ name: "", mobile: "", age: "", family_members: "", coverage_requirement: "" });
     } catch { toast.error("Could not submit. Try again."); }

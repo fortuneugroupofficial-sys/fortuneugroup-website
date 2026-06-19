@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MessageCircle, TrendingUp, Target, Shield, BookOpen, Users, Award, CheckCircle2, BarChart3, Heart, PiggyBank, GraduationCap, ArrowUpRight } from "lucide-react";
 import { Button } from "../components/ui/button";
@@ -6,7 +6,7 @@ import { Card } from "../components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { useLang } from "../context/LangContext";
 import { whatsappLink } from "../lib/api";
-import api from "../lib/api";
+import { TESTIMONIALS, FAQS } from "../data/content";
 import { SectionHeader } from "../components/SectionHeader";
 import { ConsultationForm } from "../components/LeadForms";
 import SEO from "../components/SEO";
@@ -33,13 +33,8 @@ const seriesData = (() => {
 
 const Home = () => {
   const { t } = useLang();
-  const [testimonials, setTestimonials] = useState([]);
-  const [faqs, setFaqs] = useState([]);
-
-  useEffect(() => {
-    api.get("/testimonials").then((r) => setTestimonials(r.data)).catch(()=>{});
-    api.get("/faqs").then((r) => setFaqs(r.data)).catch(()=>{});
-  }, []);
+  const testimonials = TESTIMONIALS;
+  const faqs = FAQS;
 
   return (
     <div data-testid="home-page">

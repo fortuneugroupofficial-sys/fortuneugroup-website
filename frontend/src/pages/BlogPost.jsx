@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useParams } from "react-router-dom";
-import api from "../lib/api";
+import { BLOGS } from "../data/content";
 import { ArrowLeft } from "lucide-react";
 import SEO from "../components/SEO";
 
 const BlogPost = () => {
   const { slug } = useParams();
-  const [post, setPost] = useState(null);
-  const [err, setErr] = useState(false);
-  useEffect(() => { api.get(`/blogs/${slug}`).then(r => setPost(r.data)).catch(()=>setErr(true)); }, [slug]);
-  if (err) return <div className="max-w-3xl mx-auto px-5 py-24 text-center text-brand-mute">Article not found. <Link to="/blog" className="text-brand-deepgreen font-semibold">Back to blog</Link></div>;
-  if (!post) return <div className="max-w-3xl mx-auto px-5 py-24 text-center text-brand-mute">Loading…</div>;
+  const post = BLOGS.find((b) => b.slug === slug);
+  if (!post) return <div className="max-w-3xl mx-auto px-5 py-24 text-center text-brand-mute">Article not found. <Link to="/blog" className="text-brand-deepgreen font-semibold">Back to blog</Link></div>;
   return (
     <article className="bg-white" data-testid="blog-post-page">
       <SEO
