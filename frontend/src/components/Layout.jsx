@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X, MessageCircle, ArrowUpRight, Phone } from "lucide-react";
+import {
+  Menu,
+  X,
+  MessageCircle,
+  ArrowUpRight,
+  Phone,
+  Facebook,
+  Instagram,
+  Youtube
+} from "lucide-react";
 import { useLang } from "../context/LangContext";
 import { whatsappLink, BUSINESS_EMAIL, WHATSAPP_NUMBER } from "../lib/api";
 import { trackEvent } from "./Analytics";
