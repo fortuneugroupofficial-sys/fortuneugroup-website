@@ -195,14 +195,42 @@ export const Footer = () => {
             <li>Email: <a className="hover:text-brand-green" href={`mailto:${BUSINESS_EMAIL}`}>{BUSINESS_EMAIL}</a></li>
             <li>WhatsApp: +{WHATSAPP_NUMBER}</li>
             <li>Domain: www.fortuneugroup.in</li>
-            <li>
-  <a
-    href="https://www.facebook.com/profile.php?id=61589015788132"
-    target="_blank"
-    rel="noreferrer"
-  >
-    Facebook
-  </a>
+            <li className="mt-4">
+  <div className="flex gap-4">
+
+    <a
+      href="https://www.facebook.com/profile.php?id=61589015788132"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <Facebook className="w-5 h-5" />
+    </a>
+
+    <a
+      href="https://www.instagram.com/fortuneugroup/?hl=en"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <Instagram className="w-5 h-5" />
+    </a>
+
+    <a
+      href="https://www.youtube.com/@FortuneUGroupOfficial"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <Youtube className="w-5 h-5" />
+    </a>
+
+    <a
+      href="https://wa.me/919533304441"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <MessageCircle className="w-5 h-5" />
+    </a>
+
+  </div>
 </li>
 
 <li>
