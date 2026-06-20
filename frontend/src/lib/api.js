@@ -1,6 +1,6 @@
 export const WHATSAPP_NUMBER = process.env.REACT_APP_WHATSAPP_NUMBER || "919533304441";
 export const BUSINESS_EMAIL = process.env.REACT_APP_BUSINESS_EMAIL || "contact@fortuneugroup.in";
-export const SHEETS_WEBHOOK = https://script.google.com/macros/s/AKfycbyTYiIEAqVqsmfd-gpu62QeKP25btMtvoXSlbsYViJ6PodjaQ-elVzzaXCBlaUjKDLj5A/exec";
+export const SHEETS_WEBHOOK = "https://script.google.com/macros/s/AKfycbyTYiIEAqVqsmfd-gpu62QeKP25btMtvoXSlbsYViJ6PodjaQ-elVzzaXCBlaUjKDLj5A/exec";
 
 export const whatsappLink = (text) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text || "Hello Fortune U Group, I would like to know more about your financial planning services.")}`;
