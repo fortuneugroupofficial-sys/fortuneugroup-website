@@ -70,6 +70,32 @@ export const Header = () => {
               <MessageCircle className="w-4 h-4" /> WhatsApp
             </a>
             <Link to="/contact" className="hidden lg:inline-block">
+              <a
+  href="https://www.facebook.com/profile.php?id=61589015788132"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex text-sm font-semibold"
+>
+  Facebook
+</a>
+
+<a
+  href="https://www.instagram.com/fortuneugroup/?hl=en"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex text-sm font-semibold"
+>
+  Instagram
+</a>
+
+<a
+  href="https://www.youtube.com/@FortuneUGroupOfficial"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex text-sm font-semibold"
+>
+  YouTube
+</a>
               <Button data-testid="header-cta-start" className="rounded-full bg-brand-navy hover:bg-brand-navy/90 text-white">
                 {t("nav.start")} <ArrowUpRight className="w-4 h-4 ml-1" />
               </Button>
@@ -134,6 +160,35 @@ export const Footer = () => {
             <li>Email: <a className="hover:text-brand-green" href={`mailto:${BUSINESS_EMAIL}`}>{BUSINESS_EMAIL}</a></li>
             <li>WhatsApp: +{WHATSAPP_NUMBER}</li>
             <li>Domain: www.fortuneugroup.in</li>
+            <li>
+  <a
+    href="https://www.facebook.com/profile.php?id=61589015788132"
+    target="_blank"
+    rel="noreferrer"
+  >
+    Facebook
+  </a>
+</li>
+
+<li>
+  <a
+    href="https://www.instagram.com/fortuneugroup/?hl=en"
+    target="_blank"
+    rel="noreferrer"
+  >
+    Instagram
+  </a>
+</li>
+
+<li>
+  <a
+    href="https://www.youtube.com/@FortuneUGroupOfficial"
+    target="_blank"
+    rel="noreferrer"
+  >
+    YouTube
+  </a>
+</li>
           </ul>
         </div>
       </div>
