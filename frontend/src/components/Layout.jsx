@@ -78,6 +78,32 @@ export const Header = () => {
             >
               <MessageCircle className="w-4 h-4" /> WhatsApp
             </a>
+            <a
+  href="https://www.facebook.com/profile.php?id=61589015788132"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex items-center"
+>
+  <Facebook className="w-5 h-5" />
+</a>
+
+<a
+  href="https://www.instagram.com/fortuneugroup/?hl=en"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex items-center"
+>
+  <Instagram className="w-5 h-5" />
+</a>
+
+<a
+  href="https://www.youtube.com/@FortuneUGroupOfficial"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex items-center"
+>
+  <Youtube className="w-5 h-5" />
+</a>
             <Link to="/contact" className="hidden lg:inline-block">
               <a
   href="https://www.facebook.com/profile.php?id=61589015788132"
