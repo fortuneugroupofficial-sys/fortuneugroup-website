@@ -76,7 +76,7 @@ export const Header = () => {
               onClick={()=>trackEvent("whatsapp_click",{source:"header"})} data-testid="header-whatsapp-btn"
               className="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full bg-brand-green text-white hover:bg-brand-deepgreen transition-colors"
             >
-              <MessageCircle className="w-4 h-4" /> WhatsApp
+              <MessageCircle color="#25D366" size={20} />
             </a>
             <a
   href="https://www.facebook.com/profile.php?id=61589015788132"
@@ -84,7 +84,7 @@ export const Header = () => {
   rel="noreferrer"
   className="hidden md:inline-flex items-center"
 >
-  <Facebook className="w-5 h-5" />
+  <Facebook color="#1877F2" size={20} />
 </a>
 
 <a
@@ -93,7 +93,7 @@ export const Header = () => {
   rel="noreferrer"
   className="hidden md:inline-flex items-center"
 >
-  <Instagram className="w-5 h-5" />
+  <Instagram color="#E4405F" size={20} />
 </a>
 
 <a
@@ -102,7 +102,7 @@ export const Header = () => {
   rel="noreferrer"
   className="hidden md:inline-flex items-center"
 >
-  <Youtube className="w-5 h-5" />
+  <Youtube color="#FF0000" size={20} />
 </a>
             <Link to="/contact" className="hidden lg:inline-block">
               <a
