@@ -28,7 +28,11 @@ const Blog = () => {
 
   return (
     <div data-testid="blog-page" className="bg-brand-bg">
-      <SEO title="Blog · Investor Education" description="Articles on Mutual Funds, SIP investing, Retirement Planning, Health & Term Insurance and Personal Finance — written for Indian investors." path="/blog" />
+      <SEO
+  title="Investment & Financial Planning Blog | Fortune U Group"
+  description="Read expert articles on Mutual Funds, SIP Investments, Retirement Planning, Tax Saving, Insurance and Wealth Creation strategies."
+  path="/blog"
+   />
       <section className="bg-white border-b border-brand-line">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
           <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">{t("blog.eyebrow")}</div>
