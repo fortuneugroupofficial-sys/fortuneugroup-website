@@ -33,6 +33,18 @@ const Contact = () => {
     finally { setLoading(false); }
   };
   return (
+  <>
+    <SEO
+      title="Contact Fortune U Group | Mutual Fund Advisor in Srikakulam"
+      description="Contact Fortune U Group for expert guidance on Mutual Funds, SIP Investments, Financial Planning, Retirement Planning and Insurance solutions."
+      path="/contact"
+    />
+
+    <div data-testid="contact-page" className="bg-brand-bg">
+      ...
+    </div>
+  </>
+);
     <div data-testid="contact-page" className="bg-brand-bg">
       <section className="bg-white border-b border-brand-line">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
