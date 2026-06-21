@@ -69,6 +69,8 @@ const Contact = () => {
               </div>
             </div>
             <div className="mt-8 rounded-xl overflow-hidden border border-brand-line">
+              </div>
+              
               <iframe
                title="map"
 
