@@ -43,8 +43,8 @@ const Contact = () => {
     <div data-testid="contact-page" className="bg-brand-bg">
       ...
     </div>
-  </>
-);
+    </>
+    );
     <div data-testid="contact-page" className="bg-brand-bg">
       <section className="bg-white border-b border-brand-line">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
@@ -111,9 +111,9 @@ const Contact = () => {
             </form>
           </div>
         </div>
-      </section>
-    </div>
-  );
-};
+        </section>
+        </div>
+        );
+        };
 
 export default Contact;
