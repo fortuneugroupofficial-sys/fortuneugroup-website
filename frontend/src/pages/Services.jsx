@@ -21,7 +21,11 @@ const Services = () => {
   const { t } = useLang();
   return (
   <div data-testid="services-page" className="bg-brand-bg">
-    <SEO title="Services · Mutual Fund Distribution, SIP, Insurance & Retirement" description="Eight services: Mutual Fund Distribution, SIP Planning, Goal-Based Investing, Wealth Creation, Retirement Planning, Health & Term Insurance Guidance, Financial Education." path="/services" />
+    <SEO
+  title="Financial Services | Mutual Funds, SIP & Insurance | Fortune U Group"
+  description="Explore our financial services including Mutual Funds, SIP Investments, Retirement Planning, Goal Based Investing, Health Insurance and Term Insurance solutions."
+  path="/services"
+  />
     <section className="bg-white border-b border-brand-line">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
         <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">{t("services.eyebrow")}</div>
