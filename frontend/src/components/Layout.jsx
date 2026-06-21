@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X, MessageCircle, ArrowUpRight, Phone } from "lucide-react";
+import {
+  Menu,
+  X,
+  MessageCircle,
+  ArrowUpRight,
+  Phone,
+  Facebook,
+  Instagram,
+  Youtube
+} from "lucide-react";
 import { useLang } from "../context/LangContext";
 import { whatsappLink, BUSINESS_EMAIL, WHATSAPP_NUMBER } from "../lib/api";
 import { trackEvent } from "./Analytics";
@@ -67,9 +76,61 @@ export const Header = () => {
               onClick={()=>trackEvent("whatsapp_click",{source:"header"})} data-testid="header-whatsapp-btn"
               className="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full bg-brand-green text-white hover:bg-brand-deepgreen transition-colors"
             >
-              <MessageCircle className="w-4 h-4" /> WhatsApp
+              <MessageCircle color="#25D366" size={20} />
             </a>
+            <a
+  href="https://www.facebook.com/profile.php?id=61589015788132"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex items-center"
+>
+  <Facebook color="#1877F2" size={20} />
+</a>
+
+<a
+  href="https://www.instagram.com/fortuneugroup/?hl=en"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex items-center"
+>
+  <Instagram color="#E4405F" size={20} />
+</a>
+
+<a
+  href="https://www.youtube.com/@FortuneUGroupOfficial"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex items-center"
+>
+  <Youtube color="#FF0000" size={20} />
+</a>
             <Link to="/contact" className="hidden lg:inline-block">
+              <a
+  href="https://www.facebook.com/profile.php?id=61589015788132"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex text-sm font-semibold"
+>
+  Facebook
+</a>
+
+<a
+  href="https://www.instagram.com/fortuneugroup/?hl=en"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex text-sm font-semibold"
+>
+  Instagram
+</a>
+
+<a
+  href="https://www.youtube.com/@FortuneUGroupOfficial"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex text-sm font-semibold"
+>
+  YouTube
+</a>
               <Button data-testid="header-cta-start" className="rounded-full bg-brand-navy hover:bg-brand-navy/90 text-white">
                 {t("nav.start")} <ArrowUpRight className="w-4 h-4 ml-1" />
               </Button>
@@ -134,6 +195,63 @@ export const Footer = () => {
             <li>Email: <a className="hover:text-brand-green" href={`mailto:${BUSINESS_EMAIL}`}>{BUSINESS_EMAIL}</a></li>
             <li>WhatsApp: +{WHATSAPP_NUMBER}</li>
             <li>Domain: www.fortuneugroup.in</li>
+            <li className="mt-4">
+  <div className="flex gap-4">
+
+    <a
+      href="https://www.facebook.com/profile.php?id=61589015788132"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <Facebook className="w-5 h-5" />
+    </a>
+
+    <a
+      href="https://www.instagram.com/fortuneugroup/?hl=en"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <Instagram className="w-5 h-5" />
+    </a>
+
+    <a
+      href="https://www.youtube.com/@FortuneUGroupOfficial"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <Youtube className="w-5 h-5" />
+    </a>
+
+    <a
+      href="https://wa.me/919533304441"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <MessageCircle className="w-5 h-5" />
+    </a>
+
+  </div>
+</li>
+
+<li>
+  <a
+    href="https://www.instagram.com/fortuneugroup/?hl=en"
+    target="_blank"
+    rel="noreferrer"
+  >
+    Instagram
+  </a>
+</li>
+
+<li>
+  <a
+    href="https://www.youtube.com/@FortuneUGroupOfficial"
+    target="_blank"
+    rel="noreferrer"
+  >
+    YouTube
+  </a>
+</li>
           </ul>
         </div>
       </div>
