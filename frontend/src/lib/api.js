@@ -12,8 +12,8 @@ export const whatsappLink = (text) =>
  * (the response cannot be read, but Apps Script will receive and store the row).
  */
 export async function submitLead(type, payload) {
-  const body = { type, timestamp: new Date().toISOString(), ...payload };
-  console.log("FORM DATA", body);
+  const body = { type, timestamp: new Date().toISOString(), ...payload };console.log("FORM DATA", body);
+
   if (!SHEETS_WEBHOOK) {
     console.warn("[MOCKED LEAD]", body);
     await new Promise((r) => setTimeout(r, 400));

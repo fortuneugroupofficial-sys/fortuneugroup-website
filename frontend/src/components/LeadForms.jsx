@@ -102,7 +102,7 @@ export const InsuranceForm = () => {
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      await submitLead("insurance", { ...f, age: Number(f.age), family_members: Number(f.family_members) }); trackEvent("generate_lead", { form_type: "insurance" });
+      await submitLead("insurance", { ...f, age: Number(f.age), family_members: Number(f.family_members) });console.log("INSURANCE SUBMIT", f); trackEvent("generate_lead", { form_type: "insurance" });
       toast.success("Request received! Our insurance advisor will call you.");
       setF({ name: "", mobile: "", age: "", family_members: "", coverage_requirement: "" });
     } catch { toast.error("Could not submit. Try again."); }
