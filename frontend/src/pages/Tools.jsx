@@ -261,7 +261,11 @@ const Tools = () => {
   const { t } = useLang();
   return (
   <div data-testid="tools-page" className="bg-brand-bg">
-    <SEO title="Free Calculators · SIP, Retirement, Goal, ELSS, EMI" description="Interactive SIP, Retirement, Goal-based, ELSS Tax-Saving and Home-Loan EMI calculators. Plan your financial future in numbers." path="/tools" />
+    <SEO
+  title="Free SIP Calculator, Retirement Calculator & Financial Tools | Fortune U Group"
+  description="Use free financial planning tools including SIP Calculator, Retirement Calculator, Goal Planning Calculator and investment calculators from Fortune U Group."
+  path="/tools"
+  />
     <section className="bg-white border-b border-brand-line">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
         <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">{t("tools.eyebrow")}</div>
