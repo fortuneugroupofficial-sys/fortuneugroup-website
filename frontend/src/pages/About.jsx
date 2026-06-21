@@ -17,7 +17,11 @@ const About = () => {
   const { t } = useLang();
   return (
   <div data-testid="about-page" className="bg-brand-bg">
-    <SEO title="About Us" description="Trusted financial education and wealth-planning partner for Indian families. Our mission, vision and values." path="/about" />
+    <SEO
+  title="About Fortune U Group | Financial Planning & Investment Advisory"
+  description="Learn about Fortune U Group, your trusted partner for Mutual Funds, SIP Investments, Financial Planning, Retirement Planning and Wealth Creation solutions."
+  path="/about"
+  />
     <section className="bg-white border-b border-brand-line">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-28 grid lg:grid-cols-2 gap-12 items-center">
         <div>
