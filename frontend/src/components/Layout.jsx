@@ -119,9 +119,28 @@ export const Header = () => {
                 {t(`nav.${it.key}`)}
               </NavLink>
             ))}
-            <a href={whatsappLink()} target="_blank" rel="noreferrer" className="mt-2 px-3 py-2.5 rounded-md text-sm font-semibold bg-brand-green text-white text-center" onClick={()=>trackEvent("whatsapp_click",{source:"mobile_menu"})} data-testid="mobile-whatsapp">WhatsApp Consultation</a>
-            <a href={`tel:+${WHATSAPP_NUMBER}`} className="px-3 py-2.5 rounded-md text-sm font-semibold bg-brand-navy text-white text-center" onClick={()=>trackEvent("call_click",{source:"mobile_menu"})} data-testid="mobile-call">Call Now · +{WHATSAPP_NUMBER}</a>
-            <Link to="/contact" className="px-3 py-2.5 rounded-md text-sm font-semibold border border-brand-green text-brand-deepgreen text-center" data-testid="mobile-book-consult">Book Free Consultation</Link>
+           <a
+  href={whatsappLink()}
+  target="_blank"
+  rel="noreferrer"
+  className="mt-2 px-3 py-2.5 rounded-md text-sm font-semibold"
+>
+  WhatsApp
+</a>
+
+<a
+  href={tel:+${WHATSAPP_NUMBER}}
+  className="px-3 py-2.5 rounded-md text-sm font-semibold"
+>
+  Call Now
+</a>
+
+<Link
+  to="/contact"
+  className="px-3 py-2.5 rounded-md text-sm font-semibold"
+>
+  Contact
+</Link> 
           </div>
         </div>
       )}
