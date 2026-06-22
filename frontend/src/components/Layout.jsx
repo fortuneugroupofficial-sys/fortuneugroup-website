@@ -106,39 +106,7 @@ export const Header = () => {
 >
   <Youtube color="#FF0000" size={20} />
 </a>
-            <Link to="/contact" className="hidden lg:inline-block">
-              <a
-  href="https://www.facebook.com/profile.php?id=61589015788132"
-  target="_blank"
-  rel="noreferrer"
-  className="hidden md:inline-flex text-sm font-semibold"
->
-  Facebook
-</a>
 
-<a
-  href="https://www.instagram.com/fortuneugroup/?hl=en"
-  target="_blank"
-  rel="noreferrer"
-  className="hidden md:inline-flex text-sm font-semibold"
->
-  Instagram
-</a>
-
-<a
-  href="https://www.youtube.com/@FortuneUGroupOfficial"
-  target="_blank"
-  rel="noreferrer"
-  className="hidden md:inline-flex text-sm font-semibold"
->
-  YouTube
-</a>
-              <Button data-testid="header-cta-start" className="rounded-full bg-brand-navy hover:bg-brand-navy/90 text-white">
-                {t("nav.start")} <ArrowUpRight className="w-4 h-4 ml-1" />
-              </Button>
-            </Link>
-            <button className="lg:hidden p-2" onClick={() => setOpen(!open)} data-testid="mobile-menu-toggle" aria-label="menu">
-              {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
