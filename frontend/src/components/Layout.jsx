@@ -28,7 +28,7 @@ export const Header = () => {
           <Link to="/" className="flex items-center gap-2" 
           data-testid="nav-logo">
             <img
-            src="/logo.png"
+            src="/fortune-logo.png"
             alt="Fortune U Group"
             className="h-20 w-auto"
             />
