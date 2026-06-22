@@ -80,34 +80,7 @@ export const Header = () => {
             >
               <MessageCircle color="#25D366" size={20} />
             </a>
-            <a
-  href="https://www.facebook.com/profile.php?id=61589015788132"
-  target="_blank"
-  rel="noreferrer"
-  className="hidden md:inline-flex items-center"
->
-  <Facebook color="#1877F2" size={20} />
-</a>
 
-<a
-  href="https://www.instagram.com/fortuneugroup/?hl=en"
-  target="_blank"
-  rel="noreferrer"
-  className="hidden md:inline-flex items-center"
->
-  <Instagram color="#E4405F" size={20} />
-</a>
-
-<a
-  href="https://www.youtube.com/@FortuneUGroupOfficial"
-  target="_blank"
-  rel="noreferrer"
-  className="hidden md:inline-flex items-center"
->
-  <Youtube color="#FF0000" size={20} />
-</a>
-
-            </button>
           </div>
         </div>
       </div>
