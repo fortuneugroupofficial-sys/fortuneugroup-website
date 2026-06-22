@@ -39,7 +39,7 @@ export const Header = () => {
             <img
              src="/fortune-logo.png"
              alt="Fortune U Group"
-             className="h-12 w-auto"
+             className="h-32 w-auto"
             />
             
           </Link>
