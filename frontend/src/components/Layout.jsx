@@ -106,7 +106,32 @@ export const Header = () => {
 >
   <Youtube color="#FF0000" size={20} />
 </a>
+<a
+  href="https://www.facebook.com/profile.php?id=61589015788132"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex text-sm font-semibold"
+>
+  Facebook
+</a>
 
+<a
+  href="https://www.instagram.com/fortuneugroup/?hl=en"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex text-sm font-semibold"
+>
+  Instagram
+</a>
+
+<a
+  href="https://www.youtube.com/@FortuneUGroupOfficial"
+  target="_blank"
+  rel="noreferrer"
+  className="hidden md:inline-flex text-sm font-semibold"
+>
+  YouTube
+</a>
             </button>
           </div>
         </div>
