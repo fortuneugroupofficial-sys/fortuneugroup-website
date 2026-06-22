@@ -39,9 +39,10 @@ const Home = () => {
   return (
     <div data-testid="home-page">
       <SEO
-        title="Build Your Financial Future With Confidence"
-        description="Mutual Funds · SIP Planning · Goal-Based Investing · Insurance Guidance · Retirement Planning for Indian families. Financial Education → Planning → Freedom."
-        path="/"
+        title="Mutual Fund Distributor in Tirupati | SIP Investment Advisor"
+         description="Fortune U Group provides Mutual Fund Distribution, SIP Investments, Financial Planning, Retirement Planning and Insurance Solutions in Srikakulam."
+          path="/"
+         />
         schema={{
           "@context":"https://schema.org","@type":"FinancialService",
           "name":"Fortune U Group","areaServed":"IN",

@@ -25,8 +25,13 @@ export const Header = () => {
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-brand-line" data-testid="site-header">
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2" data-testid="nav-logo">
-            <div className="w-9 h-9 rounded-md bg-brand-navy flex items-center justify-center text-white font-display font-bold">F</div>
+          <Link to="/" className="flex items-center gap-2" 
+          data-testid="nav-logo">
+            <img
+            src="/logo.png"
+            alt="Fortune U Group"
+            className="h-12 w-auto"
+           />
             <div className="leading-tight">
               <div className="font-display font-semibold text-brand-navy text-base">Fortune U Group</div>
               <div className="text-[10px] tracking-[0.18em] uppercase text-brand-green font-semibold">Wealth · Planning · Freedom</div>
