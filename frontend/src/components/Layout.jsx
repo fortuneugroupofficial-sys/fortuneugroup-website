@@ -30,7 +30,7 @@ export const Header = () => {
             <img
             src="/logo.png"
             alt="Fortune U Group"
-            className="h-12 w-auto"
+            className="h-20 w-auto"
             />
             <div className="leading-tight">
               <div className="font-display font-semibold text-brand-navy text-base">Fortune U Group</div>
