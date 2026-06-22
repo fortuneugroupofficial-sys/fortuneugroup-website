@@ -102,7 +102,7 @@ export const Header = () => {
 </a>
 
 <a
-  href={tel:+${WHATSAPP_NUMBER}}
+  href={`tel:+${WHATSAPP_NUMBER}`}
   className="px-3 py-2.5 rounded-md text-sm font-semibold"
 >
   Call Now
