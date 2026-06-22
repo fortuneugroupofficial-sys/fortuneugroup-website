@@ -99,7 +99,7 @@ const Home = () => {
                     <div className="text-[10px] uppercase tracking-[0.18em] text-brand-mute font-bold">Invested</div>
                     <div className="font-display text-2xl text-brand-navy/70 font-semibold">₹24 L</div>
                   </div>
-                  
+                  <div className="col-span-2 h-24">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={seriesData} margin={{ top: 4, right: 0, bottom: 0, left: 0 }}>
                         <defs>
