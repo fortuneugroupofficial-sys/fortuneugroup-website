@@ -30,12 +30,9 @@ export const Header = () => {
             <img
              src="/fortune-logo.png"
              alt="Fortune U Group"
-             className="h-16 w-auto"
+             className="h-20 max-w-[280px]"
             />
-            <div className="leading-tight">
-              <div className="font-display font-semibold text-brand-navy text-base">Fortune U Group</div>
-              <div className="text-[10px] tracking-[0.18em] uppercase text-brand-green font-semibold">Wealth · Planning · Freedom</div>
-            </div>
+            
           </Link>
           <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => (
