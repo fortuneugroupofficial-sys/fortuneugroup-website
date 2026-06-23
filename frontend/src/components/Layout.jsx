@@ -71,7 +71,7 @@ export const Header = () => {
             <a
               href={`tel:+${WHATSAPP_NUMBER}`}
               onClick={()=>trackEvent("call_click",{source:"header"})} data-testid="header-call-btn"
-              className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-3.5 py-2 rounded-full border border-brand-line text-white hover:border-white hover:bg-white hover:text-[#0B1F3A] transition-colors"
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-3.5 py-2 rounded-full border border-brand-line text-white hover:border-white hover:bg-white hover:text-brand-navy transition-colors"
             >
               <Phone className="w-4 h-4" /> Call Now
             </a>
