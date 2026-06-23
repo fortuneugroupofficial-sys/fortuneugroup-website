@@ -64,14 +64,14 @@ export const Header = () => {
             <button
               data-testid="lang-toggle"
               onClick={() => setLang(lang === "en" ? "te" : "en")}
-              className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-line hover:border-brand-green hover:text-brand-green transition"
+              className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-line text-white hover:border-brand-green hover:text-brand-green transition"
             >
               {lang === "en" ? "EN · తె" : "తె · EN"}
             </button>
             <a
               href={`tel:+${WHATSAPP_NUMBER}`}
               onClick={()=>trackEvent("call_click",{source:"header"})} data-testid="header-call-btn"
-              className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-3.5 py-2 rounded-full border border-brand-line text-brand-navy hover:border-brand-navy hover:bg-brand-navy hover:text-white transition-colors"
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-3.5 py-2 rounded-full border border-brand-line text-white hover:border-white hover:bg-white hover:text-[#0B1F3A] transition-colors"
             >
               <Phone className="w-4 h-4" /> Call Now
             </a>
@@ -81,7 +81,8 @@ export const Header = () => {
               onClick={()=>trackEvent("whatsapp_click",{source:"header"})} data-testid="header-whatsapp-btn"
               className="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full bg-brand-green text-white hover:bg-brand-deepgreen transition-colors"
             >
-              <MessageCircle color="#25D366" size={20} />
+              <MessageCircle color="#FFFFFF" size={20} />
+              <span>WhatsApp</span>
             </a>
 
           </div>
