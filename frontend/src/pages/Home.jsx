@@ -39,17 +39,19 @@ const Home = () => {
   return (
     <div data-testid="home-page">
       <SEO
-        title="Mutual Fund Distributor in Tirupati | SIP Investment Advisor"
-         description="Fortune U Group provides Mutual Fund Distribution, SIP Investments, Financial Planning, Retirement Planning and Insurance Solutions in Srikakulam."
-          path="/"
-         />
-        schema={{
-          "@context":"https://schema.org","@type":"FinancialService",
-          "name":"Fortune U Group","areaServed":"IN",
-          "url":"https://www.fortuneugroup.in",
-          "description":"Mutual Fund Distribution, SIP, Goal-based Investing, Retirement, Insurance Guidance and Financial Education."
-        }}
-      />
+  title="Mutual Fund Distributor in Tirupati | SIP Investment Advisor"
+  description="Fortune U Group provides Mutual Fund Distribution, SIP Investments, Financial Planning, Retirement Planning and Insurance Solutions in Srikakulam."
+  path="/"
+  schema={{
+    "@context": "https://schema.org",
+    "@type": "FinancialService",
+    name: "Fortune U Group",
+    areaServed: "IN",
+    url: "https://www.fortuneugroup.in",
+    description:
+      "Mutual Fund Distribution, SIP, Goal-based Investing, Retirement, Insurance Guidance and Financial Education."
+  }}
+/>
       {/* HERO */}
       <section className="relative overflow-hidden" data-testid="hero-section">
         <div className="absolute inset-0 bg-grid opacity-60" />
