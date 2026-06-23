@@ -31,12 +31,13 @@ export const Header = () => {
   React.useEffect(() => { setOpen(false); }, [loc.pathname]);
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-brand-line" data-testid="site-header">
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#0B1F3A] border-b border-brand-line" data-testid="site-header">
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2" 
           data-testid="nav-logo">
-            <img
+     ;f/
+            ][<img
              src="/fortune-logo.png"
              alt="Fortune U Group"
              className="h-32 md:h-36 w-auto"
@@ -51,7 +52,9 @@ export const Header = () => {
                 data-testid={`nav-${item.key}`}
                 className={({ isActive }) =>
                   `px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                    isActive ? "text-brand-navy bg-brand-soft" : "text-brand-mute hover:text-brand-navy hover:bg-brand-soft/60"
+                    isActive 
+                    ? "text-yellow-400"
+                    : "text-white hover:text-yellow-400"
                   }`
                 }
               >{t(`nav.${item.key}`)}</NavLink>
