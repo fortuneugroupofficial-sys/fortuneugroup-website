@@ -57,7 +57,9 @@ export const Header = () => {
                     : "text-white hover:text-yellow-400"
                   }`
                 }
-              >{t(`nav.${item.key}`)}</NavLink>
+                >
+              {item.key}
+              </NavLink>
             ))}
           </nav>
           <div className="flex items-center gap-2">
