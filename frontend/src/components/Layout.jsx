@@ -36,8 +36,7 @@ export const Header = () => {
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2" 
           data-testid="nav-logo">
-     ;f/
-            ][<img
+            <img
              src="/fortune-logo.png"
              alt="Fortune U Group"
              className="h-32 md:h-36 w-auto"
@@ -58,7 +57,7 @@ export const Header = () => {
                   }`
                 }
                 >
-               {t(nav.${item.key})}
+               {t(`nav.${item.key}`)}
               </NavLink>
             ))}
           </nav>
