@@ -238,7 +238,7 @@ export const Footer = () => {
           <p data-testid="legal-disclaimer"><strong className="text-white">Disclaimer:</strong> Mutual Fund investments are subject to market risks. Read all scheme related documents carefully. Fortune U Group provides investor education, mutual fund distribution support, and financial awareness services. Investment decisions should be taken after evaluating individual financial goals and risk profile.</p>
           <p>© {new Date().getFullYear()} Fortune U Group. All rights reserved.</p>
           <p className="mt-3 text-xs text-white/60 text-center">
-           Mutual Fund Distributor in Andhra Pradesh & Telangana | SIP Planning | Financial Planning | Insurance Guidance | Credit Cards | Demat Accounts | Savings Accounts | Retirement Planning | Child Education Planning
+           Mutual Fund Distributor in Andhra Pradesh & Telangana | SIP Planning | Financial Planning | Retirement Planning | Child Education Planning | Demat Accounts | Insurance Guidance | Credit Cards | Savings Accounts 
           </p>
         </div>
       </div>
