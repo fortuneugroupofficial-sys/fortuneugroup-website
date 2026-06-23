@@ -33,13 +33,13 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-brand-line" data-testid="site-header">
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
-        <div className="flex items-center justify-between h-28">
+        <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2" 
           data-testid="nav-logo">
             <img
              src="/fortune-logo.png"
              alt="Fortune U Group"
-             className="h-40 md:h-44 w-auto"
+             className="h-32 md:h-36 w-auto"
             />
             
           </Link>
