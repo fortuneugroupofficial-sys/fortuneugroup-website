@@ -145,7 +145,14 @@ export const Footer = () => {
             <li><Link to="/services">SIP Planning</Link></li>
             <li><Link to="/services">Goal-Based Investing</Link></li>
             <li><Link to="/services">Retirement Planning</Link></li>
+            <li><Link to="/services">Tax Saving Planning</Link></li>
+            <li><Link to="/services">Child Education Planning</Link></li>
+            <li><Link to="/services">Wealth Creation Planning</Link></li>
+            <li><Link to="/products">Demat Accounts</Link></li>
             <li><Link to="/services">Health & Term Insurance</Link></li>
+            <li><Link to="/services">Loan Assistance</Link></li>
+            <li><Link to="/products">Credit Cards</Link></li>
+            <li><Link to="/products">Savings Accounts</Link></li>
           </ul>
         </div>
         <div>
@@ -174,7 +181,7 @@ export const Footer = () => {
       target="_blank"
       rel="noreferrer"
     >
-      <Facebook className="w-5 h-5" />
+      <Facebook className="w-5 h-5 text-blue-500 hover:scale-110 transition" />
     </a>
 
     <a
@@ -182,7 +189,7 @@ export const Footer = () => {
       target="_blank"
       rel="noreferrer"
     >
-      <Instagram className="w-5 h-5" />
+      <Instagram className="w-5 h-5 text-pink-500 hover:scale-110 transition" />
     </a>
 
     <a
@@ -190,7 +197,7 @@ export const Footer = () => {
       target="_blank"
       rel="noreferrer"
     >
-      <Youtube className="w-5 h-5" />
+      <Youtube className="w-5 h-5 text-red-500 hover:scale-110 transition" />
     </a>
 
     <a
@@ -198,7 +205,7 @@ export const Footer = () => {
       target="_blank"
       rel="noreferrer"
     >
-      <MessageCircle className="w-5 h-5" />
+      <MessageCircle className="w-5 h-5 text-green-500 hover:scale-110 transition" />
     </a>
 
   </div>
