@@ -19,9 +19,7 @@ const navItems = [
   { to: "/", key: "home" },
   { to: "/about", key: "about" },
   { to: "/services", key: "services" },
-  
   { to: "/products", key: "products" },
-  
   { to: "/tools", key: "tools" },
   { to: "/blog", key: "blog" },
   { to: "/contact", key: "contact" },
@@ -160,7 +158,6 @@ export const Footer = () => {
             <li><Link to="/privacy-policy">Privacy Policy</Link></li>
             <li><Link to="/terms-and-conditions">Terms & Conditions</Link></li>
             <li><Link to="/disclosure">Disclosure</Link></li>
-            <li><Link to="/disclaimer">Disclaimer</Link></li>
           </ul>
         </div>
         <div>
