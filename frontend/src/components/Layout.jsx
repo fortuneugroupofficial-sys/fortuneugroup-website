@@ -157,6 +157,10 @@ export const Footer = () => {
             <li><Link to="/blog">Blog</Link></li>
             <li><Link to="/tools">Calculators</Link></li>
             <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+            <li><Link to="/terms-and-conditions">Terms & Conditions</Link></li>
+            <li><Link to="/disclosure">Disclosure</Link></li>
+            <li><Link to="/disclaimer">Disclaimer</Link></li>
           </ul>
         </div>
         <div>
