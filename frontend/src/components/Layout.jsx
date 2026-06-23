@@ -58,7 +58,7 @@ export const Header = () => {
                   }`
                 }
                 >
-              {item.key}
+               {t(nav.${item.key})}
               </NavLink>
             ))}
           </nav>
