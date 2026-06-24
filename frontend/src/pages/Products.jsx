@@ -441,7 +441,7 @@ function Hero() {
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-4">
-            
+            <a
               href="#insurance"
               className="
                 font-inter inline-flex items-center gap-2 rounded-full
@@ -452,8 +452,8 @@ function Hero() {
             >
               Explore Products
               <IconChevronRight className="h-4 w-4" />
+              
             </a>
-            
               href={waLink("Hi Fortune U Group, I'd like to know more about your products.")}
               target="_blank"
               rel="noopener noreferrer"
