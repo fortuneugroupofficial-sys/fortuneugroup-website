@@ -266,13 +266,47 @@ const Tools = () => {
   description="Use free financial planning tools including SIP Calculator, Retirement Calculator, Goal Planning Calculator and investment calculators from Fortune U Group."
   path="/tools"
   />
-    <section className="bg-white border-b border-brand-line">
-      <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
-        <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">{t("tools.eyebrow")}</div>
-        <h1 className="font-display text-4xl md:text-5xl tracking-tight text-brand-navy font-semibold leading-tight max-w-3xl">{t("tools.title")}</h1>
-        <p className="mt-5 text-brand-mute max-w-2xl leading-relaxed">{t("tools.sub")}</p>
+    <section className="bg-gradient-to-br from-blue-50 via-white to-yellow-50 border-b border-brand-line">
+  <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
+
+    <div className="text-xs tracking-[0.2em] uppercase font-bold text-green-600 mb-3">
+      FORTUNE U GROUP TOOLS
+    </div>
+
+    <h1 className="font-display text-4xl md:text-6xl tracking-tight text-brand-navy font-bold">
+      Plan Today.
+      <span className="text-blue-700"> Prosper Tomorrow.</span>
+    </h1>
+
+    <p className="mt-5 text-brand-mute max-w-3xl leading-relaxed text-lg">
+      Free SIP, Retirement, Goal Planning, ELSS & EMI Calculators to help you
+      make smarter financial decisions and achieve your financial goals.
+    </p>
+
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+      <div className="bg-white p-4 rounded-xl shadow text-center">
+        <h3 className="text-2xl font-bold text-blue-700">5+</h3>
+        <p>Calculators</p>
       </div>
-    </section>
+
+      <div className="bg-white p-4 rounded-xl shadow text-center">
+        <h3 className="text-2xl font-bold text-green-600">100%</h3>
+        <p>Free Tools</p>
+      </div>
+
+      <div className="bg-white p-4 rounded-xl shadow text-center">
+        <h3 className="text-2xl font-bold text-yellow-600">24/7</h3>
+        <p>Available</p>
+      </div>
+
+      <div className="bg-white p-4 rounded-xl shadow text-center">
+        <h3 className="text-2xl font-bold text-purple-600">Instant</h3>
+        <p>Results</p>
+      </div>
+    </div>
+
+  </div>
+</section>
 
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
