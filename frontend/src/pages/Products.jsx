@@ -318,7 +318,7 @@ function ProductCard({ icon: Icon, image, title, description }) {
             <IconArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
           </button>
 
-          
+          <a
             href={waLink(`Hi Fortune U Group, I'd like to know more about ${title}.`)}
             target="_blank"
             rel="noopener noreferrer"
