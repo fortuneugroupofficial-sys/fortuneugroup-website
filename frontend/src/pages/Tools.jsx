@@ -267,7 +267,7 @@ const Tools = () => {
   path="/tools"
   />
     <section className="bg-gradient-to-br from-blue-50 via-white to-yellow-50 border-b border-brand-line">
-  <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
+  <div className="max-w-7xl mx-auto px-5 lg:px-8 py-12 lg:py-16">
 
     <div className="text-xs tracking-[0.2em] uppercase font-bold text-green-600 mb-3">
       FORTUNE U GROUP TOOLS
@@ -278,16 +278,17 @@ const Tools = () => {
       <span className="text-blue-700"> Prosper Tomorrow.</span>
     </h1>
 
-    <p className="mt-5 text-brand-mute max-w-3xl leading-relaxed text-lg">
+    </p> className="mt-5 text-brand-mute max-w-3xl leading-relaxed text-lg">
       Free SIP, Retirement, Goal Planning, ELSS & EMI Calculators to help you
       make smarter financial decisions and achieve your financial goals.
     </p>
 
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-      <div className="bg-white p-4 rounded-xl shadow text-center">
-        <h3 className="text-2xl font-bold text-blue-700">5+</h3>
-        <p>Calculators</p>
-      </div>
+    <div className="mt-8">
+     <button className="bg-blue-700 hover:bg-blue-800 
+    text-white px-8 py-4 rounded-xl font-semibold shadow-lg">
+    Start Calculating →
+   </button>
+  </div>
 
       <div className="bg-white p-4 rounded-xl shadow text-center">
         <h3 className="text-2xl font-bold text-green-600">100%</h3>
