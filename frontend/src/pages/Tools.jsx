@@ -289,24 +289,7 @@ const Tools = () => {
     Start Calculating →
    </button>
   </div>
-
-      <div className="bg-white p-4 rounded-xl shadow text-center">
-        <h3 className="text-2xl font-bold text-green-600">100%</h3>
-        <p>Free Tools</p>
-      </div>
-
-      <div className="bg-white p-4 rounded-xl shadow text-center">
-        <h3 className="text-2xl font-bold text-yellow-600">24/7</h3>
-        <p>Available</p>
-      </div>
-
-      <div className="bg-white p-4 rounded-xl shadow text-center">
-        <h3 className="text-2xl font-bold text-purple-600">Instant</h3>
-        <p>Results</p>
-      </div>
-    </div>
-
-  </div>
+    
 </section>
 
     <section className="py-16">
