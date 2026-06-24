@@ -267,7 +267,7 @@ const Tools = () => {
   path="/tools"
   />
     <section className="bg-gradient-to-br from-blue-50 via-white to-yellow-50 border-b border-brand-line">
-  <div className="max-w-7xl mx-auto px-5 lg:px-8 py-12 lg:py-16">
+  <div className="max-w-7xl mx-auto px-5 lg:px-8 py-12 lg:py-16 grid lg:grid-cols-2 gap-10 items-center">
 
     <div className="text-xs tracking-[0.2em] uppercase font-bold text-green-600 mb-3">
       FORTUNE U GROUP TOOLS
