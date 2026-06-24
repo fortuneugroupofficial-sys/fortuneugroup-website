@@ -278,7 +278,7 @@ const Tools = () => {
       <span className="text-blue-700"> Prosper Tomorrow.</span>
     </h1>
 
-    </p> className="mt-5 text-brand-mute max-w-3xl leading-relaxed text-lg">
+    </p className="mt-5 text-brand-mute max-w-3xl leading-relaxed text-lg">
       Free SIP, Retirement, Goal Planning, ELSS & EMI Calculators to help you
       make smarter financial decisions and achieve your financial goals.
     </p>
