@@ -66,14 +66,14 @@ export const Header = () => {
             <button
               data-testid="lang-toggle"
               onClick={() => setLang(lang === "en" ? "te" : "en")}
-              className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-line text-white hover:border-brand-green hover:text-brand-green transition"
+              className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-line text-white hover:border-brand-green hover:text-brand-green[...]
             >
               {lang === "en" ? "EN · తె" : "తె · EN"}
             </button>
             <a
               href={`tel:+${WHATSAPP_NUMBER}`}
               onClick={()=>trackEvent("call_click",{source:"header"})} data-testid="header-call-btn"
-              className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-3.5 py-2 rounded-full border border-brand-line text-white hover:border-white hover:bg-white hover:text-brand-navy transition-colors"
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-3.5 py-2 rounded-full border border-brand-line text-white hover:border-white hover:bg-white hover:text-br[...]
             >
               <Phone className="w-4 h-4" /> Call Now
             </a>
@@ -87,6 +87,20 @@ export const Header = () => {
               <span>WhatsApp</span>
             </a>
 
+            {/* Mobile Hamburger Menu Button */}
+            <button
+              onClick={() => setOpen(!open)}
+              className="lg:hidden inline-flex items-center justify-center p-2 text-white hover:text-brand-green transition-colors"
+              aria-label="Toggle navigation menu"
+              aria-expanded={open}
+              data-testid="mobile-menu-toggle"
+            >
+              {open ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
           </div>
         </div>
       </div>
@@ -99,26 +113,26 @@ export const Header = () => {
               </NavLink>
             ))}
            <a
-  href={whatsappLink()}
-  target="_blank"
-  rel="noreferrer"
-  className="mt-2 px-3 py-2.5 rounded-md text-sm font-semibold"
+   href={whatsappLink()}
+   target="_blank"
+   rel="noreferrer"
+   className="mt-2 px-3 py-2.5 rounded-md text-sm font-semibold"
 >
-  WhatsApp
+   WhatsApp
 </a>
 
 <a
-  href={`tel:+${WHATSAPP_NUMBER}`}
-  className="px-3 py-2.5 rounded-md text-sm font-semibold"
+   href={`tel:+${WHATSAPP_NUMBER}`}
+   className="px-3 py-2.5 rounded-md text-sm font-semibold"
 >
-  Call Now
+   Call Now
 </a>
 
 <Link
-  to="/contact"
-  className="px-3 py-2.5 rounded-md text-sm font-semibold"
+   to="/contact"
+   className="px-3 py-2.5 rounded-md text-sm font-semibold"
 >
-  Contact
+   Contact
 </Link> 
           </div>
         </div>
@@ -174,71 +188,71 @@ export const Footer = () => {
             <li>WhatsApp: +{WHATSAPP_NUMBER}</li>
             <li>Domain: www.fortuneugroup.in</li>
             <li className="mt-4">
-  <div className="flex gap-4">
+   <div className="flex gap-4">
 
-    <a
-      href="https://www.facebook.com/profile.php?id=61589015788132"
-      target="_blank"
-      rel="noreferrer"
-    >
-      <Facebook className="w-5 h-5 text-blue-500 hover:scale-110 transition" />
-    </a>
+     <a
+       href="https://www.facebook.com/profile.php?id=61589015788132"
+       target="_blank"
+       rel="noreferrer"
+     >
+       <Facebook className="w-5 h-5 text-blue-500 hover:scale-110 transition" />
+     </a>
 
-    <a
-      href="https://www.instagram.com/fortuneugroup/?hl=en"
-      target="_blank"
-      rel="noreferrer"
-    >
-      <Instagram className="w-5 h-5 text-pink-500 hover:scale-110 transition" />
-    </a>
+     <a
+       href="https://www.instagram.com/fortuneugroup/?hl=en"
+       target="_blank"
+       rel="noreferrer"
+     >
+       <Instagram className="w-5 h-5 text-pink-500 hover:scale-110 transition" />
+     </a>
 
-    <a
-      href="https://www.youtube.com/@FortuneUGroupOfficial"
-      target="_blank"
-      rel="noreferrer"
-    >
-      <Youtube className="w-5 h-5 text-red-500 hover:scale-110 transition" />
-    </a>
+     <a
+       href="https://www.youtube.com/@FortuneUGroupOfficial"
+       target="_blank"
+       rel="noreferrer"
+     >
+       <Youtube className="w-5 h-5 text-red-500 hover:scale-110 transition" />
+     </a>
 
-    <a
-      href="https://wa.me/919533304441"
-      target="_blank"
-      rel="noreferrer"
-    >
-      <MessageCircle className="w-5 h-5 text-green-500 hover:scale-110 transition" />
-    </a>
+     <a
+       href="https://wa.me/919533304441"
+       target="_blank"
+       rel="noreferrer"
+     >
+       <MessageCircle className="w-5 h-5 text-green-500 hover:scale-110 transition" />
+     </a>
 
-  </div>
+   </div>
 </li>
 
 <li>
-  <a
-    href="https://www.instagram.com/fortuneugroup/?hl=en"
-    target="_blank"
-    rel="noreferrer"
-  >
-    Instagram
-  </a>
+   <a
+     href="https://www.instagram.com/fortuneugroup/?hl=en"
+     target="_blank"
+     rel="noreferrer"
+   >
+     Instagram
+   </a>
 </li>
 
 <li>
-  <a
-    href="https://www.youtube.com/@FortuneUGroupOfficial"
-    target="_blank"
-    rel="noreferrer"
-  >
-    YouTube
-  </a>
+   <a
+     href="https://www.youtube.com/@FortuneUGroupOfficial"
+     target="_blank"
+     rel="noreferrer"
+   >
+     YouTube
+   </a>
 </li>
           </ul>
         </div>
       </div>
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 py-6 text-xs text-white/60 leading-relaxed space-y-2">
-          <p data-testid="legal-disclaimer"><strong className="text-white">Disclaimer:</strong> Mutual Fund investments are subject to market risks. Read all scheme related documents carefully. Fortune U Group provides investor education, mutual fund distribution support, and financial awareness services. Investment decisions should be taken after evaluating individual financial goals and risk profile.</p>
+          <p data-testid="legal-disclaimer"><strong className="text-white">Disclaimer:</strong> Mutual Fund investments are subject to market risks. Read all scheme related documents carefully. F[...]
           <p>© {new Date().getFullYear()} Fortune U Group. All rights reserved.</p>
           <p className="mt-3 text-xs text-white/60 text-center">
-           Mutual Fund Distributor in Andhra Pradesh & Telangana | SIP Planning | Financial Planning | Retirement Planning | Child Education Planning | Demat Accounts | Insurance Guidance | Credit Cards | Savings Accounts 
+           Mutual Fund Distributor in Andhra Pradesh & Telangana | SIP Planning | Financial Planning | Retirement Planning | Child Education Planning | Demat Accounts | Insurance Guidance | Credi[...]
           </p>
         </div>
       </div>
