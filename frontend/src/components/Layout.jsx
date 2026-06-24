@@ -68,7 +68,7 @@ export const Header = () => {
               onClick={() => setLang(lang === "en" ? "te" : "en")}
               className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-line text-white hover:border-brand-green hover:text-brand-green transition-colors"
             >
-              {lang === "en" ? "EN · తె" : "తె · EN"}
+              {lang === "en" ? "EN | TE" : "TE | EN"}
             </button>
             <a
               href={`tel:+${WHATSAPP_NUMBER}`}
