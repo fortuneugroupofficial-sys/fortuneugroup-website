@@ -66,14 +66,14 @@ export const Header = () => {
             <button
               data-testid="lang-toggle"
               onClick={() => setLang(lang === "en" ? "te" : "en")}
-              className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-line text-white hover:border-brand-green hover:text-brand-green[...]
+              className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-line text-white hover:border-brand-green hover:text-brand-green transition-colors"
             >
               {lang === "en" ? "EN · తె" : "తె · EN"}
             </button>
             <a
               href={`tel:+${WHATSAPP_NUMBER}`}
               onClick={()=>trackEvent("call_click",{source:"header"})} data-testid="header-call-btn"
-              className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-3.5 py-2 rounded-full border border-brand-line text-white hover:border-white hover:bg-white hover:text-br[...]
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-3.5 py-2 rounded-full border border-brand-line text-white hover:border-white hover:bg-white hover:text-brand-navy transition-colors"
             >
               <Phone className="w-4 h-4" /> Call Now
             </a>
