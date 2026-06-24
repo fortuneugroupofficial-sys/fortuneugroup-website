@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import {
   Shield, Heart, Car, Home, Briefcase, CreditCard, TrendingUp,
-  PiggyBank, Phone, MessageCircle, ChevronRight, Star, Check,
-  Users, Zap, Award, Eye, Handshake, HeadphonesIcon, Menu, X,
-  ArrowRight, Building2, Landmark, BarChart3, FileText, Clock,
-  MapPin, BadgeCheck, PhoneCall
+  PiggyBank, Phone, MessageCircle, Star,
+  Users, Zap, Award, Eye, Handshake, HeadphonesIcon,
+  Building2, Landmark, FileText, MapPin, BadgeCheck, PhoneCall
 } from "lucide-react";
 
 /* ─────────────────────────────────────────
@@ -14,7 +13,6 @@ const C = {
   navy:   "#0A1931",
   navy2:  "#0D2040",
   blue:   "#1E3A8A",
-  blue2:  "#1a347d",
   gold:   "#D4AF37",
   gold2:  "#E8C55A",
   goldLt: "#FBF3D5",
@@ -26,11 +24,6 @@ const C = {
 /* ─────────────────────────────────────────
    SHARED COMPONENTS
 ───────────────────────────────────────── */
-const GoldDivider = () => (
-  <div className="flex items-center gap-3 mb-3">
-    <div style={{ width: 32, height: 2, background: C.gold }} />
-  </div>
-);
 
 const SectionEyebrow = ({ text }) => (
   <div className="flex items-center gap-2 mb-3">
@@ -324,24 +317,8 @@ const STATS = [
    MAIN COMPONENT
 ───────────────────────────────────────── */
 export default function ProductsPage() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("insurance");
   const [callbackForm, setCallbackForm] = useState({ name: "", phone: "" });
   const [callbackSent, setCallbackSent] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const navLinks = [
-    { label: "Home", href: "#home" },
-    { label: "About", href: "#why" },
-    { label: "Products", href: "#insurance" },
-    { label: "Contact", href: "#contact" },
-  ];
 
   const handleCallback = (e) => {
     e.preventDefault();
@@ -349,11 +326,6 @@ export default function ProductsPage() {
     setTimeout(() => setCallbackSent(false), 4000);
     setCallbackForm({ name: "", phone: "" });
   };
-
-  /* ── STYLES ── */
-  const headerBg = scrolled
-    ? `linear-gradient(135deg, ${C.navy} 0%, ${C.blue2} 100%)`
-    : `linear-gradient(135deg, ${C.navy}CC 0%, ${C.blue2}CC 100%)`;
 
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: "#F7F6F2", color: C.navy, overflowX: "hidden" }}>
@@ -370,115 +342,11 @@ export default function ProductsPage() {
       `}</style>
 
       {/* ════════════════════════════════════
-          STICKY HEADER
-      ════════════════════════════════════ */}
-      <header style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
-        background: headerBg,
-        boxShadow: scrolled ? "0 2px 24px rgba(0,0,0,.35)" : "none",
-        backdropFilter: scrolled ? "blur(12px)" : "none",
-        transition: "all .3s ease",
-        borderBottom: scrolled ? `1px solid rgba(212,175,55,.15)` : "none",
-      }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-
-          {/* Logo */}
-          <a href="#home" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
-            <div style={{
-              width: 44, height: 44, borderRadius: 10,
-              background: `linear-gradient(135deg, ${C.gold}, ${C.gold2})`,
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <Landmark size={22} style={{ color: C.navy }} />
-            </div>
-            <div>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: C.white, lineHeight: 1.1 }}>
-                Fortune U Group
-              </div>
-              <div style={{ fontSize: 10, color: C.gold2, letterSpacing: "1.5px", textTransform: "uppercase", fontWeight: 500 }}>
-                Financial Services
-              </div>
-            </div>
-          </a>
-
-          {/* Desktop Nav */}
-          <nav style={{ display: "flex", alignItems: "center", gap: 4 }} className="hidden-mobile">
-            {navLinks.map(l => (
-              <a key={l.label} href={l.href} style={{
-                color: "rgba(255,255,255,.75)", textDecoration: "none",
-                fontSize: 13, fontWeight: 500, padding: "6px 14px", borderRadius: 6,
-                transition: "all .2s",
-              }}
-                onMouseEnter={e => { e.currentTarget.style.color = C.gold2; e.currentTarget.style.background = "rgba(255,255,255,.08)"; }}
-                onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,.75)"; e.currentTarget.style.background = ""; }}
-              >
-                {l.label}
-              </a>
-            ))}
-            <a href="tel:+919533304441" style={{
-              display: "flex", alignItems: "center", gap: 7,
-              background: `linear-gradient(135deg, ${C.gold}, ${C.gold2})`,
-              color: C.navy, fontWeight: 700, fontSize: 13,
-              padding: "8px 18px", borderRadius: 50,
-              textDecoration: "none", marginLeft: 8,
-              boxShadow: "0 3px 12px rgba(212,175,55,.3)",
-              transition: "all .25s",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(212,175,55,.5)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 3px 12px rgba(212,175,55,.3)"; }}
-            >
-              <Phone size={14} /> Call Now
-            </a>
-          </nav>
-
-          {/* Mobile Hamburger */}
-          <button onClick={() => setMenuOpen(!menuOpen)} style={{ display: "none", background: "none", border: "none", color: C.white, cursor: "pointer" }} className="show-mobile">
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <div style={{
-            background: C.navy, padding: "16px 24px 24px",
-            borderTop: `1px solid rgba(212,175,55,.15)`,
-          }}>
-            {navLinks.map(l => (
-              <a key={l.label} href={l.href} onClick={() => setMenuOpen(false)} style={{
-                display: "block", color: "rgba(255,255,255,.8)", textDecoration: "none",
-                padding: "12px 0", fontSize: 15, fontWeight: 500,
-                borderBottom: "1px solid rgba(255,255,255,.06)",
-              }}>{l.label}</a>
-            ))}
-            <a href="tel:+919000000000" style={{
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-              background: `linear-gradient(135deg, ${C.gold}, ${C.gold2})`,
-              color: C.navy, fontWeight: 700, fontSize: 14,
-              padding: "12px", borderRadius: 50, marginTop: 16,
-              textDecoration: "none",
-            }}>
-              <Phone size={16} /> Call Now
-            </a>
-          </div>
-        )}
-      </header>
-
-      <style>{`
-        @media (max-width: 768px) {
-          .hidden-mobile { display: none !important; }
-          .show-mobile { display: block !important; }
-        }
-        @media (min-width: 769px) {
-          .show-mobile { display: none !important; }
-        }
-      `}</style>
-
-      {/* ════════════════════════════════════
           HERO
       ════════════════════════════════════ */}
       <section id="home" style={{
         background: `linear-gradient(160deg, ${C.navy} 0%, ${C.navy2} 40%, ${C.blue} 100%)`,
-        paddingTop: 144, paddingBottom: 88,
+        paddingTop: 80, paddingBottom: 88,
         position: "relative", overflow: "hidden",
       }}>
         {/* Decorative orbs */}
@@ -545,7 +413,7 @@ export default function ProductsPage() {
             {/* Trust Badges */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
               {[
-                { icon: Users, label: "1,000+ Clients" },
+                { icon: Users, label: "10,000+ Clients" },
                 { icon: MapPin, label: "AP & Telangana" },
                 { icon: BadgeCheck, label: "IRDAI Assistance" },
                 { icon: Landmark, label: "RBI Guided Products" },
@@ -864,96 +732,6 @@ export default function ProductsPage() {
           </div>
         </div>
       </section>
-
-      {/* ════════════════════════════════════
-          FOOTER
-      ════════════════════════════════════ */}
-      <footer style={{ background: C.navy, padding: "40px 24px 28px", borderTop: `1px solid rgba(212,175,55,.18)` }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: 32, marginBottom: 32 }}>
-
-            {/* Brand */}
-            <div style={{ maxWidth: 280 }}>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: C.white, fontWeight: 700, marginBottom: 8 }}>
-                Fortune <span style={{ color: C.gold2 }}>U</span> Group
-              </div>
-              <p style={{ fontSize: 13, color: "rgba(255,255,255,.45)", lineHeight: 1.65 }}>
-                Your trusted financial partner across Andhra Pradesh & Telangana. Building wealth, protecting futures.
-              </p>
-              <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
-                <a href="tel:+919533304441" style={{
-                  display: "flex", alignItems: "center", gap: 6,
-                  background: `rgba(212,175,55,.12)`, border: `1px solid rgba(212,175,55,.25)`,
-                  color: C.gold2, fontSize: 12, fontWeight: 600,
-                  padding: "7px 14px", borderRadius: 50, textDecoration: "none",
-                }}>
-                  <Phone size={12} /> Call Us
-                </a>
-                <a href="https://wa.me/919533304441" target="_blank" rel="noreferrer" style={{
-                  display: "flex", alignItems: "center", gap: 6,
-                  background: "rgba(37,211,102,.12)", border: "1px solid rgba(37,211,102,.25)",
-                  color: "#4ADE80", fontSize: 12, fontWeight: 600,
-                  padding: "7px 14px", borderRadius: 50, textDecoration: "none",
-                }}>
-                  <MessageCircle size={12} /> WhatsApp
-                </a>
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: 16 }}>Quick Links</div>
-              {["Insurance", "Loans", "Banking & Investment", "About Us", "Contact"].map(l => (
-                <div key={l} style={{ marginBottom: 9 }}>
-                  <a href="#" style={{ color: "rgba(255,255,255,.5)", fontSize: 13, textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}
-                    onMouseEnter={e => { e.currentTarget.style.color = C.gold2; }}
-                    onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,.5)"; }}
-                  >
-                    <ChevronRight size={12} /> {l}
-                  </a>
-                </div>
-              ))}
-            </div>
-
-            {/* Services */}
-            <div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: 16 }}>Services</div>
-              {["Mutual Fund Distribution", "SIP Planning", "Financial Planning", "Insurance Guidance", "Demat Accounts", "Credit Cards"].map(s => (
-                <div key={s} style={{ marginBottom: 9 }}>
-                  <span style={{ color: "rgba(255,255,255,.45)", fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}>
-                    <Check size={11} style={{ color: C.gold }} /> {s}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* Coverage */}
-            <div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: 16 }}>Coverage</div>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 12 }}>
-                <MapPin size={14} style={{ color: C.gold2, marginTop: 2, flexShrink: 0 }} />
-                <span style={{ color: "rgba(255,255,255,.55)", fontSize: 13, lineHeight: 1.6 }}>
-                  Hyderabad, Vijayawada,<br />Guntur, Visakhapatnam,<br />and all major cities in<br />AP & Telangana
-                </span>
-              </div>
-            </div>
-
-          </div>
-
-          <div style={{ height: 1, background: "rgba(255,255,255,.06)", marginBottom: 20 }} />
-
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-            <div style={{ fontSize: 12, color: "rgba(255,255,255,.28)" }}>
-              © 2024 Fortune U Group. All rights reserved.
-            </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 4, fontSize: 11, color: "rgba(255,255,255,.3)" }}>
-              {["Mutual Fund Distributor", "SIP Planning", "Financial Planning", "Insurance Guidance", "Credit Cards", "Demat Accounts"].map((s, i, arr) => (
-                <span key={s}>{s}{i < arr.length - 1 && <span style={{ color: C.gold, margin: "0 4px" }}>|</span>}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </footer>
 
       {/* ════════════════════════════════════
           FLOATING WHATSAPP BUTTON
