@@ -249,10 +249,12 @@ export const Footer = () => {
       </div>
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 py-6 text-xs text-white/60 leading-relaxed space-y-2">
-          <p data-testid="legal-disclaimer"><strong className="text-white">Disclaimer:</strong> Mutual Fund investments are subject to market risks. Read all scheme related documents carefully. F[...]
+          <p data-testid="legal-disclaimer">
+            <strong className="text-white">Disclaimer:</strong> Mutual Fund investments are subject to market risks. Read all scheme related documents carefully before investing.
+          </p>
           <p>© {new Date().getFullYear()} Fortune U Group. All rights reserved.</p>
           <p className="mt-3 text-xs text-white/60 text-center">
-           Mutual Fund Distributor in Andhra Pradesh & Telangana | SIP Planning | Financial Planning | Retirement Planning | Child Education Planning | Demat Accounts | Insurance Guidance | Credi[...]
+            Mutual Fund Distributor in Andhra Pradesh & Telangana | SIP Planning | Financial Planning | Retirement Planning | Child Education Planning | Demat Accounts | Insurance Guidance | Credit Card Services
           </p>
         </div>
       </div>
