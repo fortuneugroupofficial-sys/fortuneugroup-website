@@ -289,7 +289,7 @@ const Tools = () => {
     Start Calculating →
    </button>
   </div>
-    
+  </div>  {/* max-w-7xl div close */}
 </section>
 
     <section className="py-16">
