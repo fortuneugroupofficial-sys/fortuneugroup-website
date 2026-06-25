@@ -386,7 +386,7 @@ export default function ProductsPage() {
          >
           WhatsApp Us
         </a>
-          
+      </div>
 
       {/* Right Side */}
       <div className="relative flex justify-center lg:justify-end">
@@ -423,7 +423,7 @@ export default function ProductsPage() {
 
     </div>
   </div>
-</section>
+ </section>
       
       {/* ════════════════════════════════════
           INSURANCE
