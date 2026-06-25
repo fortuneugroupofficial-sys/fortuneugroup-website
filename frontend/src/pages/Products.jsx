@@ -329,71 +329,10 @@ export default function ProductsPage() {
       {/* ════════════════════════════════════
           HERO  (compact — ~38% less height)
       ════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A1931] via-[#102A56] to-[#1E3A8A] text-white">
-
-      {/* Background Blur Effects */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
-       <div className="absolute bottom-0 right-0 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl"></div>
-
-       <div className="relative max-w-7xl mx-auto px-6 py-24 lg:py-32">
-
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-
-        {/* Left Content */}
-       <div>
-        <span className="inline-flex items-center bg-yellow-500/15 border border-yellow-400/30 text-yellow-300 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-          ⭐ Trusted Financial Services
-        </span>
-
-        <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-          Secure Your
-          <span className="text-yellow-400">Future</span>
-          With
-          <br/>
-          Fortune U Group
-        </h1>
-
-        <p className="mt-6 text-lg text-gray-300 leading-relaxed">
-          Health Insurance, Term Insurance, Home Loans, Personal Loans,
-          Business Loans, Credit Cards, Demat Accounts, Zero Balance Accounts
-          & Investment Solutions — All Under One Roof.
-        </p>
-
-        <div className="flex flex-wrap gap-4 mt-8">
-
-          <a href="#products"
-            className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-8 py-4 rounded-xl transition duration-300">
-            Explore Services
-          </a>
-
-          <a href="#contact"
-            className="border border-white/40 hover:bg-white hover:text-[#0A1931] px-8 py-4 rounded-xl transition duration-300">
-            Contact Us
-          </a>
-
-        </div>
-
-      </div>
-
-      {/* Right Side Image */}
-      <div className="relative">
-
-        <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-
-          <img
-            src="/hero-finance.jpg"
-            alt="Fortune U Group"
-            className="w-full h-full object-cover">
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
+      <section>
+      <h1>Hero Test</h1>
+      </section>
+      
 
       {/* ════════════════════════════════════
           INSURANCE
