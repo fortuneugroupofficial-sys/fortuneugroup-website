@@ -329,69 +329,71 @@ export default function ProductsPage() {
       {/* ════════════════════════════════════
           HERO  (compact — ~38% less height)
       ════════════════════════════════════ */}
-      {/* Hero Content */}
-       <div className="max-w-5xl mx-auto text-center">
+      <section class="relative overflow-hidden bg-gradient-to-br from-[#0A1931] via-[#102A56] to-[#1E3A8A] text-white">
 
-       {/* Section 1 */}
-     <div className="space-y-6">
-      <span className="inline-block px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-semibold">
-      ✦ AP & Telangana's Trusted Financial Partner
-    </span>
+      <!-- Background Blur Effects -->
+      <div class="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+       <div class="absolute bottom-0 right-0 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl"></div>
 
-    <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-      Your Trusted{" "}
-      <span className="text-yellow-500">Financial</span>
-      <br />
-      Growth Partner
-    </h1>
+       <div class="relative max-w-7xl mx-auto px-6 py-24 lg:py-32">
 
-    <p className="max-w-3xl mx-auto text-lg text-gray-300">
-      Insurance, Loans, Banking & Investment Solutions guided by
-      qualified advisors across Andhra Pradesh & Telangana.
-    </p>
-  </div>
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
 
-  {/* Space Between */}
-  <div className="h-12"></div>
+        <!-- Left Content -->
+       <div>
+        <span class="inline-flex items-center bg-yellow-500/15 border border-yellow-400/30 text-yellow-300 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+          ⭐ Trusted Financial Services
+        </span>
 
-  {/* Section 2 */}
-  <div className="space-y-8">
+        <h1 class="text-5xl lg:text-6xl font-bold leading-tight">
+          Secure Your
+          <span class="text-yellow-400">Future</span>
+          With
+          <br>
+          Fortune U Group
+        </h1>
 
-    <div className="flex flex-wrap justify-center gap-4">
-      <button className="px-8 py-4 rounded-full bg-yellow-500 hover:bg-yellow-600 font-semibold">
-        📞 Call Now
-      </button>
+        <p class="mt-6 text-lg text-gray-300 leading-relaxed">
+          Health Insurance, Term Insurance, Home Loans, Personal Loans,
+          Business Loans, Credit Cards, Demat Accounts, Zero Balance Accounts
+          & Investment Solutions — All Under One Roof.
+        </p>
 
-      <button className="px-8 py-4 rounded-full bg-green-500 hover:bg-green-600 font-semibold">
-        WhatsApp
-      </button>
+        <div class="flex flex-wrap gap-4 mt-8">
 
-      <button className="px-8 py-4 rounded-full border border-white hover:bg-white hover:text-black font-semibold">
-        Request Callback
-      </button>
+          <a href="#products"
+            class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-8 py-4 rounded-xl transition duration-300">
+            Explore Services
+          </a>
+
+          <a href="#contact"
+            class="border border-white/40 hover:bg-white hover:text-[#0A1931] px-8 py-4 rounded-xl transition duration-300">
+            Contact Us
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- Right Side Image -->
+      <div class="relative">
+
+        <div class="rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+
+          <img
+            src="/hero-finance.jpg"
+            alt="Fortune U Group"
+            class="w-full h-full object-cover">
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div className="flex flex-wrap justify-center gap-3 text-sm">
-      <span className="px-4 py-2 rounded-full bg-white/10">
-        Clients Across AP & TS
-      </span>
-
-      <span className="px-4 py-2 rounded-full bg-white/10">
-        AP & Telangana
-      </span>
-
-      <span className="px-4 py-2 rounded-full bg-white/10">
-        Insurance Support
-      </span>
-
-      <span className="px-4 py-2 rounded-full bg-white/10">
-        Banking & Financial Solutions
-      </span>
-    </div>
-
   </div>
 
-</div>
+</section>
 
       {/* ════════════════════════════════════
           INSURANCE
