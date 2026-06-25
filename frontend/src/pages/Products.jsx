@@ -335,6 +335,8 @@ export default function ProductsPage() {
      {/* Background Effects */}
      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
      <div className="absolute bottom-0 right-0 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl"></div>
+     <div className="absolute top-20 right-20 w-72 h-72 bg-yellow-400/10 rounded-full blur-3xl"></div>
+     <div className="absolute bottom-10 left-20 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
 
      <div className="relative max-w-7xl mx-auto px-6 py-20 lg:py-28">
 
@@ -347,13 +349,28 @@ export default function ProductsPage() {
           ⭐ Trusted Financial Services
         </span>
 
-        <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-          Secure Your
-          <br />
-          <span className="text-yellow-400">Financial Future</span>
-          <br />
-          With Fortune U Group
-        </h1>
+        <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
+         Secure Your
+          <span className="block text-yellow-400">
+            Financial Future
+          </span>
+           With Fortune U Group
+         </h1><div className="flex flex-wrap gap-3 mt-6">
+
+        <span className="bg-white/10 px-4 py-2 rounded-full text-sm">
+         ✔ Trusted Advisors
+        </span>
+
+        <span className="bg-white/10 px-4 py-2 rounded-full text-sm">
+         ✔ Fast Approval
+        </span>
+
+        <span className="bg-white/10 px-4 py-2 rounded-full text-sm">
+         ✔ Expert Support
+        </span>
+
+        </div>
+        
 
         <p className="mt-6 text-lg text-gray-300 leading-relaxed">
           Health Insurance • Term Insurance • Home Loans • Personal Loans •
@@ -361,66 +378,53 @@ export default function ProductsPage() {
           • Investment Solutions
         </p>
 
-        <div className="flex flex-wrap gap-4 mt-8">
+        <a
+         href="https://wa.me/919533304441"
+         target="_blank"
+          rel="noopener noreferrer"
+          className="bg-green-500 text-white font-bold px-8 py-4 rounded-xl hover:bg-green-600 transition-all duration-300 hover:scale-105"
+         >
+          WhatsApp Us
+        </a>
+          
 
-          <a
-            href="#insurance"
-            className="bg-yellow-400 text-[#0A1931] font-bold px-8 py-4 rounded-xl hover:bg-yellow-300 transition duration-300"
-          >
-            Explore Services
-          </a>
+      {/* Right Side */}
+      <div className="relative flex justify-center lg:justify-end">
 
-          <a
-            href="/contact"
-            className="border border-white px-8 py-4 rounded-xl hover:bg-white hover:text-[#0A1931] transition duration-300"
-          >
-            Contact Us
-          </a>
+        <div className="bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-6 shadow-2xl w-full max-w-md">
+
+          {/* IMAGE CONTAINER */}
+          <div className="overflow-hidden rounded-2xl">
+            <img
+              src="/images/finance-advisor.jpg"
+              alt="Fortune U Group"
+              className="w-full h-auto object-cover rounded-2xl"
+            />
+          </div>
+
+          {/* Bottom Stats */}
+          <div className="grid grid-cols-2 gap-4 mt-6">
+
+            <div className="text-center">
+              <h4 className="text-yellow-400 text-2xl font-bold">10+</h4>
+              <p className="text-white text-sm">Financial Services</p>
+            </div>
+
+            <div className="text-center">
+              <h4 className="text-yellow-400 text-2xl font-bold">100%</h4>
+              <p className="text-white text-sm">Customer Support</p>
+            </div>
+
+          </div>
 
         </div>
 
       </div>
 
-      {/* Right Side */}
-<div className="relative flex justify-center lg:justify-end">
-
-  <div
-    className="bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-6 shadow-2xl w-full max-w-md"
-  >
-
-    {/* IMAGE CONTAINER */}
-    <div className="overflow-hidden rounded-2xl">
-      <img
-        src="/images/finance-advisor.jpg"
-        alt="Fortune U Group"
-        className="w-full h-auto object-cover rounded-2xl"
-      />
     </div>
-
-    {/* Bottom Stats */}
-    <div className="grid grid-cols-2 gap-4 mt-6">
-
-      <div className="text-center">
-        <h4 className="text-yellow-400 text-2xl font-bold">10+</h4>
-        <p className="text-white text-sm">Financial Services</p>
-      </div>
-
-      <div className="text-center">
-        <h4 className="text-yellow-400 text-2xl font-bold">100%</h4>
-        <p className="text-white text-sm">Customer Support</p>
-      </div>
-
-    </div>
-
-   </div>
-  
   </div>
-
-</div>
-
 </section>
       
-
       {/* ════════════════════════════════════
           INSURANCE
       ════════════════════════════════════ */}
