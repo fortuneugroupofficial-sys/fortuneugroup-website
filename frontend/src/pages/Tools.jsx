@@ -266,33 +266,128 @@ const Tools = () => {
   description="Use free financial planning tools including SIP Calculator, Retirement Calculator, Goal Planning Calculator and investment calculators from Fortune U Group."
   path="/tools"
   />
-    <section className="bg-gradient-to-br from-blue-50 via-white to-yellow-50 border-b border-brand-line">
-  <div className="max-w-7xl mx-auto px-5 lg:px-8 py-12 lg:py-16 grid lg:grid-cols-2 gap-10 items-center">
+    <section className="bg-gradient-to-br from-slate-50 via-white to-blue-50 border-b border-gray-200">
+  <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
 
-    <div className="text-xs tracking-[0.2em] uppercase font-bold text-green-600 mb-3">
-      FORTUNE U GROUP TOOLS
+    <div className="grid lg:grid-cols-2 gap-12 items-center">
+
+      {/* Left Content */}
+      <div>
+
+        <span className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold">
+          Fortune U Group Financial Tools
+        </span>
+
+        <h1 className="mt-6 text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+          Plan Today.
+          <span className="block text-blue-700">
+            Prosper Tomorrow.
+          </span>
+        </h1>
+
+        <p className="mt-6 text-lg text-gray-600 leading-8 max-w-xl">
+          Free SIP Calculator, Retirement Planner, Goal Planning,
+          ELSS Tax Saving and EMI Calculator designed to help you
+          make smarter financial decisions.
+        </p>
+
+        <div className="mt-8 flex flex-wrap gap-4">
+
+          <button
+            className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-4 rounded-xl font-semibold shadow-lg transition">
+            Start Calculating →
+          </button>
+
+          <button
+            className="border border-blue-700 text-blue-700 hover:bg-blue-50 px-8 py-4 rounded-xl font-semibold transition">
+            Talk to Advisor
+          </button>
+
+        </div>
+
+      </div>
+
+      {/* Right Card Starts Here */}
+      <div className="relative">
+
+        <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 p-8">
+
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <p className="text-gray-500 text-sm">
+                Projected Wealth
+              </p>
+
+              <h2 className="text-4xl font-bold text-blue-700 mt-2">
+                ₹1,18,24,202
+              </h2>
+            </div>
+
+            <div className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-semibold">
+              +12% CAGR
+            </div>
+          </div>
+
+          <div className="space-y-5">
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Monthly SIP
+              </span>
+
+              <span className="font-semibold">
+                ₹10,000
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Investment Period
+              </span>
+
+              <span className="font-semibold">
+                20 Years
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Expected Return
+              </span>
+
+              <span className="font-semibold">
+                12% p.a.
+              </span>
+            </div>
+
+            <hr className="my-4" />
+
+            <div className="flex justify-between text-lg font-bold">
+              <span>Estimated Wealth</span>
+
+              <span className="text-blue-700">
+                ₹1.18 Cr
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <h1 className="font-display text-4xl md:text-6xl tracking-tight text-brand-navy font-bold">
-      Plan Today.
-      <span className="text-blue-700"> Prosper Tomorrow.</span>
-    </h1>
-
-    <p className="mt-5 text-brand-mute max-w-3xl leading-relaxed text-lg">
-      Free SIP, Retirement, Goal Planning, ELSS & EMI Calculators to help you
-      make smarter financial decisions and achieve your financial goals.
-    </p>
-
-    <div className="mt-8">
-     <button className="bg-blue-700 hover:bg-blue-800 
-    text-white px-8 py-4 rounded-xl font-semibold shadow-lg">
-    Start Calculating →
-   </button>
   </div>
-  </div>  {/* max-w-7xl div close */}
+
 </section>
 
-    <section className="py-16">
+    <section
+  id="calculators"
+  className="py-16 bg-gradient-to-b from-white to-blue-50"
+   >
+      
+      
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         <Tabs defaultValue="sip" className="w-full" data-testid="tools-tabs">
           <TabsList className="bg-white border border-brand-line p-1 rounded-full mx-auto flex w-fit flex-wrap">
@@ -308,6 +403,36 @@ const Tools = () => {
           <TabsContent value="elss" className="mt-8"><ELSSCalc /></TabsContent>
           <TabsContent value="emi" className="mt-8"><EMICalc /></TabsContent>
         </Tabs>
+        <section className="mt-20 rounded-3xl bg-gradient-to-r from-blue-700 to-blue-900 text-white p-10 text-center">
+
+  <h2 className="text-4xl font-bold">
+    Need Personal Financial Guidance?
+  </h2>
+
+  <p className="mt-4 text-blue-100 max-w-2xl mx-auto">
+    Our financial experts can help you choose the right Mutual Funds,
+    Insurance and Loan solutions based on your goals.
+  </p>
+
+  <div className="mt-8 flex flex-wrap justify-center gap-4">
+
+    <a
+      href="/contact"
+      className="bg-yellow-400 text-black px-8 py-4 rounded-xl font-bold hover:bg-yellow-300"
+    >
+      Book Free Consultation
+    </a>
+
+    <a
+      href="https://wa.me/919533304441"
+      className="border border-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-blue-700"
+    >
+      WhatsApp Us
+    </a>
+
+  </div>
+
+</section>
       </div>
     </section>
   </div>
