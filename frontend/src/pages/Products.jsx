@@ -331,23 +331,23 @@ export default function ProductsPage() {
       ════════════════════════════════════ */}
       <section class="relative overflow-hidden bg-gradient-to-br from-[#0A1931] via-[#102A56] to-[#1E3A8A] text-white">
 
-      <!-- Background Blur Effects -->
+      {/* Background Blur Effects */}
       <div class="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
        <div class="absolute bottom-0 right-0 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl"></div>
 
-       <div class="relative max-w-7xl mx-auto px-6 py-24 lg:py-32">
+       <div className="relative max-w-7xl mx-auto px-6 py-24 lg:py-32">
 
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-        <!-- Left Content -->
+        {/* Left Content */}
        <div>
-        <span class="inline-flex items-center bg-yellow-500/15 border border-yellow-400/30 text-yellow-300 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+        <span className="inline-flex items-center bg-yellow-500/15 border border-yellow-400/30 text-yellow-300 px-4 py-2 rounded-full text-sm font-semibold mb-6">
           ⭐ Trusted Financial Services
         </span>
 
-        <h1 class="text-5xl lg:text-6xl font-bold leading-tight">
+        <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
           Secure Your
-          <span class="text-yellow-400">Future</span>
+          <span className="text-yellow-400">Future</span>
           With
           <br>
           Fortune U Group
@@ -375,7 +375,7 @@ export default function ProductsPage() {
 
       </div>
 
-      <!-- Right Side Image -->
+      {/* Right Side Image */}
       <div class="relative">
 
         <div class="rounded-3xl overflow-hidden shadow-2xl border border-white/10">
