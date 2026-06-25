@@ -8,7 +8,6 @@ import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianG
 import { SectionHeader } from "../components/SectionHeader";
 import SEO from "../components/SEO";
 import { useLang } from "../context/LangContext";
-
 const fmt = (n) => {
   if (!isFinite(n)) return "—";
   if (n >= 1e7) return `₹${(n/1e7).toFixed(2)} Cr`;
