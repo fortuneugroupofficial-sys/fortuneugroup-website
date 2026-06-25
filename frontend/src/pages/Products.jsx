@@ -329,9 +329,100 @@ export default function ProductsPage() {
       {/* ════════════════════════════════════
           HERO  (compact — ~38% less height)
       ════════════════════════════════════ */}
-      <section>
-      <h1>Hero Test</h1>
-      </section>
+      {/* ================= HERO SECTION ================= */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A1931] via-[#102A56] to-[#1E3A8A] text-white">
+
+     {/* Background Effects */}
+     <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+     <div className="absolute bottom-0 right-0 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl"></div>
+
+     <div className="relative max-w-7xl mx-auto px-6 py-20 lg:py-28">
+
+    <div className="grid lg:grid-cols-2 gap-12 items-center">
+
+      {/* Left Content */}
+      <div>
+
+        <span className="inline-flex items-center bg-yellow-500/15 border border-yellow-400/30 text-yellow-300 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+          ⭐ Trusted Financial Services
+        </span>
+
+        <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
+          Secure Your
+          <br />
+          <span className="text-yellow-400">Financial Future</span>
+          <br />
+          With Fortune U Group
+        </h1>
+
+        <p className="mt-6 text-lg text-gray-300 leading-relaxed">
+          Health Insurance • Term Insurance • Home Loans • Personal Loans •
+          Business Loans • Credit Cards • Demat Account • Zero Balance Account
+          • Investment Solutions
+        </p>
+
+        <div className="flex flex-wrap gap-4 mt-8">
+
+          <a
+            href="#insurance"
+            className="bg-yellow-400 text-[#0A1931] font-bold px-8 py-4 rounded-xl hover:bg-yellow-300 transition duration-300"
+          >
+            Explore Services
+          </a>
+
+          <a
+            href="/contact"
+            className="border border-white px-8 py-4 rounded-xl hover:bg-white hover:text-[#0A1931] transition duration-300"
+          >
+            Contact Us
+          </a>
+
+        </div>
+
+      </div>
+
+      {/* Right Side */}
+      <div className="relative flex justify-center">
+
+        <div className="bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-8 shadow-2xl w-full max-w-md">
+
+          <div className="text-center">
+
+            <div className="text-6xl mb-4">💼</div>
+
+            <h3 className="text-2xl font-bold text-yellow-400 mb-3">
+              Fortune U Group
+            </h3>
+
+            <p className="text-gray-300">
+              Trusted Financial Partner
+            </p>
+
+            <div className="grid grid-cols-2 gap-4 mt-8">
+
+              <div className="bg-white/10 rounded-xl p-4">
+                <h4 className="text-yellow-400 text-xl font-bold">10+</h4>
+                <p className="text-sm">Financial Services</p>
+              </div>
+
+              <div className="bg-white/10 rounded-xl p-4">
+                <h4 className="text-yellow-400 text-xl font-bold">100%</h4>
+                <p className="text-sm">Customer Support</p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
       
 
       {/* ════════════════════════════════════
