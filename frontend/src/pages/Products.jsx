@@ -396,7 +396,7 @@ export default function ProductsPage() {
           {/* IMAGE CONTAINER */}
           <div className="overflow-hidden rounded-2xl">
             <img
-              src="/images/finance-advisor.jpg"
+              src="/images/financial-advisor.png"
               alt="Fortune U Group"
               className="w-full h-auto object-cover rounded-2xl"
             />
