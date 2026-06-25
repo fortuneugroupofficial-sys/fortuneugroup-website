@@ -329,84 +329,69 @@ export default function ProductsPage() {
       {/* ════════════════════════════════════
           HERO  (compact — ~38% less height)
       ════════════════════════════════════ */}
-      <section id="home" style={{
-        background: `linear-gradient(160deg, ${C.navy} 0%, ${C.navy2} 40%, ${C.blue} 100%)`,
-        paddingTop: 52, paddingBottom: 52,
-        position: "relative", overflow: "hidden",
-      }}>
-        <div style={{ position: "absolute", top: -80, right: -80, width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, rgba(212,175,55,.08) 0%, transparent 70%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: -40, left: -40, width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, rgba(30,58,138,.45) 0%, transparent 70%)", pointerEvents: "none" }} />
+      {/* Hero Content */}
+       <div className="max-w-5xl mx-auto text-center">
 
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
-          <div style={{ maxWidth: 680, margin: "0 auto", textAlign: "center" }}>
+       {/* Section 1 */}
+     <div className="space-y-6">
+      <span className="inline-block px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-semibold">
+      ✦ AP & Telangana's Trusted Financial Partner
+    </span>
 
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              background: "rgba(212,175,55,.12)", border: "1px solid rgba(212,175,55,.3)",
-              color: C.gold2, fontSize: 11, fontWeight: 700, letterSpacing: "2px",
-              textTransform: "uppercase", padding: "5px 16px", borderRadius: 50, marginBottom: 20,
-            }}>
-              ✦ AP & Telangana's Trusted Financial Partner
-            </div>
+    <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+      Your Trusted{" "}
+      <span className="text-yellow-500">Financial</span>
+      <br />
+      Growth Partner
+    </h1>
 
-            <h1 style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: "clamp(28px, 4.5vw, 50px)",
-              fontWeight: 800, color: C.white, lineHeight: 1.12, marginBottom: 14,
-            }}>
-              Your Trusted{" "}
-              <span style={{ background: `linear-gradient(135deg, ${C.gold}, ${C.gold2})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                Financial Growth
-              </span>{" "}
-              Partner
-            </h1>
+    <p className="max-w-3xl mx-auto text-lg text-gray-300">
+      Insurance, Loans, Banking & Investment Solutions guided by
+      qualified advisors across Andhra Pradesh & Telangana.
+    </p>
+  </div>
 
-            <p style={{ fontSize: 15, color: "rgba(255,255,255,.68)", maxWidth: 520, margin: "0 auto 28px", fontWeight: 300, lineHeight: 1.65 }}>
-              Insurance, loans, banking, and investment solutions — guided by qualified advisors across Andhra Pradesh & Telangana.
-            </p>
+  {/* Space Between */}
+  <div className="h-12"></div>
 
-            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 32 }}>
-              <PrimaryBtn href="tel:+919000000000">
-                <Phone size={15} /> Call Now
-              </PrimaryBtn>
-              <a href="https://wa.me/919000000000" target="_blank" rel="noreferrer" style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                background: "#25D366", color: C.white, fontWeight: 700, fontSize: 14,
-                padding: "11px 24px", borderRadius: 50, textDecoration: "none",
-                transition: "all .25s", boxShadow: "0 4px 18px rgba(37,211,102,.28)",
-              }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = ""; }}
-              >
-                <MessageCircle size={15} /> WhatsApp
-              </a>
-              <OutlineBtn href="#contact" light>
-                <FileText size={14} /> Request Callback
-              </OutlineBtn>
-            </div>
+  {/* Section 2 */}
+  <div className="space-y-8">
 
-            {/* Trust Badges */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
-              {[
-                { icon: Users,      label: "Clients Across AP & TS" },
-                { icon: MapPin,     label: "AP & Telangana" },
-                { icon: BadgeCheck, label: "Insurance Support" },
-                { icon: Landmark,   label: "Banking & Financial Solutions" },
-              ].map(({ icon: Icon, label }) => (
-                <div key={label} style={{
-                  display: "flex", alignItems: "center", gap: 6,
-                  background: "rgba(255,255,255,.07)", border: "1px solid rgba(255,255,255,.12)",
-                  color: "rgba(255,255,255,.8)", fontSize: 12, fontWeight: 500,
-                  padding: "6px 12px", borderRadius: 50,
-                }}>
-                  <Icon size={12} style={{ color: C.gold2 }} /> {label}
-                </div>
-              ))}
-            </div>
+    <div className="flex flex-wrap justify-center gap-4">
+      <button className="px-8 py-4 rounded-full bg-yellow-500 hover:bg-yellow-600 font-semibold">
+        📞 Call Now
+      </button>
 
-          </div>
-        </div>
-      </section>
+      <button className="px-8 py-4 rounded-full bg-green-500 hover:bg-green-600 font-semibold">
+        WhatsApp
+      </button>
+
+      <button className="px-8 py-4 rounded-full border border-white hover:bg-white hover:text-black font-semibold">
+        Request Callback
+      </button>
+    </div>
+
+    <div className="flex flex-wrap justify-center gap-3 text-sm">
+      <span className="px-4 py-2 rounded-full bg-white/10">
+        Clients Across AP & TS
+      </span>
+
+      <span className="px-4 py-2 rounded-full bg-white/10">
+        AP & Telangana
+      </span>
+
+      <span className="px-4 py-2 rounded-full bg-white/10">
+        Insurance Support
+      </span>
+
+      <span className="px-4 py-2 rounded-full bg-white/10">
+        Banking & Financial Solutions
+      </span>
+    </div>
+
+  </div>
+
+</div>
 
       {/* ════════════════════════════════════
           INSURANCE
@@ -589,10 +574,10 @@ export default function ProductsPage() {
                 <MapPin size={12} /> Serving Andhra Pradesh & Telangana
               </div>
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <PrimaryBtn href="tel:+919000000000">
+                <PrimaryBtn href="tel:+919533304441">
                   <Phone size={15} /> Call Now
                 </PrimaryBtn>
-                <a href="https://wa.me/919000000000" target="_blank" rel="noreferrer" style={{
+                <a href="https://wa.me/919533304441" target="_blank" rel="noreferrer" style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
                   background: "#25D366", color: C.white, fontWeight: 700, fontSize: 14,
                   padding: "11px 22px", borderRadius: 50, textDecoration: "none",
@@ -716,7 +701,7 @@ export default function ProductsPage() {
           FLOATING WHATSAPP BUTTON
       ════════════════════════════════════ */}
       <a
-        href="https://wa.me/919000000000"
+        href="https://wa.me/919533304441"
         target="_blank" rel="noreferrer"
         title="Chat on WhatsApp"
         style={{
