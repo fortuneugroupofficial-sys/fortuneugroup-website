@@ -329,11 +329,11 @@ export default function ProductsPage() {
       {/* ════════════════════════════════════
           HERO  (compact — ~38% less height)
       ════════════════════════════════════ */}
-      <section class="relative overflow-hidden bg-gradient-to-br from-[#0A1931] via-[#102A56] to-[#1E3A8A] text-white">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A1931] via-[#102A56] to-[#1E3A8A] text-white">
 
       {/* Background Blur Effects */}
-      <div class="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
-       <div class="absolute bottom-0 right-0 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+       <div className="absolute bottom-0 right-0 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl"></div>
 
        <div className="relative max-w-7xl mx-auto px-6 py-24 lg:py-32">
 
@@ -349,25 +349,25 @@ export default function ProductsPage() {
           Secure Your
           <span className="text-yellow-400">Future</span>
           With
-          <br>
+          <br/>
           Fortune U Group
         </h1>
 
-        <p class="mt-6 text-lg text-gray-300 leading-relaxed">
+        <p className="mt-6 text-lg text-gray-300 leading-relaxed">
           Health Insurance, Term Insurance, Home Loans, Personal Loans,
           Business Loans, Credit Cards, Demat Accounts, Zero Balance Accounts
           & Investment Solutions — All Under One Roof.
         </p>
 
-        <div class="flex flex-wrap gap-4 mt-8">
+        <div className="flex flex-wrap gap-4 mt-8">
 
           <a href="#products"
-            class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-8 py-4 rounded-xl transition duration-300">
+            className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-8 py-4 rounded-xl transition duration-300">
             Explore Services
           </a>
 
           <a href="#contact"
-            class="border border-white/40 hover:bg-white hover:text-[#0A1931] px-8 py-4 rounded-xl transition duration-300">
+            className="border border-white/40 hover:bg-white hover:text-[#0A1931] px-8 py-4 rounded-xl transition duration-300">
             Contact Us
           </a>
 
@@ -376,14 +376,14 @@ export default function ProductsPage() {
       </div>
 
       {/* Right Side Image */}
-      <div class="relative">
+      <div className="relative">
 
-        <div class="rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+        <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10">
 
           <img
             src="/hero-finance.jpg"
             alt="Fortune U Group"
-            class="w-full h-full object-cover">
+            className="w-full h-full object-cover">
 
         </div>
 
