@@ -382,45 +382,39 @@ export default function ProductsPage() {
       </div>
 
       {/* Right Side */}
-      <div className="relative flex justify-center">
+<div className="relative flex justify-center lg:justify-end">
 
-        <div className="bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-8 shadow-2xl w-full max-w-md">
+  <div
+    className="bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-6 shadow-2xl w-full max-w-md"
+  >
 
-          <div className="text-center">
+    {/* IMAGE CONTAINER */}
+    <div className="overflow-hidden rounded-2xl">
+      <img
+        src="/images/finance-advisor.jpg"
+        alt="Fortune U Group"
+        className="w-full h-auto object-cover rounded-2xl"
+      />
+    </div>
 
-            <div className="text-6xl mb-4">💼</div>
+    {/* Bottom Stats */}
+    <div className="grid grid-cols-2 gap-4 mt-6">
 
-            <h3 className="text-2xl font-bold text-yellow-400 mb-3">
-              Fortune U Group
-            </h3>
+      <div className="text-center">
+        <h4 className="text-yellow-400 text-2xl font-bold">10+</h4>
+        <p className="text-white text-sm">Financial Services</p>
+      </div>
 
-            <p className="text-gray-300">
-              Trusted Financial Partner
-            </p>
-
-            <div className="grid grid-cols-2 gap-4 mt-8">
-
-              <div className="bg-white/10 rounded-xl p-4">
-                <h4 className="text-yellow-400 text-xl font-bold">10+</h4>
-                <p className="text-sm">Financial Services</p>
-              </div>
-
-              <div className="bg-white/10 rounded-xl p-4">
-                <h4 className="text-yellow-400 text-xl font-bold">100%</h4>
-                <p className="text-sm">Customer Support</p>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
+      <div className="text-center">
+        <h4 className="text-yellow-400 text-2xl font-bold">100%</h4>
+        <p className="text-white text-sm">Customer Support</p>
       </div>
 
     </div>
 
   </div>
+
+</div>
 
 </section>
       
