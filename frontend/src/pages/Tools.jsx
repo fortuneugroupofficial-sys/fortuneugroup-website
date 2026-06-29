@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { Slider } from "../components/ui/slider";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -8,23 +9,71 @@ import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianG
 import { SectionHeader } from "../components/SectionHeader";
 import SEO from "../components/SEO";
 import { useLang } from "../context/LangContext";
-const fmt = (n) => {
+
+ const seriesData = [
+  { year: "Y1", wealth: 12 },
+  { year: "Y2", wealth: 25 },
+  { year: "Y3", wealth: 40 },
+  { year: "Y4", wealth: 58 },
+  { year: "Y5", wealth: 80 },
+  ];
+  const fmt = (n) => {
   if (!isFinite(n)) return "—";
   if (n >= 1e7) return `₹${(n/1e7).toFixed(2)} Cr`;
   if (n >= 1e5) return `₹${(n/1e5).toFixed(2)} L`;
   return `₹${Math.round(n).toLocaleString("en-IN")}`;
 };
 
-const InputRow = ({ label, value, onChange, min, max, step, suffix, testid }) => (
-  <div>
-    <div className="flex items-center justify-between mb-2">
-      <Label className="text-xs uppercase tracking-wider font-semibold text-brand-navy">{label}</Label>
+const InputRow = ({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  suffix,
+  testid,
+}) => (
+  <div className="space-y-3">
+
+    <div className="flex items-center justify-between">
+
+      <Label className="text-xs font-bold uppercase tracking-wider text-[#0A2540]">
+        {label}
+      </Label>
+
       <div className="flex items-center gap-2">
-        <Input type="number" value={value} min={min} max={max} step={step} onChange={(e)=>onChange(Number(e.target.value))} className="h-8 w-28 text-right bg-brand-soft/40 border-brand-line focus-visible:ring-brand-green" data-testid={`${testid}-input`} />
-        {suffix && <span className="text-xs text-brand-mute">{suffix}</span>}
+
+        <Input
+          type="number"
+          value={value}
+          min={min}
+          max={max}
+          step={step}
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="w-28 h-11 rounded-xl border border-[#D1D5DB] text-center font-semibold shadow-sm focus:border-[#10B981] focus:ring-2 focus:ring-[#10B981]/20"
+        />
+
+        {suffix && (
+          <span className="text-sm font-medium text-gray-500">
+            {suffix}
+          </span>
+        )}
+
       </div>
+
     </div>
-    <Slider value={[value]} min={min} max={max} step={step} onValueChange={(v)=>onChange(v[0])} data-testid={`${testid}-slider`} />
+
+    <Slider
+      value={[value]}
+      min={min}
+      max={max}
+      step={step}
+      onValueChange={(v) => onChange(v[0])}
+      data-testid={testid}
+      className="slider py-2"
+    />
+
   </div>
 );
 
@@ -72,14 +121,14 @@ const SIPCalc = () => {
   }, [m, y, r]);
   return (
     <div className="grid lg:grid-cols-5 gap-6" data-testid="sip-calc">
-      <Card className="p-6 lg:col-span-2 bg-white border-brand-line">
+      <Card className="p-8 lg:col-span-2 bg-white border border-[#E5E7EB] rounded-[20px] shadow-xl">
         <div className="space-y-6">
           <InputRow label="Monthly SIP (₹)" value={m} onChange={setM} min={500} max={200000} step={500} testid="sip-monthly" />
           <InputRow label="Years" value={y} onChange={setY} min={1} max={40} step={1} suffix="yrs" testid="sip-years" />
           <InputRow label="Expected Return (% p.a.)" value={r} onChange={setR} min={1} max={25} step={0.5} suffix="%" testid="sip-rate" />
         </div>
       </Card>
-      <Card className="p-6 lg:col-span-3 bg-white border-brand-line">
+      <Card className="p-8 lg:col-span-3 bg-white border border-[#E5E7EB] rounded-[20px] shadow-xl">
         <div className="grid grid-cols-3 gap-4">
           <Stat label="Invested" value={fmt(invested)} />
           <Stat label="Est. Wealth" value={fmt(wealth)} accent />
@@ -250,9 +299,24 @@ const EMICalc = () => {
 };
 
 const Stat = ({ label, value, accent }) => (
-  <div className={`rounded-xl p-5 border ${accent ? "bg-brand-green/10 border-brand-green/30" : "bg-brand-soft/40 border-brand-line"}`}>
-    <div className="text-[10px] uppercase tracking-[0.18em] font-bold text-brand-mute">{label}</div>
-    <div className={`mt-1 font-display text-2xl font-semibold ${accent ? "text-brand-deepgreen" : "text-brand-navy"}`}>{value}</div>
+  <div
+    className={`rounded-3xl p-7 border shadow-xl hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 ${
+      accent
+        ? "bg-gradient-to-br from-[#ECFDF5] to-[#D1FAE5] border-[#10B981]"
+        : "bg-gradient-to-br from-white to-[#F8FAFC] border-[#E5E7EB]"
+    }`}
+  >
+    <div className="text-xs uppercase tracking-wider font-semibold text-gray-500">
+      {label}
+    </div>
+
+    <div
+      className={`mt-3 text-3xl font-bold ${
+        accent ? "text-[#10B981]" : "text-[#0A2540]"
+      }`}
+    >
+      {value}
+    </div>
   </div>
 );
 
@@ -265,137 +329,155 @@ const Tools = () => {
   description="Use free financial planning tools including SIP Calculator, Retirement Calculator, Goal Planning Calculator and investment calculators from Fortune U Group."
   path="/tools"
   />
-    <section className="bg-gradient-to-br from-slate-50 via-white to-blue-50 border-b border-gray-200">
-  <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+    {/* ================= TOOLS HERO ================= */}
 
-    <div className="grid lg:grid-cols-2 gap-12 items-center">
+<section className="relative overflow-hidden bg-white pt-6 pb-20 lg:pt-8 lg:pb-20">
+<div className="max-w-7xl mx-auto px-5 lg:px-8 -mt-6">
+    <div className="grid lg:grid-cols-2 gap-14 items-center">
 
-      {/* Left Content */}
+      {/* LEFT */}
       <div>
 
-        <span className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold">
-          Fortune U Group Financial Tools
-        </span>
+        {/* Badge */}
+        <div className="inline-flex items-center rounded-full bg-blue-50 border border-blue-100 px-4 py-2 text-sm font-semibold text-[#0A2540]">
+          Smart Financial Calculators
+        </div>
 
-        <h1 className="mt-6 text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+        {/* Heading */}
+        <h1 className="mt-6 text-5xl lg:text-6xl font-bold leading-tight text-[#0A2540]">
           Plan Today.
-          <span className="block text-blue-700">
+          <br />
+          <span className="text-[#D4AF37]">
             Prosper Tomorrow.
           </span>
         </h1>
 
-        <p className="mt-6 text-lg text-gray-600 leading-8 max-w-xl">
-          Free SIP Calculator, Retirement Planner, Goal Planning,
-          ELSS Tax Saving and EMI Calculator designed to help you
-          make smarter financial decisions.
+        {/* Description */}
+
+        <p className="mt-6 text-lg leading-8 text-gray-600 max-w-xl">
+          Free SIP Calculator, Retirement Planner,
+          Goal Planning, ELSS Tax Saving and EMI
+          Calculator to help you make smarter
+          financial decisions.
         </p>
 
-        <div className="mt-8 flex flex-wrap gap-4">
+        {/* Buttons */}
 
-          <button
-            className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-4 rounded-xl font-semibold shadow-lg transition">
-            Start Calculating →
-          </button>
+        <div className="mt-10 flex flex-wrap gap-4">
+          <a href="#calculator">
+           <button className="px-8 py-4 rounded-full bg-[#0A2540] text-white font-semibold hover:bg-[#123B68] transition">
+           Start Calculating →
+           </button>
+            </a>
 
-          <button
-            className="border border-blue-700 text-blue-700 hover:bg-blue-50 px-8 py-4 rounded-xl font-semibold transition">
+          <Link to="/contact">
+            <button
+            className="px-8 py-4 rounded-full
+            bg-[#D4AF37] text-[#0A2540] font-semibold shadow-lg hover:bg-[#B68D22] hover:text-white
+            hover:shadow-2xl hover:scale-105 transition-all duration-300" >
             Talk to Advisor
-          </button>
+           </button>
+          </Link
+          
+          >
 
         </div>
 
       </div>
 
-      {/* Right Card Starts Here */}
-      <div className="relative">
+      {/* RIGHT */}
 
-        <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 p-8">
+      <div>
 
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <p className="text-gray-500 text-sm">
-                Projected Wealth
-              </p>
+        <div className="relative rounded-3xl bg-white border border-gray-200 shadow-2xl p-8">
 
-              <h2 className="text-4xl font-bold text-blue-700 mt-2">
-                ₹1,18,24,202
-              </h2>
-            </div>
+          {/* CAGR Badge */}
 
-            <div className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-semibold">
-              +12% CAGR
-            </div>
+          <div className="absolute top-6 right-6 bg-green-100 text-green-700 font-bold rounded-full px-4 py-2 text-sm">
+            +12% CAGR
           </div>
 
-          <div className="space-y-5">
+          <p className="uppercase tracking-widest text-xs text-gray-500">
+            Projected Wealth
+          </p>
+
+          <h2 className="mt-3 text-5xl font-bold text-[#0A2540]">
+            ₹1,18,24,202
+          </h2>
+
+          {/* Gold Line */}
+
+          <div className="mt-6 h-1 w-28 rounded-full bg-[#D4AF37]"></div>
+
+          {/* Details */}
+
+          <div className="mt-8 space-y-5">
 
             <div className="flex justify-between">
-              <span className="text-gray-500">
-                Monthly SIP
-              </span>
-
-              <span className="font-semibold">
-                ₹10,000
-              </span>
+              <span className="text-gray-500">Monthly SIP</span>
+              <span className="font-semibold text-[#0A2540]">₹10,000</span>
             </div>
 
             <div className="flex justify-between">
-              <span className="text-gray-500">
-                Investment Period
-              </span>
-
-              <span className="font-semibold">
-                20 Years
-              </span>
+              <span className="text-gray-500">Investment Period</span>
+              <span className="font-semibold text-[#0A2540]">20 Years</span>
             </div>
 
             <div className="flex justify-between">
-              <span className="text-gray-500">
-                Expected Return
-              </span>
-
-              <span className="font-semibold">
-                12% p.a.
-              </span>
-            </div>
-
-            <hr className="my-4" />
-
-            <div className="flex justify-between text-lg font-bold">
-              <span>Estimated Wealth</span>
-
-              <span className="text-blue-700">
-                ₹1.18 Cr
-              </span>
+              <span className="text-gray-500">Expected Return</span>
+              <span className="font-semibold text-[#0A2540]">12% p.a.</span>
             </div>
 
           </div>
+
+          {/* Graph Placeholder */}
+
+          <div className="mt-10 h-44">
+         <ResponsiveContainer width="100%" height="100%">
+         <AreaChart data={seriesData}>
+         <Area
+        type="monotone"
+        dataKey="wealth"
+        stroke="#D4AF37"
+        fill="#FDE68A"
+        />
+       </AreaChart>
+      </ResponsiveContainer>
+      </div>
 
         </div>
 
       </div>
 
     </div>
-
   </div>
-
 </section>
 
     <section
-  id="calculators"
-  className="py-16 bg-gradient-to-b from-white to-blue-50"
-   >
-      
-      
+    id="calculator"
+     className="py-16 bg-gradient-to-b from-white to-blue-50">
+    
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         <Tabs defaultValue="sip" className="w-full" data-testid="tools-tabs">
-          <TabsList className="bg-white border border-brand-line p-1 rounded-full mx-auto flex w-fit flex-wrap">
-            <TabsTrigger value="sip" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-5" data-testid="tab-sip">SIP</TabsTrigger>
-            <TabsTrigger value="ret" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-5" data-testid="tab-ret">Retirement</TabsTrigger>
-            <TabsTrigger value="goal" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-5" data-testid="tab-goal">Goal</TabsTrigger>
-            <TabsTrigger value="elss" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-5" data-testid="tab-elss">ELSS</TabsTrigger>
-            <TabsTrigger value="emi" className="rounded-full data-[state=active]:bg-brand-navy data-[state=active]:text-white px-5" data-testid="tab-emi">EMI</TabsTrigger>
-          </TabsList>
+
+          <TabsList className="mx-auto inline-flex items-center justify-center rounded-full border 
+          border-gray-200 bg-white p-1 shadow-lg">
+
+            <TabsTrigger value="sip"className="rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 
+            data-[state=active]:bg-[#0A2540] data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-gray-100"> SIP</TabsTrigger>
+
+            <TabsTrigger value="ret" className="rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 
+            data-[state=active]:bg-[#0A2540] data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-gray-100"> Retirement</TabsTrigger>
+
+            <TabsTrigger value="goal" className="rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 
+            data-[state=active]:bg-[#0A2540] data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-gray-100">Goal Planning</TabsTrigger>
+
+            <TabsTrigger value="elss" className="rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 
+            data-[state=active]:bg-[#0A2540] data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-gray-100"> ELSS</TabsTrigger>
+
+            <TabsTrigger value="emi" className="rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 
+            data-[state=active]:bg-[#0A2540] data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-gray-100"> EMI</TabsTrigger>
+            </TabsList>
           <TabsContent value="sip" className="mt-8"><SIPCalc /></TabsContent>
           <TabsContent value="ret" className="mt-8"><RetirementCalc /></TabsContent>
           <TabsContent value="goal" className="mt-8"><GoalCalc /></TabsContent>
@@ -431,6 +513,462 @@ const Tools = () => {
 
   </div>
 
+</section>
+
+  {/* Financial Health Score */}
+<section className="py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-5">
+
+    <div className="text-center mb-12">
+      <p className="text-[#D4AF37] font-semibold uppercase tracking-wider">
+        Financial Health Score
+      </p>
+
+      <h2 className="text-4xl font-bold text-[#0A2540] mt-2">
+        Know Your Financial Health
+      </h2>
+
+      <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+        Get an instant financial score based on your savings,
+        investments and monthly income.
+      </p>
+    </div>
+
+    <div className="grid lg:grid-cols-2 gap-10">
+
+      {/* Left */}
+
+      <div className="bg-white rounded-3xl border border-gray-200 shadow-xl p-8">
+
+        <div className="mb-6">
+          <label className="font-semibold text-[#0A2540]">
+            Age
+          </label>
+
+          <input
+            type="number"
+            placeholder="30"
+            className="mt-2 w-full rounded-xl border p-3"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="font-semibold text-[#0A2540]">
+            Monthly Income
+          </label>
+
+          <input
+            type="number"
+            placeholder="50000"
+            className="mt-2 w-full rounded-xl border p-3"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="font-semibold text-[#0A2540]">
+            Monthly Savings
+          </label>
+
+          <input
+            type="number"
+            placeholder="10000"
+            className="mt-2 w-full rounded-xl border p-3"
+          />
+        </div>
+
+        <div className="mb-8">
+          <label className="font-semibold text-[#0A2540]">
+            Current Investments
+          </label>
+
+          <input
+            type="number"
+            placeholder="500000"
+            className="mt-2 w-full rounded-xl border p-3"
+          />
+        </div>
+
+        <button className="w-full py-4 rounded-xl bg-[#0A2540] text-white hover:bg-[#163B65]">
+          Calculate Score
+        </button>
+
+      </div>
+
+      {/* Right */}
+
+      <div className="rounded-3xl bg-gradient-to-br from-[#0A2540] to-[#163B65] text-white p-10 shadow-xl">
+
+        <div className="text-center">
+
+          <div className="text-7xl font-bold text-[#D4AF37]">
+            82
+          </div>
+
+          <div className="text-xl mt-3">
+            Financial Score
+          </div>
+
+          <div className="inline-block mt-6 bg-green-500 text-white px-5 py-2 rounded-full font-semibold">
+            Excellent
+          </div>
+
+        </div>
+
+        <div className="mt-10 space-y-4">
+
+          <div className="flex items-center justify-between">
+            <span>Savings Habit</span>
+            <span>★★★★★</span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <span>Investment Discipline</span>
+            <span>★★★★☆</span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <span>Emergency Fund</span>
+            <span>★★★★★</span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <span>Insurance Protection</span>
+            <span>★★★★☆</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+   {/* Investment Comparison */}
+<section className="py-20 bg-[#F8FAFC]">
+  <div className="max-w-7xl mx-auto px-5">
+
+    <div className="text-center mb-12">
+      <p className="text-[#D4AF37] font-semibold uppercase tracking-widest">
+        Investment Comparison
+      </p>
+
+      <h2 className="text-4xl font-bold text-[#0A2540] mt-2">
+        Compare Investment Options
+      </h2>
+
+      <p className="text-gray-600 mt-4">
+        Understand which investment option can help you achieve your financial goals.
+      </p>
+    </div>
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+        <h3 className="text-xl font-bold text-[#0A2540]">SIP</h3>
+        <p className="mt-3 text-gray-600">
+          Long-term wealth creation through disciplined monthly investing.
+        </p>
+        <div className="mt-6 text-3xl font-bold text-[#16A34A]">
+          ★★★★★
+        </div>
+      </div>
+
+      <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+        <h3 className="text-xl font-bold text-[#0A2540]">Fixed Deposit</h3>
+        <p className="mt-3 text-gray-600">
+          Stable returns with lower risk but limited growth potential.
+        </p>
+        <div className="mt-6 text-3xl font-bold text-yellow-500">
+          ★★★☆☆
+        </div>
+      </div>
+
+      <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+        <h3 className="text-xl font-bold text-[#0A2540]">Gold</h3>
+        <p className="mt-3 text-gray-600">
+          Good for diversification and long-term value preservation.
+        </p>
+        <div className="mt-6 text-3xl font-bold text-yellow-500">
+          ★★★★☆
+        </div>
+      </div>
+
+      <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+        <h3 className="text-xl font-bold text-[#0A2540]">PPF</h3>
+        <p className="mt-3 text-gray-600">
+          Safe tax-saving investment backed by the Government of India.
+        </p>
+        <div className="mt-6 text-3xl font-bold text-green-600">
+          ★★★★☆
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+     {/* Premium Features */}
+<section className="py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-5">
+
+    <div className="text-center mb-14">
+      <span className="text-[#D4AF37] font-semibold uppercase tracking-[0.2em]">
+        Why Choose Our Tools
+      </span>
+
+      <h2 className="mt-3 text-4xl font-bold text-[#0A2540]">
+        Smart Financial Planning Made Easy
+      </h2>
+
+      <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+        Powerful calculators designed to help you make better investment decisions.
+      </p>
+    </div>
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+      <div className="group rounded-3xl border border-gray-200 bg-white p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+        <div className="w-16 h-16 rounded-2xl bg-[#FFF8E1] flex items-center justify-center text-3xl">
+          ⚡
+        </div>
+
+        <h3 className="mt-6 text-xl font-bold text-[#0A2540]">
+          Instant Results
+        </h3>
+
+        <p className="mt-3 text-gray-600">
+          Calculate SIP, EMI and retirement planning instantly.
+        </p>
+      </div>
+
+      <div className="group rounded-3xl border border-gray-200 bg-white p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+        <div className="w-16 h-16 rounded-2xl bg-[#FFF8E1] flex items-center justify-center text-3xl">
+          📈
+        </div>
+
+        <h3 className="mt-6 text-xl font-bold text-[#0A2540]">
+          Growth Charts
+        </h3>
+
+        <p className="mt-3 text-gray-600">
+          Interactive charts visualize your future wealth.
+        </p>
+      </div>
+
+      <div className="group rounded-3xl border border-gray-200 bg-white p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+        <div className="w-16 h-16 rounded-2xl bg-[#FFF8E1] flex items-center justify-center text-3xl">
+          🔒
+        </div>
+
+        <h3 className="mt-6 text-xl font-bold text-[#0A2540]">
+          Safe & Secure
+        </h3>
+
+        <p className="mt-3 text-gray-600">
+          Your financial information stays completely private.
+        </p>
+      </div>
+
+      <div className="group rounded-3xl border border-gray-200 bg-white p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+        <div className="w-16 h-16 rounded-2xl bg-[#FFF8E1] flex items-center justify-center text-3xl">
+          👨‍💼
+        </div>
+
+        <h3 className="mt-6 text-xl font-bold text-[#0A2540]">
+          Expert Guidance
+        </h3>
+
+        <p className="mt-3 text-gray-600">
+          Connect with our advisor for personalized financial planning.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+    {/* Download Report Section */}
+<section className="py-20 bg-[#F8FAFC]">
+  <div className="max-w-6xl mx-auto px-5">
+
+    <div className="rounded-3xl bg-gradient-to-r from-[#0A2540] via-[#163B65] to-[#0A2540] p-10 lg:p-14 shadow-2xl">
+
+      <div className="grid lg:grid-cols-2 gap-10 items-center">
+
+        {/* Left */}
+
+        <div>
+
+          <span className="inline-block px-4 py-2 rounded-full bg-[#D4AF37] text-[#0A2540] font-semibold text-sm">
+            FREE REPORT
+          </span>
+
+          <h2 className="mt-6 text-4xl font-bold text-white">
+            Download Your Financial Report
+          </h2>
+
+          <p className="mt-4 text-blue-100 leading-8">
+            Get a personalized investment summary including SIP growth,
+            retirement corpus, goal planning and expert recommendations.
+          </p>
+
+          <ul className="mt-8 space-y-3 text-white">
+
+            <li>✅ SIP Projection Report</li>
+
+            <li>✅ Retirement Planning Summary</li>
+
+            <li>✅ Goal Based Investment Plan</li>
+
+            <li>✅ Tax Saving Suggestions</li>
+
+            <li>✅ Expert Financial Tips</li>
+
+          </ul>
+
+        </div>
+
+        {/* Right */}
+
+        <div className="bg-white rounded-3xl p-8 shadow-xl">
+
+          <h3 className="text-2xl font-bold text-[#0A2540]">
+            Get Your Free PDF
+          </h3>
+
+          <input
+            type="text"
+            placeholder="Full Name"
+            className="mt-6 w-full border rounded-xl p-4"
+          />
+
+          <input
+            type="tel"
+            placeholder="Mobile Number"
+            className="mt-4 w-full border rounded-xl p-4"
+          />
+
+          <input
+            type="email"
+            placeholder="Email Address"
+            className="mt-4 w-full border rounded-xl p-4"
+          />
+
+          <button
+            className="mt-6 w-full bg-[#D4AF37] hover:bg-[#C89B2A] text-[#0A2540] font-bold py-4 rounded-xl transition-all">
+            📄 Download Free PDF
+          </button>
+
+          <button
+            className="mt-4 w-full bg-[#0A2540] hover:bg-[#163B65] text-white font-bold py-4 rounded-xl transition-all">
+            📅 Book Free Consultation
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+     {/* GOAL PLANNER */}
+
+<section className="py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-5">
+
+    <div className="text-center mb-14">
+
+      <span className="text-[#D4AF37] font-semibold uppercase tracking-widest">
+        Goal Planner
+      </span>
+
+      <h2 className="mt-3 text-4xl font-bold text-[#0A2540]">
+        Plan Your Financial Goals
+      </h2>
+
+      <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
+        Select your financial goal and calculate the monthly SIP required to achieve it.
+      </p>
+
+    </div>
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <div className="rounded-3xl bg-white border border-gray-200 shadow-xl p-8 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+        <div className="text-5xl">🏠</div>
+        <h3 className="mt-6 text-2xl font-bold text-[#0A2540]">
+          Home Purchase
+        </h3>
+        <p className="mt-3 text-gray-600">
+          Plan your dream home with systematic monthly investments.
+        </p>
+      </div>
+
+      <div className="rounded-3xl bg-white border border-gray-200 shadow-xl p-8 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+        <div className="text-5xl">🎓</div>
+        <h3 className="mt-6 text-2xl font-bold text-[#0A2540]">
+          Child Education
+        </h3>
+        <p className="mt-3 text-gray-600">
+          Secure your child's higher education with disciplined investing.
+        </p>
+      </div>
+
+      <div className="rounded-3xl bg-white border border-gray-200 shadow-xl p-8 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+        <div className="text-5xl">💍</div>
+        <h3 className="mt-6 text-2xl font-bold text-[#0A2540]">
+          Marriage Planning
+        </h3>
+        <p className="mt-3 text-gray-600">
+          Build a dedicated corpus for future family milestones.
+        </p>
+      </div>
+
+      <div className="rounded-3xl bg-white border border-gray-200 shadow-xl p-8 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+        <div className="text-5xl">🚗</div>
+        <h3 className="mt-6 text-2xl font-bold text-[#0A2540]">
+          Car Purchase
+        </h3>
+        <p className="mt-3 text-gray-600">
+          Plan your next vehicle purchase without financial stress.
+        </p>
+      </div>
+
+      <div className="rounded-3xl bg-white border border-gray-200 shadow-xl p-8 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+        <div className="text-5xl">🏖️</div>
+        <h3 className="mt-6 text-2xl font-bold text-[#0A2540]">
+          Retirement
+        </h3>
+        <p className="mt-3 text-gray-600">
+          Create long-term wealth for a comfortable retirement.
+        </p>
+      </div>
+
+      <div className="rounded-3xl bg-gradient-to-br from-[#0A2540] to-[#163B65] text-white p-8 shadow-2xl">
+
+        <h3 className="text-2xl font-bold">
+          Need Personal Guidance?
+        </h3>
+
+        <p className="mt-4 text-blue-100">
+          Speak with our financial advisor and receive a customized investment plan.
+        </p>
+
+        <button className="mt-8 w-full bg-[#D4AF37] hover:bg-[#C89B2A] text-[#0A2540] font-bold py-4 rounded-xl">
+          Book Free Consultation
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
 </section>
       </div>
     </section>

@@ -81,7 +81,7 @@ export const Header = () => {
               href={whatsappLink()}
               target="_blank" rel="noreferrer"
               onClick={()=>trackEvent("whatsapp_click",{source:"header"})} data-testid="header-whatsapp-btn"
-              className="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full bg-brand-green text-white hover:bg-brand-deepgreen transition-colors"
+              className="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full bg-[#0A2540] text-white hover:bg-[#081B33] transition-colors"
             >
               <MessageCircle color="#FFFFFF" size={20} />
               <span>WhatsApp</span>

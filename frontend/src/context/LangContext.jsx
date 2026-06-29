@@ -6,12 +6,16 @@ const DICT = {
   en: {
     nav: { home: "Home", about: "About", services: "Services", products: "Products", tools: "Tools", blog: "Blog", contact: "Contact", admin: "Admin", start: "Start Your Journey", call: "Call Now" },
     hero: {
-      eyebrow: "Financial Education → Planning → Freedom",
-      title: "Build Your Financial Future With Confidence",
-      sub: "Mutual Funds · SIP Planning · Goal-Based Investing · Insurance Guidance · Retirement Planning",
-      ctaPrimary: "Start Your Investment Journey",
-      ctaSecondary: "WhatsApp Consultation",
-    },
+     eyebrow: "Mutual Fund Distributor • Financial Planning • SIP Investments",
+
+     title: "Achieve Your Financial Goals With Expert Planning",
+
+     sub: "Mutual Funds • SIP Planning • Goal-Based Investing • Retirement Planning • Insurance Guidance",
+
+     ctaPrimary: "Start Your Financial Plan",
+
+     ctaSecondary: "Free WhatsApp Consultation",
+   },
     home: {
       whyEyebrow: "Why Fortune U",
       whyTitle: "Education-first. Goal-driven. Built for the long haul.",
@@ -41,11 +45,15 @@ const DICT = {
   te: {
     nav: { home: "హోమ్", about: "మా గురించి", services: "సేవలు", tools: "టూల్స్", blog: "బ్లాగ్", contact: "సంప్రదించండి", admin: "అడ్మిన్", start: "మొదలు పెట్టండి", call: "ఇప్పుడే కాల్" },
     hero: {
-      eyebrow: "ఆర్థిక విద్య → ప్లానింగ్ → స్వేచ్ఛ",
-      title: "మీ ఆర్థిక భవిష్యత్తును ఆత్మవిశ్వాసంతో నిర్మించండి",
-      sub: "మ్యూచువల్ ఫండ్స్ · SIP ప్లానింగ్ · లక్ష్యాధారిత పెట్టుబడి · బీమా · రిటైర్‌మెంట్ ప్లానింగ్",
-      ctaPrimary: "మీ పెట్టుబడి ప్రారంభించండి",
-      ctaSecondary: "వాట్సాప్ సంప్రదింపు",
+     eyebrow: "మ్యూచువల్ ఫండ్ డిస్ట్రిబ్యూటర్ • ఫైనాన్షియల్ ప్లానింగ్",
+
+     title: "మీ ఆర్థిక లక్ష్యాలను నిపుణుల ప్రణాళికతో సాధించండి ",
+
+     sub: "మ్యూచువల్ ఫండ్స్ • SIP • రిటైర్మెంట్ ప్లానింగ్ • గోల్ బేస్డ్ ఇన్వెస్టింగ్",
+
+     ctaPrimary: "మీ పెట్టుబడి ప్రారంభించండి",
+
+     ctaSecondary: "WhatsApp సంప్రదించండి",
     },
     home: {
       whyEyebrow: "ఎందుకు Fortune U",

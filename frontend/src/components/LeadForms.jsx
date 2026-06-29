@@ -49,7 +49,9 @@ export const ConsultationForm = () => {
           </SelectContent>
         </Select>
       </div>
-      <Button type="submit" disabled={loading} data-testid="consult-submit" className="bg-brand-green hover:bg-brand-deepgreen text-white rounded-full h-11 text-sm font-semibold">
+      <Button type="submit" disabled={loading} data-testid="consult-submit" 
+      className="bg-brand-navy hover:bg-blue-900 
+      text-white rounded-full h-11 text-sm font-semibold">
         {loading ? "Submitting…" : "Book Free Consultation"}
       </Button>
     </form>
@@ -120,7 +122,8 @@ export const InsuranceForm = () => {
         <Label className="text-xs uppercase tracking-wider font-semibold text-brand-navy">Coverage Requirement</Label>
         <Textarea required value={f.coverage_requirement} onChange={(e)=>setF({...f, coverage_requirement:e.target.value})} data-testid="ins-cov" className="bg-brand-soft/40 border-brand-line focus-visible:ring-brand-green" placeholder="e.g., ₹10L health cover for family of 4" />
       </div>
-      <Button type="submit" disabled={loading} data-testid="ins-submit" className="bg-brand-green hover:bg-brand-deepgreen text-white rounded-full h-11 text-sm font-semibold">
+      <Button type="submit" disabled={loading} data-testid="ins-submit" 
+      className="bg-[#D4AF37] hover:bg-[#C49A2C] text-white rounded-full h-11 text-sm font-semibold">
         {loading ? "Submitting…" : "Request Insurance Guidance"}
       </Button>
     </form>

@@ -86,7 +86,7 @@ const OutlineBtn = ({ children, href = "#", light = false }) => (
 /* ─────────────────────────────────────────
    PRODUCT CARD
 ───────────────────────────────────────── */
-const ProductCard = ({ icon: Icon, title, desc, highlights, tag, tagColor, iconBg }) => {
+const ProductCard = ({ icon: Icon, title, desc, highlights, tag, tagColor, iconBg, whatsappText }) => {
   const [hovered, setHovered] = useState(false);
   return (
     <div
@@ -159,12 +159,20 @@ const ProductCard = ({ icon: Icon, title, desc, highlights, tag, tagColor, iconB
         >Apply Now</a>
         <a href="#contact" style={{
           flex: 1, textAlign: "center", padding: "9px 12px",
-          border: "1.5px solid #CBD5E8", color: C.blue, borderRadius: 8,
+          background: C.gold,
+          color: C.white,
+          border: "1.5px solid #D4AF37",
+          borderRadius: 8,
           fontSize: 13, fontWeight: 600, textDecoration: "none", transition: "all .25s",
         }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = C.gold; e.currentTarget.style.color = C.gold; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = "#CBD5E8"; e.currentTarget.style.color = C.blue; }}
-        >Learn More</a>
+          onMouseEnter={(e) => {
+         e.currentTarget.style.background = C.gold2;
+        }}
+
+          onMouseLeave={(e) => {
+         e.currentTarget.style.background = C.gold;
+        }}
+        >Get Free Consultation</a>
       </div>
     </div>
   );
@@ -179,6 +187,7 @@ const INSURANCE = [
     tag: "Insurance", tagColor: { bg: "#E8F4FD", text: "#1565C0" },
     iconBg: "linear-gradient(135deg,#E8F4FD,#BFE0F9)",
     desc: "Comprehensive medical cover for individuals and families. Cashless hospitalisation, OPD benefits, and critical illness add-ons available across leading insurers.",
+    whatsappText: "Hi Fortune U Group, I am interested in Health Insurance",
     highlights: ["Cashless Network", "Family Floater", "Critical Illness", "No Claim Bonus"],
   },
   {
@@ -186,6 +195,7 @@ const INSURANCE = [
     tag: "Insurance", tagColor: { bg: "#E8F4FD", text: "#1565C0" },
     iconBg: "linear-gradient(135deg,#EDE9FE,#C4B5FD)",
     desc: "Pure life protection at affordable premiums. Secure your family's financial independence with a high sum assured — we help you compare and choose the right plan.",
+    whatsappText: "Hi Fortune U Group, I am interested in Term Insurance",
     highlights: ["High Cover", "Low Premium", "Tax Benefit 80C", "Riders Available"],
   },
   {
@@ -193,6 +203,7 @@ const INSURANCE = [
     tag: "Insurance", tagColor: { bg: "#E8F4FD", text: "#1565C0" },
     iconBg: "linear-gradient(135deg,#E8F4FD,#BFE0F9)",
     desc: "Protect your car, bike, or commercial vehicle. We assist with third-party cover, own-damage policies, and renewals from top general insurance companies.",
+    whatsappText: "Hi Fortune U Group, I am interested in Vehicle Insurance",
     highlights: ["Third-Party Cover", "Own Damage", "Zero Depreciation", "Quick Renewal"],
   },
 ];
@@ -203,6 +214,7 @@ const LOANS = [
     tag: "Loans", tagColor: { bg: "#FFF3E0", text: "#E65100" },
     iconBg: "linear-gradient(135deg,#FFF3E0,#FFE0A3)",
     desc: "We help you find the right home loan from multiple banks and NBFCs. Compare interest rates, tenure options, and documentation requirements — all in one place.",
+    whatsappText: "Hi Fortune U Group, I am interested in Home Loan",
     highlights: ["Multiple Lenders", "Long Tenure", "Balance Transfer", "Tax Benefits"],
   },
   {
@@ -210,6 +222,7 @@ const LOANS = [
     tag: "Loans", tagColor: { bg: "#FFF3E0", text: "#E65100" },
     iconBg: "linear-gradient(135deg,#FFF8E1,#FFE082)",
     desc: "Need funds quickly? We assist salaried and self-employed individuals in finding personal loan offers with minimal documentation and transparent terms.",
+    whatsappText: "Hi Fortune U Group, I am interested in Personal Loan",
     highlights: ["No Collateral", "Multiple Banks", "Flexible Tenure", "Minimal Docs"],
   },
   {
@@ -217,6 +230,7 @@ const LOANS = [
     tag: "Loans", tagColor: { bg: "#FFF3E0", text: "#E65100" },
     iconBg: "linear-gradient(135deg,#FFF3E0,#FFE0A3)",
     desc: "Grow your business with the right financing. We connect MSMEs, startups, and established businesses with working capital and term loan options from leading lenders.",
+    whatsappText: "Hi Fortune U Group, I am interested in Business Loan",
     highlights: ["MSME Focused", "Collateral-Free Options", "Working Capital", "Govt Schemes"],
   },
 ];
@@ -227,6 +241,7 @@ const BANKING = [
     tag: "Banking", tagColor: { bg: "#E8F5E9", text: "#2E7D32" },
     iconBg: "linear-gradient(135deg,#E8F5E9,#B9E4BB)",
     desc: "We help you choose the right credit card based on your lifestyle and spending habits — from cashback and reward points to travel benefits, across major banks.",
+    whatsappText: "Hi Fortune U Group, I am interested in Credit Cards",
     highlights: ["Cashback Cards", "Reward Points", "Travel Perks", "Lifetime Free Options"],
   },
   {
@@ -234,6 +249,7 @@ const BANKING = [
     tag: "Banking", tagColor: { bg: "#E8F5E9", text: "#2E7D32" },
     iconBg: "linear-gradient(135deg,#E8F5E9,#B9E4BB)",
     desc: "Open a zero balance savings account with premium banking features — instant digital access, free transfers, and high interest rates — through our bank partners.",
+    whatsappText: "Hi Fortune U Group, I am interested in Savings Account",
     highlights: ["Zero Balance", "Digital Banking", "Free Transfers", "High Interest"],
   },
   {
@@ -241,6 +257,7 @@ const BANKING = [
     tag: "Investment", tagColor: { bg: "#E8F5E9", text: "#2E7D32" },
     iconBg: "linear-gradient(135deg,#E8F5E9,#B9E4BB)",
     desc: "Start investing in the stock market with a seamlessly linked demat and trading account. Access equities, IPOs, ETFs, and bonds through our trusted broker partners.",
+    whatsappText: "Hi Fortune U Group, I am interested in Demat Account",
     highlights: ["Stocks & ETFs", "IPO Access", "SIP Enabled", "Low Brokerage"],
   },
 ];
@@ -251,6 +268,7 @@ const INVESTMENTS = [
     tag: "Investment", tagColor: { bg: "#F3E8FF", text: "#7E22CE" },
     iconBg: "linear-gradient(135deg,#F3E8FF,#DDD6FE)",
     desc: "SIP Planning, Lumpsum Investments, Goal-Based Investing, Retirement Planning, ELSS Tax Saving Funds, and Wealth Creation Solutions — guided by our registered advisors.",
+    whatsappText: "Hi Fortune U Group, I am interested in Investment Solutions",
     highlights: ["SIP Planning", "Lumpsum Investment", "ELSS Tax Saving", "Retirement Planning"],
   },
 ];
@@ -338,67 +356,64 @@ export default function ProductsPage() {
      <div className="absolute top-20 right-20 w-72 h-72 bg-yellow-400/10 rounded-full blur-3xl"></div>
      <div className="absolute bottom-10 left-20 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
 
-     <div className="relative max-w-7xl mx-auto px-6 py-20 lg:py-28">
+     <div className="relative max-w-7xl mx-auto px-6 pt-0 pb-6 lg:pt-0 lg:pb-8">
 
-    <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <div className="grid lg:grid-cols-2 gap-6 items-center">
 
       {/* Left Content */}
       <div>
 
-        <span className="inline-flex items-center bg-yellow-500/15 border border-yellow-400/30 text-yellow-300 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+        <span className="inline-flex items-center bg-yellow-500/15 border border-yellow-400/30 
+        text-yellow-300 px-4 py-2 rounded-full text-sm font-semibold mb-8">
           ⭐ Trusted Financial Services
         </span>
 
-        <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-         Secure Your
+        <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+           Secure Your
           <span className="block text-yellow-400">
             Financial Future
           </span>
            With Fortune U Group
-         </h1><div className="flex flex-wrap gap-3 mt-6">
+         </h1><div className="flex flex-wrap gap-6 mt-2 mb-10">
 
-        <span className="bg-white/10 px-4 py-2 rounded-full text-sm">
+        <span className="bg-white/10 px-6 py-3 rounded-full text-sm">
          ✔ Trusted Advisors
         </span>
 
-        <span className="bg-white/10 px-4 py-2 rounded-full text-sm">
+        <span className="bg-white/10 px-6 py-3 rounded-full text-sm">
          ✔ Fast Approval
         </span>
 
-        <span className="bg-white/10 px-4 py-2 rounded-full text-sm">
+        <span className="bg-white/10 px-6 py-3 rounded-full text-sm">
          ✔ Expert Support
         </span>
 
         </div>
-        
 
-        <p className="mt-6 text-lg text-gray-300 leading-relaxed">
-          Health Insurance • Term Insurance • Home Loans • Personal Loans •
-          Business Loans • Credit Cards • Demat Account • Zero Balance Account
-          • Investment Solutions
-        </p>
-
-        <a
-         href="https://wa.me/919533304441"
-         target="_blank"
-          rel="noopener noreferrer"
-          className="bg-green-500 text-white font-bold px-8 py-4 rounded-xl hover:bg-green-600 transition-all duration-300 hover:scale-105"
-         >
-          WhatsApp Us
-        </a>
+       <a
+       href="https://wa.me/919533304441"
+       target="_blank"
+       rel="noopener noreferrer"
+       className="mt-10 bg-green-500 text-white font-bold px-8 
+       py-4 rounded-xl hover:bg-green-600 transition-all
+        duration-300 hover:scale-105"
+      >
+        WhatsApp Us
+      </a>
       </div>
 
       {/* Right Side */}
       <div className="relative flex justify-center lg:justify-end">
 
-        <div className="bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-6 shadow-2xl w-full max-w-md">
+        <div className="bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-4 
+        shadow-2xl w-full max-w-md">
 
           {/* IMAGE CONTAINER */}
-          <div className="overflow-hidden rounded-2xl">
+          <div className="overflow-hidden rounded-2xl flex justify-center">
             <img
               src="/images/financial-advisor.png"
-              alt="Fortune U Group"
-              className="w-full h-auto object-cover rounded-2xl"
+              alt="Financial Expert"
+              className="w-[450px] lg:w-[550px] h-auto object-contain mx-auto drop-shadow-2xl"
             />
           </div>
 
@@ -609,7 +624,7 @@ export default function ProductsPage() {
                 <PrimaryBtn href="tel:+919533304441">
                   <Phone size={15} /> Call Now
                 </PrimaryBtn>
-                <a href="https://wa.me/919533304441" target="_blank" rel="noreferrer" style={{
+                <a  target="_blank" rel="noreferrer" style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
                   background: "#25D366", color: C.white, fontWeight: 700, fontSize: 14,
                   padding: "11px 22px", borderRadius: 50, textDecoration: "none",

@@ -54,16 +54,22 @@ const Home = () => {
 />
       {/* HERO */}
       <section className="relative overflow-hidden" data-testid="hero-section">
-        <div className="absolute inset-0 bg-grid opacity-60" />
-        <div className="absolute inset-0 bg-radial-fade" />
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 pt-16 lg:pt-24 pb-16 relative">
+        <div className="absolute inset-0 bg-grid opacity-30" />
+        <section className="relative overflow-hidden bg-white"></section>
+        <div className="max-w-7xl mx-auto px-5 lg:px-8 pt-8 lg:pt-10 pb-16 relative">
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-green/10 text-brand-deepgreen text-xs font-semibold uppercase tracking-[0.18em] reveal reveal-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-navy/10 text-brand-yellow
+              text-xs font-semibold uppercase tracking-[0.18em] reveal reveal-1">
                 <CheckCircle2 className="w-3.5 h-3.5" /> {t("hero.eyebrow")}
               </div>
-              <h1 className="mt-5 font-display text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-brand-navy font-semibold reveal reveal-2">
-                {t("hero.title")}
+              <h1 className="mt-5 font-display text-4xl sm:text-5xl lg:text-6xl leading-[1.05] 
+               tracking-tight text-brand-navy font-semibold reveal reveal-2">
+                <>
+                 Achieve Your Financial Goals With
+                <br />
+                <span className="text-[#D4AF37]">Expert Planning</span>
+                </>
               </h1>
               <p className="mt-5 text-base sm:text-lg text-brand-mute leading-relaxed max-w-2xl reveal reveal-3">{t("hero.sub")}</p>
               <div className="mt-8 flex flex-wrap gap-3 reveal reveal-4">
@@ -73,14 +79,16 @@ const Home = () => {
                   </Button>
                 </Link>
                 <a href={whatsappLink()} target="_blank" rel="noreferrer">
-                  <Button data-testid="hero-cta-whatsapp" variant="outline" className="h-12 px-6 rounded-full border-brand-green text-brand-deepgreen hover:bg-brand-green hover:text-white text-sm font-semibold">
+                  <Button data-testid="hero-cta-whatsapp" variant="outline" 
+                  className="h-12 px-6 rounded-full bg-[#25D366] hover:bg-[#1DA851] 
+                  text-white text-sm font-semibold transition duration-300">
                     <MessageCircle className="w-4 h-4 mr-2" /> {t("hero.ctaSecondary")}
                   </Button>
                 </a>
               </div>
 
               <div className="mt-12 grid grid-cols-3 gap-6 max-w-xl">
-                {[{n:"1,000+", l:"Invesors Educated"}, {n:"6+ Yrs", l:"Market Experience"}, {n:"Goal Based", l:"Financial Planning"}].map((s, i)=>(
+                {[{n:"100+", l:"Invesors Educated"}, {n:"6+ Yrs", l:"Market Experience"}, {n:"Goal Based", l:"Financial Planning"}].map((s, i)=>(
                   <div key={i} className="reveal reveal-4">
                     <div className="font-display text-2xl md:text-3xl font-semibold text-brand-navy">{s.n}</div>
                     <div className="text-xs text-brand-mute mt-1">{s.l}</div>
@@ -90,11 +98,15 @@ const Home = () => {
             </div>
 
             <div className="lg:col-span-5 relative">
-              <div className="relative rounded-2xl overflow-hidden border border-brand-line shadow-soft bg-white reveal reveal-3">
-                <img src="https://images.pexels.com/photos/5402587/pexels-photo-5402587.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Indian family planning future" className="w-full h-72 object-cover" />
+              <div className="relative rounded-2xl 
+                overflow-hidden border border-brand-line shadow-soft bg-white reveal reveal-3">
+                <img src="/images/family-advisor.png"
+                   alt="Family Advisor"
+                    className="w-full h-full object-cover"
+                   />
                 <div className="p-5 grid grid-cols-2 gap-4 bg-white">
                   <div>
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-brand-green font-bold">Wealth (20-Yr SIP)</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-brand-yellow font-bold">Wealth (20-Yr SIP)</div>
                     <div className="font-display text-2xl text-brand-navy font-semibold">₹98.9 L</div>
                   </div>
                   <div>
@@ -106,12 +118,12 @@ const Home = () => {
                       <AreaChart data={seriesData} margin={{ top: 4, right: 0, bottom: 0, left: 0 }}>
                         <defs>
                           <linearGradient id="gw" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#10B981" stopOpacity={0.5} />
-                            <stop offset="100%" stopColor="#10B981" stopOpacity={0} />
+                            <stop offset="0%" stopColor="#2563EB" stopOpacity={0.5} />
+                            <stop offset="100%" stopColor="#2563EB" stopOpacity={0} />
                           </linearGradient>
                         </defs>
-                        <Area type="monotone" dataKey="wealth" stroke="#10B981" strokeWidth={2} fill="url(#gw)" />
-                        <Area type="monotone" dataKey="invested" stroke="#0A2540" strokeWidth={1.5} fillOpacity={0} />
+                        <Area type="monotone" dataKey="wealth" stroke="#2563EB" strokeWidth={2} fill="url(#gw)" />
+                        <Area type="monotone" dataKey="invested" stroke="#2563EB" strokeWidth={1.5} fillOpacity={0} />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
@@ -119,7 +131,7 @@ const Home = () => {
               </div>
               <div className="absolute -bottom-5 -left-5 hidden md:block bg-white rounded-xl border border-brand-line shadow-soft p-3 animate-float-y">
                 <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-brand-green/10 flex items-center justify-center text-brand-deepgreen"><Award className="w-5 h-5" /></div>
+                  <div className="w-10 h-10 rounded-full bg-brand-navy/10 flex items-center justify-center text-brand-yellow"><Award className="w-5 h-5" /></div>
                   <div>
                     <div className="text-xs font-semibold text-brand-navy">SEBI-aware</div>
                     <div className="text-[10px] text-brand-mute">Investor-first approach</div>
@@ -138,13 +150,16 @@ const Home = () => {
           <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {serviceCards.map((s, i) => (
               <Link to="/services" key={i} className="group">
-                <Card className="p-7 border-brand-line shadow-card hover:-translate-y-1 hover:shadow-soft transition-all duration-300 h-full bg-white" data-testid={`home-service-card-${i}`}>
-                  <div className="w-11 h-11 rounded-lg bg-brand-soft text-brand-navy flex items-center justify-center group-hover:bg-brand-green group-hover:text-white transition">
-                    <s.icon className="w-5 h-5" />
+                 <Card className="p-8 rounded-3xl border border-gray-200 bg-white shadow-xl hover:shadow-2xl hover:-translate-y-2 hover:border-[#D4AF37] transition-all duration-300 h-full">
+                  <div className="w-14 h-14 rounded-2xl bg-[#FFF8E1] text-[#D4AF37] flex items-center justify-center group-hover:bg-[#0A2540] group-hover:text-white transition-all duration-300">
+                    <s.icon className="w-8 h-8" />
                   </div>
-                  <h3 className="mt-5 font-display text-lg text-brand-navy font-semibold">{s.title}</h3>
-                  <p className="mt-2 text-sm text-brand-mute leading-relaxed">{s.desc}</p>
-                  <div className="mt-5 inline-flex items-center text-xs font-semibold text-brand-deepgreen">Learn more <ArrowUpRight className="w-3.5 h-3.5 ml-1" /></div>
+                  <h3 className="mt-5 text-xl font-bold text-{#0A2540}">{s.title}</h3>
+                  <p className="mt-3 text-gray-600 leading-7">{s.desc}</p>
+                  <div className="mt-6 inline-flex items-center text-sm font-semibold text-[#0A2540] hover:text-[#D4AF37] transition-colors">
+                   Learn more
+                   <ArrowUpRight className="w-4 h-4 ml-2" />
+                     </div>
                 </Card>
               </Link>
             ))}
@@ -153,52 +168,191 @@ const Home = () => {
       </section>
 
       {/* WHY US */}
-      <section className="py-20 lg:py-28 bg-brand-navy text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.05] bg-grid" />
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">Why Fortune U</div>
-              <h2 className="font-display text-3xl md:text-4xl font-semibold leading-tight">Education-first. Goal-driven. Built for the long haul.</h2>
-              <p className="mt-4 text-white/70 leading-relaxed">We don't sell schemes. We teach families how money works, design a goal-based plan, and stay with you for the journey.</p>
-              <div className="mt-8 grid sm:grid-cols-2 gap-4">
-                {[
-                  ["Transparent advice", "No hidden agendas. We educate before we recommend."],
-                  ["Goal-mapped portfolios", "Every SIP linked to a specific life goal."],
-                  ["Behavioural coaching", "We coach you through market cycles."],
-                  ["Long-term thinking", "Built for 10-30 year wealth journeys, not quick wins."],
-                ].map(([t,d], i) => (
-                  <div key={i} className="rounded-xl border border-white/10 p-5 bg-white/[0.03] backdrop-blur">
-                    <div className="font-display font-semibold">{t}</div>
-                    <div className="text-sm text-white/70 mt-1">{d}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="relative">
-              <img src="https://images.unsplash.com/photo-1758518729841-308509f69a7f?crop=entropy&cs=srgb&fm=jpg&q=85" alt="Professionals discussing charts" className="rounded-2xl border border-white/10 w-full" />
-              <div className="absolute -bottom-6 -right-6 bg-white text-brand-navy rounded-xl p-4 shadow-soft hidden md:block">
-                <div className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-brand-deepgreen" />
-                  <div>
-                    <div className="font-semibold text-sm">5,000+ Indian families</div>
-                    <div className="text-xs text-brand-mute">trust Fortune U</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-5">
 
-      {/* CONSULT FORM */}
+       <div className="text-center mb-14">
+
+      <span className="text-[#D4AF37] font-semibold uppercase tracking-wider">
+        WHY CHOOSE FORTUNE U GROUP
+      </span>
+
+      <h2 className="text-4xl font-bold mt-3 text-gray-900">
+        Your Trusted Financial Planning Partner
+      </h2>
+
+      <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+        We help individuals and families achieve their financial goals through
+        disciplined investing, SIP planning and long-term wealth creation.
+      </p>
+
+    </div>
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+      <Card className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300">
+        <Target className="w-12 h-12 text-blue-700 mb-5" />
+        <h3 className="text-xl font-bold mb-3">Goal Based Planning</h3>
+        <p className="text-[#D4AF37]">
+          Every investment is linked to your life goals like retirement,
+          children's education and wealth creation.
+        </p>
+      </Card>
+
+      <Card className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300">
+        <TrendingUp className="w-12 h-12 text-[#D4AF37] mb-5" />
+        <h3 className="text-xl font-bold mb-3">Long Term Wealth</h3>
+        <p className="text-gray-600">
+          SIP investments designed to build wealth consistently over
+          10–30 years.
+        </p>
+      </Card>
+
+      <Card className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300">
+        <Shield className="w-12 h-12 text-yellow-500 mb-5" />
+        <h3 className="text-xl font-bold mb-3">Risk Protection</h3>
+        <p className="text-gray-600">
+          Protect your family with Term Insurance and Health Insurance
+          recommendations.
+        </p>
+      </Card>
+
+      <Card className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300">
+        <Users className="w-12 h-12 text-purple-600 mb-5" />
+        <h3 className="text-xl font-bold mb-3">Personal Guidance</h3>
+        <p className="text-gray-600">
+          One-to-one financial planning and continuous portfolio review
+          for every client.
+        </p>
+      </Card>
+
+      <Card className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300">
+        <BookOpen className="w-12 h-12 text-indigo-600 mb-5" />
+        <h3 className="text-xl font-bold mb-3">Financial Education</h3>
+        <p className="text-[#D4AF37]">
+          Learn how money works, avoid common mistakes and make informed financial decisions.
+        </p>
+      </Card>
+
+      <Card className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300">
+      <Award className="w-12 h-12 text-orange-500 mb-5" />
+       <h3 className="text-xl font-bold mb-3">Trusted Advisor</h3>
+       <p className="text-gray-600">
+       Transparent guidance with regular reviews to keep you on track towards your financial goals.
+       </p>
+     </Card>
+
+    </div>
+
+  </div>
+</section>
+
+   {/* FINANCIAL PLANNING PROCESS */}
+      <section className="py-20 bg-slate-50">
+       <div className="max-w-7xl mx-auto px-5">
+
+       <div className="text-center mb-14">
+       <span className="text-[#D4AF37] font-semibold uppercase tracking-wider">
+        OUR PROCESS
+       </span>
+
+      <h2 className="text-4xl font-bold mt-3 text-gray-900">
+        Your Financial Planning Journey
+      </h2>
+
+      <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+        A simple step-by-step process designed to help you achieve your
+        financial goals with confidence.
+      </p>
+    </div>
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <Card className="p-8 rounded-3xl shadow-lg">
+        <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-700 mb-5">
+          1
+        </div>
+        <h3 className="text-xl font-bold mb-3">
+          Free Consultation
+        </h3>
+        <p className="text-gray-600">
+          Understand your current financial situation and future goals.
+        </p>
+      </Card>
+
+      <Card className="p-8 rounded-3xl shadow-lg">
+        <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-700 mb-5">
+          2
+        </div>
+        <h3 className="text-xl font-bold mb-3">
+          Goal Analysis
+        </h3>
+        <p className="text-gray-600">
+          Identify retirement, child education, wealth creation and tax-saving goals.
+        </p>
+      </Card>
+
+      <Card className="p-8 rounded-3xl shadow-lg">
+        <div className="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center text-2xl font-bold text-amber-700 mb-5">
+          3
+        </div>
+        <h3 className="text-xl font-bold mb-3">
+          Personalized Plan
+        </h3>
+        <p className="text-gray-600">
+          Create a customized investment and protection strategy.
+        </p>
+      </Card>
+
+      <Card className="p-8 rounded-3xl shadow-lg">
+        <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-700 mb-5">
+          4
+        </div>
+        <h3 className="text-xl font-bold mb-3">
+          Investment Started
+        </h3>
+        <p className="text-gray-600">
+          Begin SIPs or investments in suitable mutual funds.
+        </p>
+      </Card>
+
+      <Card className="p-8 rounded-3xl shadow-lg">
+        <div className="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center text-2xl font-bold text-amber-700 mb-5">
+          5
+        </div>
+        <h3 className="text-xl font-bold mb-3">
+          Portfolio Review
+        </h3>
+        <p className="text-gray-600">
+          Regular monitoring and portfolio rebalancing for better performance.
+        </p>
+      </Card>
+
+      <Card className="p-8 rounded-3xl shadow-lg">
+        <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-700 mb-5">
+          6
+        </div>
+        <h3 className="text-xl font-bold mb-3">
+          Long-Term Wealth
+        </h3>
+        <p className="text-gray-600">
+          Stay disciplined and achieve long-term financial freedom.
+        </p>
+      </Card>
+
+    </div>
+
+  </div>
+</section>
+
+ {/* CONSULT FORM */}
       <section className="py-20 lg:py-28 bg-white" data-testid="home-consult-section">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-2 gap-12 items-start">
           <div>
           <SectionHeader eyebrow={t("home.consultEyebrow")} title={t("home.consultTitle")} sub={t("home.consultSub")} />
             <ul className="mt-8 space-y-3 text-sm text-brand-mute">
               {["Personalised goal-mapping","Tax-efficient SIP mix","Insurance gap analysis","Lifetime advisor relationship"].map((s,i)=>(
-                <li key={i} className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-brand-green mt-0.5" /> <span>{s}</span></li>
+                <li key={i} className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-brand-g mt-0.5" /> <span>{s}</span></li>
               ))}
             </ul>
           </div>
@@ -209,40 +363,299 @@ const Home = () => {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="py-20 lg:py-28 bg-brand-soft/40" data-testid="home-testimonials">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8">
-          <SectionHeader eyebrow={t("home.testEyebrow")} title={t("home.testTitle")} align="center" />
-          <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {testimonials.slice(0,6).map((tst) => (
-              <Card key={tst.id} className="p-6 bg-white border-brand-line shadow-card" data-testid={`testimonial-${tst.id}`}>
-                <div className="flex gap-0.5 mb-3 text-brand-green">
-                  {Array.from({length: tst.rating || 5}).map((_, i)=>(<span key={i}>★</span>))}
-                </div>
-                <p className="text-sm text-brand-ink leading-relaxed">"{tst.content}"</p>
-                <div className="mt-5 pt-4 border-t border-brand-line">
-                  <div className="font-semibold text-sm text-brand-navy">{tst.name}</div>
-                  <div className="text-xs text-brand-mute">{tst.role}</div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* FAQ */}
-      <section className="py-20 lg:py-28 bg-white" data-testid="home-faq">
-        <div className="max-w-3xl mx-auto px-5 lg:px-8">
-          <SectionHeader eyebrow={t("home.faqEyebrow")} title={t("home.faqTitle")} align="center" />
-          <Accordion type="single" collapsible className="mt-10">
-            {faqs.map((f) => (
-              <AccordionItem key={f.id} value={f.id} data-testid={`faq-${f.id}`}>
-                <AccordionTrigger className="text-left font-display font-medium text-brand-navy hover:no-underline">{f.question}</AccordionTrigger>
-                <AccordionContent className="text-sm text-brand-mute leading-relaxed">{f.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+<section className="py-20 bg-white-50">
+  <div className="max-w-7xl mx-auto px-5">
+
+    <div className="text-center mb-14">
+      <span className="text-[#D4AF37] font-semibold uppercase tracking-wider">
+        CLIENT SUCCESS STORIES
+      </span>
+
+      <h2 className="text-4xl font-bold mt-3 text-gray-900">
+        Trusted By Happy Families
+      </h2>
+
+      <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+        Hundreds of investors trust Fortune U Group for SIP Planning,
+        Mutual Funds, Insurance and Goal-Based Financial Planning.
+      </p>
+    </div>
+
+    <div className="grid md:grid-cols-3 gap-8">
+
+      <Card className="p-8 rounded-3xl">
+        <div className="text-yellow-500 text-xl">★★★★★</div>
+
+        <p className="mt-5 text-gray-600">
+          Started SIP planning for my daughter's education.
+          Excellent guidance and regular portfolio reviews.
+        </p>
+
+        <h4 className="mt-6 font-bold">
+          Ramesh Kumar
+        </h4>
+
+        <span className="text-sm text-gray-500">
+          Tirupati
+        </span>
+      </Card>
+
+      <Card className="p-8 rounded-3xl">
+        <div className="text-yellow-500 text-xl">★★★★★</div>
+
+        <p className="mt-5 text-gray-600">
+          Very transparent financial planning.
+          Helped us build a long-term wealth creation strategy.
+        </p>
+
+        <h4 className="mt-6 font-bold">
+          Suresh Babu
+        </h4>
+
+        <span className="text-sm text-gray-500">
+          Visakhapatnam
+        </span>
+      </Card>
+
+      <Card className="p-8 rounded-3xl">
+        <div className="text-yellow-500 text-xl">★★★★★</div>
+
+        <p className="mt-5 text-gray-600">
+          Best Mutual Fund and Insurance consultation.
+          Highly recommended for families.
+        </p>
+
+        <h4 className="mt-6 font-bold">
+          Lakshmi Devi
+        </h4>
+
+        <span className="text-sm text-gray-500">
+          Hyderabad
+        </span>
+      </Card>
+
+    </div>
+
+  </div>
+</section>
+
+       {/* SIP CALCULATOR */}
+       <section className="py-20 bg-gradient-to-r from-blue-50 to-white">
+       <div className="max-w-7xl mx-auto px-5">
+
+       <div className="text-center mb-14">
+      <span className="text-[#D4AF37] font-semibold uppercase tracking-wider">
+        SIP CALCULATOR
+      </span>
+
+      <h2 className="text-4xl font-bold mt-3 text-gray-900">
+        Plan Your Future With SIP
+      </h2>
+
+      <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+        Calculate how your monthly investment can grow over time.
+      </p>
+    </div>
+
+    <div className="grid md:grid-cols-2 gap-10">
+
+      <Card className="p-8 rounded-2xl shadow-lg">
+        <div className="space-y-6">
+
+          <div>
+            <label className="font-semibold">
+              Monthly SIP (₹)
+            </label>
+            <input
+              type="number"
+              placeholder="5000"
+              className="w-full mt-2 border rounded-lg p-3"
+            />
+          </div>
+
+          <div>
+            <label className="font-semibold">
+              Investment Period (Years)
+            </label>
+            <input
+              type="number"
+              placeholder="20"
+              className="w-full mt-2 border rounded-lg p-3"
+            />
+          </div>
+
+          <div>
+            <label className="font-semibold">
+              Expected Return (%)
+            </label>
+            <input
+              type="number"
+              placeholder="12"
+              className="w-full mt-2 border rounded-lg p-3"
+            />
+          </div>
+
+          <Button className="w-full">
+            Calculate SIP
+          </Button>
+
         </div>
-      </section>
+      </Card>
+
+      <Card className="p-8 rounded-2xl shadow-lg">
+
+        <h3 className="text-2xl font-bold mb-8">
+          Estimated Result
+        </h3>
+
+        <div className="space-y-5">
+
+          <div className="flex justify-between">
+            <span>Total Investment</span>
+            <strong>₹12,00,000</strong>
+          </div>
+
+          <div className="flex justify-between">
+            <span>Estimated Returns</span>
+            <strong className="text-">
+              ₹22,50,000
+            </strong>
+          </div>
+
+          <div className="border-t pt-5 flex justify-between text-xl font-bold">
+            <span>Total Wealth</span>
+            <span className="text-blue-700">
+              ₹34,50,000
+            </span>
+          </div>
+
+        </div>
+
+      </Card>
+
+    </div>
+
+  </div>
+</section>
+
+     {/* FAQ SECTION */}
+
+      <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-5">
+
+      <div className="text-center mb-14">
+      <span className="text-[#D4AF37] font-semibold uppercase tracking-wider">
+        FREQUENTLY ASKED QUESTIONS
+      </span>
+
+      <h2 className="text-4xl font-bold mt-3 text-gray-900">
+        Have Questions? We Have Answers
+      </h2>
+
+      <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+        Find answers to the most common questions about Mutual Funds,
+        SIPs and Financial Planning.
+      </p>
+    </div>
+
+    <div className="space-y-6">
+
+      <Card className="p-6 rounded-2xl shadow">
+        <h3 className="text-xl font-semibold">
+          What is a SIP?
+        </h3>
+        <p className="text-gray-600 mt-2">
+          SIP (Systematic Investment Plan) allows you to invest a fixed amount
+          regularly in Mutual Funds and build wealth over time.
+        </p>
+      </Card>
+
+      <Card className="p-6 rounded-2xl shadow">
+        <h3 className="text-xl font-semibold">
+          How much should I invest every month?
+        </h3>
+        <p className="text-gray-600 mt-2">
+          You can start from ₹500 per month based on your financial goals.
+        </p>
+      </Card>
+
+      <Card className="p-6 rounded-2xl shadow">
+        <h3 className="text-xl font-semibold">
+          Are Mutual Funds safe?
+        </h3>
+        <p className="text-gray-600 mt-2">
+          Mutual Funds are market-linked investments. Choosing suitable funds
+          based on your goals and risk profile is important.
+        </p>
+      </Card>
+
+      <Card className="p-6 rounded-2xl shadow">
+        <h3 className="text-xl font-semibold">
+          Do you provide financial planning?
+        </h3>
+        <p className="text-gray-600 mt-2">
+          Yes. We help you create personalized financial plans for retirement,
+          child education, wealth creation and protection.
+        </p>
+      </Card>
+
+      <Card className="p-6 rounded-2xl shadow">
+        <h3 className="text-xl font-semibold">
+          How can I start?
+        </h3>
+        <p className="text-gray-600 mt-2">
+          Click "Get Free Consultation" or contact us on WhatsApp. We'll help
+          you choose the right investment strategy.
+        </p>
+      </Card>
+
+    </div>
+
+    </div>
+   </section> 
+
+   {/* FINAL CTA */}
+
+<section className="py-20 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+  <div className="max-w-6xl mx-auto px-5 text-center">
+
+    <span className="inline-block bg-yellow-400 text-blue-900 px-4 py-2 rounded-full font-semibold mb-6">
+      START YOUR FINANCIAL JOURNEY TODAY
+    </span>
+
+    <h2 className="text-4xl lg:text-5xl font-bold">
+      Build Wealth With Smart Financial Planning
+    </h2>
+
+    <p className="mt-6 text-lg text-blue-100 max-w-3xl mx-auto">
+      Whether you're planning for retirement, your child's education,
+      or long-term wealth creation, Fortune U Group is here to guide you.
+    </p>
+
+    <div className="flex flex-wrap justify-center gap-5 mt-10">
+
+      <a
+        href="/contact"
+        className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-xl font-bold hover:bg-yellow-300 transition"
+      >
+        Get Free Consultation
+      </a>
+
+      <a
+        href="https://wa.me/919533304441"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-[#25D366] border-2 border-[#25D366] text-white px-8 py-4 rounded-xl font-bold 
+        hover:bg-[#1DA851] hover:border-[#1DA851] transition duration-300"
+      >
+        WhatsApp Now
+      </a>
+
+    </div>
+
+  </div>
+   </section>
     </div>
   );
 };
