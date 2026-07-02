@@ -322,7 +322,86 @@ const Stat = ({ label, value, accent }) => (
 
 const Tools = () => {
   const { t } = useLang();
+
+  // 👇 ఇక్కడ paste చేయండి
+  const [age, setAge] = useState(30);
+  const [income, setIncome] = useState(50000);
+  const [savings, setSavings] = useState(10000);
+  const [investment, setInvestment] = useState(500000);
+  const [score, setScore] = useState(82);
+
+  const calculateScore = () => {
+    let s = 0;
+
+    if (savings >= income * 0.2) s += 30;
+    else if (savings >= income * 0.1) s += 20;
+    else s += 10;
+
+    if (investment >= income * 12) s += 30;
+    else if (investment >= income * 6) s += 20;
+    else s += 10;
+
+    if (age < 35) s += 20;
+    else if (age < 50) s += 15;
+    else s += 10;
+
+    s += 20;
+
+    setScore(Math.min(s, 100));
+  };
+  const scoreText = () => {
+
+const downloadPDF = () => {
+  const link = document.createElement("a");
+  link.href = "/financial-report.pdf";
+  link.download = "Fortune-U-Group-Financial-Report.pdf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+  if (score >= 90) return "Excellent";
+  if (score >= 70) return "Good";
+  if (score >= 50) return "Average";
+  return "Needs Improvement";
+};
+const starText = () => {
+  if (score >= 90) return "★★★★★";
+  if (score >= 70) return "★★★★☆";
+  if (score >= 50) return "★★★☆☆";
+  return "★★☆☆☆";
+};
+const savingsStars = () => {
+  if (savings >= income * 0.2) return "★★★★★";
+  if (savings >= income * 0.1) return "★★★★☆";
+  return "★★★☆☆";
+};
+
+const investmentStars = () => {
+  if (investment >= income * 12) return "★★★★★";
+  if (investment >= income * 6) return "★★★★☆";
+  return "★★★☆☆";
+};
+
+const emergencyStars = () => {
+  if (savings >= income * 0.3) return "★★★★★";
+  if (savings >= income * 0.2) return "★★★★☆";
+  return "★★★☆☆";
+};
+
+const insuranceStars = () => {
+  if (score >= 90) return "★★★★★";
+  if (score >= 70) return "★★★★☆";
+  return "★★★☆☆";
+};
+const downloadPDF = () => {
+  const link = document.createElement("a");
+  link.href = "/Fortune_U_Group_Financial_Guide.pdf";
+  link.download = "Fortune_U_Group_Financial_Guide.pdf";
+  link.click();
+};
   return (
+
   <div data-testid="tools-page" className="bg-brand-bg">
     <SEO
   title="Free SIP Calculator, Retirement Calculator & Financial Tools | Fortune U Group"
@@ -523,7 +602,7 @@ const Tools = () => {
       <p className="text-[#D4AF37] font-semibold uppercase tracking-wider">
         Financial Health Score
       </p>
-
+      
       <h2 className="text-4xl font-bold text-[#0A2540] mt-2">
         Know Your Financial Health
       </h2>
@@ -546,10 +625,12 @@ const Tools = () => {
           </label>
 
           <input
-            type="number"
-            placeholder="30"
-            className="mt-2 w-full rounded-xl border p-3"
+          type="number"
+          value={age}
+          onChange={(e) => setAge(Number(e.target.value))}
+          className="mt-2 w-full rounded-xl border p-3"
           />
+        
         </div>
 
         <div className="mb-6">
@@ -558,10 +639,11 @@ const Tools = () => {
           </label>
 
           <input
-            type="number"
-            placeholder="50000"
-            className="mt-2 w-full rounded-xl border p-3"
-          />
+        type="number"
+        value={income}
+        onChange={(e) => setIncome(Number(e.target.value))}
+        className="mt-2 w-full rounded-xl border p-3"
+        />
         </div>
 
         <div className="mb-6">
@@ -571,7 +653,8 @@ const Tools = () => {
 
           <input
             type="number"
-            placeholder="10000"
+            value={savings}
+            onChange={(e) => setSavings(Number(e.target.value))}
             className="mt-2 w-full rounded-xl border p-3"
           />
         </div>
@@ -581,16 +664,20 @@ const Tools = () => {
             Current Investments
           </label>
 
-          <input
-            type="number"
-            placeholder="500000"
-            className="mt-2 w-full rounded-xl border p-3"
+         <input
+          type="number"
+           value={investment}
+           onChange={(e) => setInvestment(Number(e.target.value))}
+           className="mt-2 w-full rounded-xl border p-3"
           />
         </div>
 
-        <button className="w-full py-4 rounded-xl bg-[#0A2540] text-white hover:bg-[#163B65]">
-          Calculate Score
-        </button>
+        <button
+       onClick={calculateScore}
+        className="w-full py-4 rounded-xl bg-[#0A2540] text-white hover:bg-[#163B65]"
+       >
+       Calculate Score
+     </button>
 
       </div>
 
@@ -601,15 +688,16 @@ const Tools = () => {
         <div className="text-center">
 
           <div className="text-7xl font-bold text-[#D4AF37]">
-            82
-          </div>
+           {score}
+           </div>
 
           <div className="text-xl mt-3">
             Financial Score
           </div>
 
           <div className="inline-block mt-6 bg-green-500 text-white px-5 py-2 rounded-full font-semibold">
-            Excellent
+        {scoreText()}
+        
           </div>
 
         </div>
@@ -618,22 +706,30 @@ const Tools = () => {
 
           <div className="flex items-center justify-between">
             <span>Savings Habit</span>
-            <span>★★★★★</span>
+            <span className="text-yellow-400 text-xl">
+            {savingsStars()}
+            </span>
           </div>
 
           <div className="flex items-center justify-between">
             <span>Investment Discipline</span>
-            <span>★★★★☆</span>
+            <span className="text-yellow-400 text-xl">
+              {investmentStars()}
+            </span>
           </div>
 
           <div className="flex items-center justify-between">
             <span>Emergency Fund</span>
-            <span>★★★★★</span>
+            <span className="text-yellow-400 text-xl">
+              {emergencyStars()}
+            </span>
           </div>
 
           <div className="flex items-center justify-between">
             <span>Insurance Protection</span>
-            <span>★★★★☆</span>
+            <span className="text-yellow-400 text-xl">
+              {insuranceStars()}
+            </span>
           </div>
 
         </div>
@@ -772,7 +868,8 @@ const Tools = () => {
         </p>
       </div>
 
-      <div className="group rounded-3xl border border-gray-200 bg-white p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+      <div className="group rounded-3xl border border-gray-200 bg-white p-8 shadow-lg 
+      hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
         <div className="w-16 h-16 rounded-2xl bg-[#FFF8E1] flex items-center justify-center text-3xl">
           👨‍💼
         </div>
@@ -858,15 +955,24 @@ const Tools = () => {
             className="mt-4 w-full border rounded-xl p-4"
           />
 
-          <button
-            className="mt-6 w-full bg-[#D4AF37] hover:bg-[#C89B2A] text-[#0A2540] font-bold py-4 rounded-xl transition-all">
-            📄 Download Free PDF
-          </button>
+         <button
+          onClick={downloadPDF}
+          className="mt-6 w-full bg-[#D4AF37] hover:bg-[#C89B2A] text-[#0A2540] font-bold py-4 rounded-xl transition-all"
+    >
+         📄 Download Free PDF
+</button> 
 
           <button
-            className="mt-4 w-full bg-[#0A2540] hover:bg-[#163B65] text-white font-bold py-4 rounded-xl transition-all">
-            📅 Book Free Consultation
-          </button>
+         onClick={() =>
+         window.open(
+         "https://wa.me/919533304441?text=Hi%20Fortune%20U%20Group,%20I%20want%20to%20book%20a%20free%20consultation.",
+         "_blank"
+       )
+       }
+       className="mt-4 w-full bg-[#0A2540] hover:bg-[#163B65] text-white font-bold py-4 rounded-xl transition-all"
+      >
+      📅 Book Free Consultation
+       </button>
 
         </div>
 
@@ -960,9 +1066,17 @@ const Tools = () => {
           Speak with our financial advisor and receive a customized investment plan.
         </p>
 
-        <button className="mt-8 w-full bg-[#D4AF37] hover:bg-[#C89B2A] text-[#0A2540] font-bold py-4 rounded-xl">
-          Book Free Consultation
-        </button>
+        <button
+        onClick={() =>
+       window.open(
+      "https://wa.me/919533304441?text=Hi%20Fortune%20U%20Group,%20I%20want%20to%20book%20a%20free%20consultation.",
+      "_blank"
+    )
+  }
+  className="mt-8 w-full bg-[#D4AF37] hover:bg-[#C89B2A] text-[#0A2540] font-bold py-4 rounded-xl"
+>
+  Book Free Consultation
+</button>
 
       </div>
 

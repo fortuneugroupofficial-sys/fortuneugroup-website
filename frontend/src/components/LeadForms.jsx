@@ -25,9 +25,10 @@ export const ConsultationForm = () => {
       toast.success("Thanks! Our advisor will contact you shortly.");
       setF({ name: "", mobile: "", email: "", city: "", financial_goal: "" });
     } catch (err) { toast.error("Something went wrong. Please try again."); }
-    finally { setLoading(false); }
+    finally { setLoading(false); 
+    }
   };
-  return (
+    return (
     <form onSubmit={submit} className="grid gap-4" data-testid="consultation-form">
       <Field label="Full Name" required value={f.name} onChange={(e)=>setF({...f, name:e.target.value})} data-testid="consult-name" />
       <div className="grid sm:grid-cols-2 gap-4">

@@ -40,7 +40,7 @@ const Blog = () => {
   {/* Background Image */}
   <div className="absolute inset-0">
     <img
-      src="/images/blog-hero.png"
+      src="/images/blog-hero.webp"
       alt="Financial Advisor"
       className="w-full h-full object-cover opacity-20"
     />
@@ -332,9 +332,9 @@ const Blog = () => {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
 
       {[
-        { number: "10,000+", label: "Happy Clients" },
-        { number: "500+", label: "Financial Articles" },
-        { number: "₹100+ Cr", label: "Assets Guided" },
+        { number: "100+", label: "Happy Clients" },
+        { number: "50+", label: "Financial Articles" },
+        { number: "₹10+ Cr", label: "Assets Guided" },
         { number: "98%", label: "Client Satisfaction" },
       ].map((item, index) => (
 
@@ -551,9 +551,7 @@ const Blog = () => {
   </div>
 
 </section>
-
-     
-
+      
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
           <div className="flex flex-wrap gap-2" data-testid="blog-categories">

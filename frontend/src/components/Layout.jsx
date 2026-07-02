@@ -81,7 +81,7 @@ export const Header = () => {
               href={whatsappLink()}
               target="_blank" rel="noreferrer"
               onClick={()=>trackEvent("whatsapp_click",{source:"header"})} data-testid="header-whatsapp-btn"
-              className="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full bg-[#0A2540] text-white hover:bg-[#081B33] transition-colors"
+              className="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full bg-[#25D366] text-white hover:bg-[#1DA851] transition-colors"
             >
               <MessageCircle color="#FFFFFF" size={20} />
               <span>WhatsApp</span>
@@ -153,7 +153,7 @@ export const Footer = () => {
           <p className="text-sm text-white/70 leading-relaxed">Financial Education → Financial Planning → Financial Freedom. Helping Indian families build long-term wealth.</p>
         </div>
         <div>
-          <h4 className="font-display font-semibold mb-3 text-sm tracking-wide">Services</h4>
+          <h4 className="font-display font-semibold mb-2 text-sm tracking-wide text-[#D4AF37]">Services</h4>
           <ul className="space-y-2 text-sm text-white/70">
             <li><Link to="/services">Mutual Fund Distribution</Link></li>
             <li><Link to="/services">SIP Planning</Link></li>
@@ -162,11 +162,7 @@ export const Footer = () => {
             <li><Link to="/services">Tax Saving Planning</Link></li>
             <li><Link to="/services">Child Education Planning</Link></li>
             <li><Link to="/services">Wealth Creation Planning</Link></li>
-            <li><Link to="/products">Demat Accounts</Link></li>
             <li><Link to="/services">Health & Term Insurance</Link></li>
-            <li><Link to="/services">Loan Assistance</Link></li>
-            <li><Link to="/products">Credit Cards</Link></li>
-            <li><Link to="/products">Savings Accounts</Link></li>
           </ul>
         </div>
         <div>

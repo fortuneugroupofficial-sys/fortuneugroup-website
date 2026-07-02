@@ -40,13 +40,11 @@ const Services = () => {
           Financial Services
         </div>
 
-        <h1 className="font-display text-5xl lg:text-6xl font-bold text-brand-navy">
-  Complete
-  <span className="text-brand-yellow">
-    {" "}Financial Solutions For Every{" "}
-  </span>
-  Stage Of Life
-</h1>
+        <h1 className="font-display text-5xl lg:text-6xl font-bold text-brand-navy leading-tight">
+          Complete
+          <span className="text-brand-yellow"> Financial </span>
+          Solutions For Every Stage Of Life
+        </h1>
 
         <p className="mt-6 text-lg text-brand-mute leading-8 max-w-xl">
           Mutual Funds, SIP Planning, Insurance, Loans and Financial

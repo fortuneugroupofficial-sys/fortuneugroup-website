@@ -36,59 +36,81 @@ const Contact = () => {
   <>
     <SEO
       title="Contact Fortune U Group | Mutual Fund Advisor in Tirupati"
-      description="Contact Fortune U Group for expert guidance on Mutual Funds, SIP Investments, Financial Planning, Retirement Planning and Insurance solutions."
+      description="Contact Fortune U Group for expert guidance on Mutual Funds, SIP Investments, 
+      Financial Planning, Retirement Planning and Insurance solutions."
       path="/contact"
     />
 
     <div data-testid="contact-page" className="bg-brand-bg">
-      <section className="bg-white border-b border-brand-line">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
-          <div className="text-xs tracking-[0.2em] uppercase font-bold text-brand-green mb-3">Get in touch</div>
-          <h1 className="font-display text-4xl md:text-5xl tracking-tight text-brand-navy font-semibold leading-tight max-w-3xl">Let's design your financial roadmap.</h1>
-          {/* Contact Hero Stats */}
-        <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-5">
+      <section className="bg-gradient-to-r from-[#0A2540] to-[#12385B] text-white py-20">
+  <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
 
-       <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 text-center hover:shadow-xl transition-all duration-300">
-       <div className="text-3xl mb-3">📞</div>
-       <h3 className="text-2xl font-bold text-[#0A2540]">1 Hr</h3>
-      <p className="text-sm text-gray-600 mt-1">
-      Response Time
+    <span className="text-[#D4AF37] font-semibold uppercase tracking-widest">
+      CONTACT US
+    </span>
+
+    <h1 className="text-5xl font-bold mt-4 leading-tight">
+      Let's Build Your <span className="text-[#D4AF37]">Financial Future</span>
+    </h1>
+
+    <p className="mt-6 text-lg text-gray-200 max-w-3xl mx-auto">
+      Get expert guidance on Mutual Funds, SIP Planning, Insurance,
+      Retirement Planning and Wealth Creation.
     </p>
-  </div>
 
-  <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 text-center hover:shadow-xl transition-all duration-300">
-    <div className="text-3xl mb-3">💬</div>
-    <h3 className="text-2xl font-bold text-[#0A2540]">
-      Free
-    </h3>
-    <p className="text-sm text-gray-600 mt-1">
-      Consultation
-    </p>
-  </div>
+    <div className="mt-10 flex flex-wrap justify-center gap-5">
 
-  <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 text-center hover:shadow-xl transition-all duration-300">
-    <div className="text-3xl mb-3">👨‍💼</div>
-    <h3 className="text-2xl font-bold text-[#0A2540]">
-      100+
-    </h3>
-    <p className="text-sm text-gray-600 mt-1">
-      Investors Guided
-    </p>
-  </div>
+      <button
+  onClick={() => {
+    const form = document.getElementById("consultation-form");
+    if (form) {
+      form.scrollIntoView({ behavior: "smooth" });
+    }
+  }}
+  className="bg-[#D4AF37] text-[#0A2540] px-8 py-4 rounded-xl font-bold hover:scale-105 transition"
+>
+  Book Free Consultation
+</button>
 
-  <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 text-center hover:shadow-xl transition-all duration-300">
-    <div className="text-3xl mb-3">⭐</div>
-    <h3 className="text-xl font-bold text-[#0A2540]">
-      Trusted
-    </h3>
-    <p className="text-sm text-gray-600 mt-1">
-      Financial Partner
-    </p>
-  </div>
+      <a
+        href="tel:+919533304441"
+        className="border border-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-[#0A2540] transition"
+      >
+        📞 Call Now
+      </a>
 
-</div>
-        </div>
-      </section>
+    </div>
+
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14">
+
+      <div className="bg-white text-[#0A2540] rounded-2xl p-6 shadow-lg">
+        <h3 className="text-3xl">⚡</h3>
+        <h4 className="font-bold mt-3">1 Hr</h4>
+        <p>Response Time</p>
+      </div>
+
+      <div className="bg-white text-[#0A2540] rounded-2xl p-6 shadow-lg">
+        <h3 className="text-3xl">💬</h3>
+        <h4 className="font-bold mt-3">Free</h4>
+        <p>Consultation</p>
+      </div>
+
+      <div className="bg-white text-[#0A2540] rounded-2xl p-6 shadow-lg">
+        <h3 className="text-3xl">👨‍💼</h3>
+        <h4 className="font-bold mt-3">100+</h4>
+        <p>Investors Guided</p>
+      </div>
+
+      <div className="bg-white text-[#0A2540] rounded-2xl p-6 shadow-lg">
+        <h3 className="text-3xl">⭐</h3>
+        <h4 className="font-bold mt-3">Trusted</h4>
+        <p>Financial Partner</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
 
       {/* Why Choose Fortune U Group */}
 <section className="py-16">
@@ -274,10 +296,6 @@ const Contact = () => {
         <div className="w-16 h-16 mx-auto rounded-full bg-[#D4AF37] text-[#0A2540] flex items-center justify-center text-2xl font-bold">
           2
         </div>
-
-        <h3 className="mt-6 text-xl font-bold text-[#0A2540]">
-          Free Consultation
-        </h3>
 
         <p className="mt-3 text-gray-600">
           We understand your financial goals and requirements.
@@ -501,8 +519,13 @@ const Contact = () => {
           </div>
 
           <div className="rounded-3xl bg-white border border-gray-200 p-8 shadow-xl hover:shadow-2xl transition-all duration-300">
-            <SectionHeader eyebrow="Send message" title="We respond within 4 hours" />
-            <form onSubmit={submit} className="mt-8 grid gap-5" data-testid="contact-form">
+            <SectionHeader eyebrow="Send message" title="We respond within 1 hour" />
+            <form
+  id="consultation-form"
+  onSubmit={submit}
+  className="mt-8 grid gap-5"
+  data-testid="contact-form"
+>
               <Field label="Name" required value={f.name} onChange={(e)=>setF({...f, name:e.target.value})} data-testid="contact-name" />
               <div className="grid sm:grid-cols-2 gap-4">
                 <Field label="Mobile" required value={f.mobile} onChange={(e)=>setF({...f, mobile:e.target.value})} data-testid="contact-mobile" />
