@@ -16,6 +16,7 @@ import PrivacyPolicy from "./pages/Privacypolicy";
 import TermsConditions from "./pages/Terms&Conditions";
 import Disclosure from "./pages/Disclosure";
 import "./App.css";
+import AIChatWidget from "./components/ui/AIChatWidget";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
 
           <Route path="/disclosure" element={<Layout><Disclosure /></Layout>} />
         </Routes>
+        <AIChatWidget />
       </LangProvider>
     </BrowserRouter>
   );
