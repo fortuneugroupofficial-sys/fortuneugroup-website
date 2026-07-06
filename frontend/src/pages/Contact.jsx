@@ -551,14 +551,14 @@ const Contact = () => {
   required
   value={f.city}
   onChange={(e) => setF({ ...f, city: e.target.value })}
-/>
+/>  
               </div>
               <div className="space-y-1.5">
                 <Label className="text-xs uppercase tracking-wider font-semibold text-brand-navy">Financial Goal</Label>
                
                 <select
                value={f.financial_goal}
-               onChange={(e) => setF({ ...f, goal: e.target.value })}
+               onChange={(e) => setF({ ...f, financial_goal: e.target.value })}
                required
                className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 
                text-base focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300"
