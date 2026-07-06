@@ -93,7 +93,7 @@ setResponse(aiResponse);
         onClick={() => setIsOpen(true)}
         style={{
           position: "fixed",
-          bottom: "20px",
+          bottom: "140px",
           right: "20px",
           width: "65px",
           height: "65px",
@@ -116,7 +116,7 @@ setResponse(aiResponse);
       <div
         style={{
           position: "fixed",
-          bottom: "20px",
+          bottom: "140px",
           right: "20px",
           width: "360px",
           height: "520px",

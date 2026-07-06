@@ -1,6 +1,6 @@
 export const WHATSAPP_NUMBER = process.env.REACT_APP_WHATSAPP_NUMBER || "919533304441";
 export const BUSINESS_EMAIL = process.env.REACT_APP_BUSINESS_EMAIL || "fortuneugroupofficial@gmail.com";
-export const SHEETS_WEBHOOK = "https://script.google.com/macros/s/AKfycbzhUL6lw-T-c-AZ7ejQq9vTJxYfljRTLh5GsMRYqFPFZGMtqsyZ2jvt1GiU2OH4Z1LO/exec";
+export const SHEETS_WEBHOOK = "http://localhost:5678/webhook/fortune-lead";
 
 export const whatsappLink = (text) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text || "Hello Fortune U Group, I would like to know more about your financial planning services.")}`;
@@ -22,8 +22,8 @@ export async function submitLead(type, payload) {
   try {
     await fetch(SHEETS_WEBHOOK, {
       method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      mode: "cors",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
     return { ok: true };

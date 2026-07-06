@@ -73,7 +73,7 @@ const Home = () => {
               </h1>
               <p className="mt-5 text-base sm:text-lg text-brand-mute leading-relaxed max-w-2xl reveal reveal-3">{t("hero.sub")}</p>
               <div className="mt-8 flex flex-wrap gap-3 reveal reveal-4">
-                <Link to="/contact">
+                <Link to="/contact#contact-form">
                   <Button data-testid="hero-cta-start" className="h-12 px-6 rounded-full bg-brand-navy hover:bg-brand-navy/90 text-white text-sm font-semibold">
                     {t("hero.ctaPrimary")} <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>

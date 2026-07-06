@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { whatsappLink, WHATSAPP_NUMBER, BUSINESS_EMAIL, submitLead } from "../lib/api";
 import { trackEvent } from "../components/Analytics";
 import { Input } from "../components/ui/input";
@@ -14,21 +15,29 @@ import { useLang } from "../context/LangContext";
 const Field = ({ label, ...props }) => (
   <div className="space-y-1.5">
     <Label className="text-xs uppercase tracking-wider font-semibold text-brand-navy">{label}</Label>
-    <Input {...props} className="bg-brand-soft/40 border-brand-line focus-visible:ring-brand-green" />
+    <Input
+  {...props}
+  className="h-14 rounded-xl border border-gray-300 bg-gray-50 px-4 text-base placeholder:text-gray-400 
+  focus:border-green-600 focus:ring-2 focus:ring-green-200 transition-all duration-300"
+/>
   </div>
 );
 
 const Contact = () => {
-  const [f, setF] = useState({ name: "", mobile: "", email: "", message: "" });
+  const [f, setF] = useState({ name: "", mobile: "", email: "", city:"", financial_goal:"", message: "" });
   const [loading, setLoading] = useState(false);
-  const { t } = useLang();
-  const submit = async (e) => {
+   const { t } = useLang();
+  const location = useLocation();
+
+
+
+   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
       await submitLead("contact", f);
       trackEvent("generate_lead", { form_type: "contact" });
       toast.success("Thanks! We'll reach out shortly.");
-      setF({ name: "", mobile: "", email: "", message: "" });
+      setF({ name: "", mobile: "", email: "", city: "", financial_goal: "", message: "" });
     } catch { toast.error("Could not send. Please try again."); }
     finally { setLoading(false); }
   };
@@ -62,7 +71,7 @@ const Contact = () => {
 
       <button
   onClick={() => {
-    const form = document.getElementById("consultation-form");
+    const form = document.getElementById("contact-form");
     if (form) {
       form.scrollIntoView({ behavior: "smooth" });
     }
@@ -518,26 +527,55 @@ const Contact = () => {
             ></iframe>
           </div>
 
-          <div className="rounded-3xl bg-white border border-gray-200 p-8 shadow-xl hover:shadow-2xl transition-all duration-300">
-            <SectionHeader eyebrow="Send message" title="We respond within 1 hour" />
+          <div 
+          id="contact-form"
+          className="rounded-3xl bg-white border border-gray-100 p-10 shadow-2xl 
+            hover:shadow-3xl transition-all duration-500">
+            <SectionHeader
+  eyebrow="Get In Touch"
+  title="Get Your Free Financial Consultation"
+  description="Fill out the form and our financial planner will contact you within 1 hour."
+  />
             <form
-  id="consultation-form"
-  onSubmit={submit}
-  className="mt-8 grid gap-5"
-  data-testid="contact-form"
->
-              <Field label="Name" required value={f.name} onChange={(e)=>setF({...f, name:e.target.value})} data-testid="contact-name" />
+            onSubmit={submit}
+            className="mt-8 grid gap-5"
+            data-testid="contact-form"
+            >
+              <Field label="Name" required value={f.name} onChange={(e)=>setF({...f, name:e.target.value})} 
+              data-testid="contact-name" />
               <div className="grid sm:grid-cols-2 gap-4">
                 <Field label="Mobile" required value={f.mobile} onChange={(e)=>setF({...f, mobile:e.target.value})} data-testid="contact-mobile" />
                 <Field label="Email" type="email" required value={f.email} onChange={(e)=>setF({...f, email:e.target.value})} data-testid="contact-emailfield" />
+                <Field
+  label="City"
+  required
+  value={f.city}
+  onChange={(e) => setF({ ...f, city: e.target.value })}
+/>
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs uppercase tracking-wider font-semibold text-brand-navy">Message</Label>
-                <Textarea required rows={5} value={f.message} onChange={(e)=>setF({...f, message:e.target.value})} className="bg-brand-soft/40 border-brand-line focus-visible:ring-brand-green" data-testid="contact-message" />
+                <Label className="text-xs uppercase tracking-wider font-semibold text-brand-navy">Financial Goal</Label>
+               
+                <select
+               value={f.financial_goal}
+               onChange={(e) => setF({ ...f, goal: e.target.value })}
+               required
+               className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 
+               text-base focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300"
+              >
+              <option value="">Select Your Financial Goal</option>
+              <option value="Retirement Planning">Retirement Planning</option>
+              <option value="Child Education">Child Education</option>
+              <option value="Home Purchase">Home Purchase</option>
+              <option value="Wealth Creation">Wealth Creation</option>
+             <option value="Tax Saving">Tax Saving</option>
+            <option value="Other">Other</option>
+            </select>
               </div>
               <Button type="submit" disabled={loading} data-testid="contact-submit" 
-              className="w-full h-14 rounded-2xl bg-[#0A2540] hover:bg-[#163B6D] text-white text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-2xl">
-                {loading ? "Sending…" : "Send Message"}</Button>
+              className="w-full h-14 rounded-xl bg-gradient-to-r from-green-600 to-blue-700 hover:from-green-700 hover:to-blue-800 
+              text-lg font-semibold shadow-lg transition-all duration-300 hover:scale-[1.02]">
+                {loading ? "Sending…" : "Book Free Consultation"}</Button>
             </form>
           </div>
         </div>
