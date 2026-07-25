@@ -1,6 +1,6 @@
 export const WHATSAPP_NUMBER = process.env.REACT_APP_WHATSAPP_NUMBER || "919533304441";
 export const BUSINESS_EMAIL = process.env.REACT_APP_BUSINESS_EMAIL || "fortuneugroupofficial@gmail.com";
-export const SHEETS_WEBHOOK = "http://localhost:5678/webhook/fortune-lead";
+
 
 export const whatsappLink = (text) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text || "Hello Fortune U Group, I would like to know more about your financial planning services.")}`;
@@ -12,6 +12,25 @@ export const whatsappLink = (text) =>
  * (the response cannot be read, but Apps Script will receive and store the row).
  */
 export async function submitLead(type, payload) {
+
+  let webhook = "";
+
+switch (type) {
+  case "insurance":
+    webhook = "https://n8n.fortuneugroup.in/webhook/insurance";
+    break;
+
+  case "sip":
+    webhook = "https://n8n.fortuneugroup.in/webhook/sip";
+    break;
+
+  case "ai-chat":
+    webhook = "https://n8n.fortuneugroup.in/webhook/ai-chat";
+    break;
+
+  default:
+    webhook = "https://n8n.fortuneugroup.in/webhook/book-consultation";
+}
   const body = {
   type,
   timestamp: new Date().toISOString(),
@@ -21,15 +40,21 @@ export async function submitLead(type, payload) {
   city: payload.city,
   financial_goal: payload.financial_goal,
   message: payload.message,
+  insuranceType: payload.insuranceType,
+monthlyIncome: payload.monthlyIncome,
+sipBudget: payload.sipBudget,
+age: payload.age,
+familyMembers: payload.familyMembers,
+coverageRequirement: payload.coverageRequirement,
 };
 
-  if (!SHEETS_WEBHOOK) {
+  if (!webhook) {
     console.warn("[MOCKED LEAD]", body);
     await new Promise((r) => setTimeout(r, 400));
     return { ok: true, mocked: true };
   }
   try {
-    await fetch(SHEETS_WEBHOOK, {
+    await fetch(webhook, {
       method: "POST",
       mode: "cors",
       headers: { "Content-Type": "application/json" },

@@ -5,6 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(
   process.env.REACT_APP_GEMINI_API_KEY
 );
+console.log("API Key:", process.env.REACT_APP_GEMINI_API_KEY);
 
 export default function AIChatWidget() {
   const [question, setQuestion] = useState("");
@@ -47,34 +48,24 @@ ${question}
 చివర్లో "మరింత సమాచారం కోసం Fortune U Group ని సంప్రదించండి." అని చెప్పు.
 `;
 
- console.log("API KEY:", 
-      process.env.REACT_APP_GEMINI_API_KEY);
       console.log("Question:", question);
     
       const result = await model.generateContent(prompt);
      const aiResponse = result.response.text();
 
-await fetch(
-  "https://app.nocodb.com/api/v3/data/p80ee0k7d5451m9/m6m10gknvvnebti/records",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "xc-token": "nc_pat_lCZASw2UYb46LS2281xg2JcudgTXehutwOe5P8oy"
-    },
-    body: JSON.stringify([
-      {
-        fields:{
-        Name: name,
-        Mobile: mobile,
-        Question: question,
-        AI_Response: aiResponse
-      }
-
-    }
-   ])
-   }
-  );
+    
+  await fetch("https://n8n.fortuneugroup.in/webhook/ai-chat", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    name,
+    mobile,
+    question,
+    aiResponse,
+  }),
+});
 
 setResponse(aiResponse);
 

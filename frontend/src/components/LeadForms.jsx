@@ -65,7 +65,13 @@ export const SIPRequestForm = () => {
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      await submitLead("sip", { ...f, monthly_income: Number(f.monthly_income), sip_budget: Number(f.sip_budget) }); trackEvent("generate_lead", { form_type: "sip" });
+      await submitLead("sip", {
+  ...f,
+  monthlyIncome: Number(f.monthly_income),
+  sipBudget: Number(f.sip_budget),
+  financialGoal: f.goal_type,
+});
+       trackEvent("generate_lead", { form_type: "sip" });
       toast.success("SIP plan request received!");
       setF({ name: "", mobile: "", monthly_income: "", sip_budget: "", goal_type: "" });
     } catch { toast.error("Could not submit. Try again."); }
@@ -105,9 +111,16 @@ export const InsuranceForm = () => {
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      await submitLead("insurance", { ...f, age: Number(f.age), family_members: Number(f.family_members) });console.log("INSURANCE SUBMIT", f); trackEvent("generate_lead", { form_type: "insurance" });
+      
+      await submitLead("insurance", {
+  ...f,
+  age: Number(f.age),
+  familyMembers: Number(f.family_members),
+  coverageRequirement: f.coverage_requirement
+});
+      console.log("INSURANCE SUBMIT", f); trackEvent("generate_lead", { form_type: "insurance" });
       toast.success("Request received! Our insurance advisor will call you.");
-      setF({ name: "", mobile: "", age: "", family_members: "", coverage_requirement: "" });
+      setF({ name: "", mobile: "", age: "", "familyMembers": "", coverage_requirement: "" });
     } catch { toast.error("Could not submit. Try again."); }
     finally { setLoading(false); }
   };
