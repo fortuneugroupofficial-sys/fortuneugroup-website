@@ -380,7 +380,7 @@ const Blog = () => {
         </a>
 
         <a
-          href="https://wa.me/919533304441"
+          href={whatsappLink()}
           target="_blank"
           rel="noopener noreferrer"
           className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full font-semibold transition"

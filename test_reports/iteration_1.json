@@ -32,6 +32,6 @@
   "seed_data_creation": "Backend tests POSTed TEST_ prefixed leads/contact and round-tripped a TEST_ blog/testimonial/FAQ (created+updated+deleted). The leftover 3 TEST_ leads + 1 contact remain in DB (small, harmless).",
   "retest_needed": false,
   "main_agent_can_self_test": true,
-  "context_for_next_testing_agent": "Backend test file is /app/backend/tests/backend_test.py (25 tests, all passing). Frontend Tools inputs ret-age-input and goal-amt-input only render when their tab is active - click tab-ret or tab-goal first. WhatsApp FAB uses wa.me/919533304441. Lang toggle changes hero to Telugu. Admin token stored as localStorage 'fu_admin_token'.",
+  "context_for_next_testing_agent": "Backend test file is /app/backend/tests/backend_test.py (25 tests, all passing). Frontend Tools inputs ret-age-input and goal-amt-input only render when their tab is active - click tab-ret or tab-goal first. WhatsApp FAB uses wa.me/919490237465. Lang toggle changes hero to Telugu. Admin token stored as localStorage 'fu_admin_token'.",
   "rca of the issue": "No production bugs found."
 }

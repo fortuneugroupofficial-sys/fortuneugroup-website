@@ -584,7 +584,7 @@ const downloadPDF = () => {
     </a>
 
     <a
-      href="https://wa.me/919533304441"
+      href={whatsappLink()}
       className="border border-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-blue-700"
     >
       WhatsApp Us
@@ -965,7 +965,7 @@ const downloadPDF = () => {
           <button
          onClick={() =>
          window.open(
-         "https://wa.me/919533304441?text=Hi%20Fortune%20U%20Group,%20I%20want%20to%20book%20a%20free%20consultation.",
+         "https://wa.me/919490237465?text=Hi%20Fortune%20U%20Group,%20I%20want%20to%20book%20a%20free%20consultation.",
          "_blank"
        )
        }
@@ -1069,7 +1069,7 @@ const downloadPDF = () => {
         <button
         onClick={() =>
        window.open(
-      "https://wa.me/919533304441?text=Hi%20Fortune%20U%20Group,%20I%20want%20to%20book%20a%20free%20consultation.",
+      "https://wa.me/919490237465?text=Hi%20Fortune%20U%20Group,%20I%20want%20to%20book%20a%20free%20consultation.",
       "_blank"
     )
   }

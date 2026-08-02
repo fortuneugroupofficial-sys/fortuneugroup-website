@@ -211,7 +211,7 @@ export const Footer = () => {
      </a>
 
      <a
-       href="https://wa.me/919533304441"
+       href={whatsappLink()}
        target="_blank"
        rel="noreferrer"
      >

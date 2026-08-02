@@ -54,7 +54,7 @@ const About = () => {
           </a>
 
           <a
-            href="https://wa.me/919533304441"
+            href="https://wa.me/919490237465"
             className="bg-[#25D366] text-white px-8 py-4 rounded-full hover:bg-[#1DA851] transition duration-300"
           >
             WhatsApp Now
@@ -583,7 +583,7 @@ const About = () => {
       </a>
       
       <a
-        href="https://wa.me/919533304441"
+        href={whatsappLink()}
         target="_blank"
         rel="noopener noreferrer"
         className="px-8 py-4 rounded-full bg-[#25D366] border-2 border-[#25D366] 

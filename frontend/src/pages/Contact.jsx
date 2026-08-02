@@ -82,7 +82,7 @@ const Contact = () => {
 </button>
 
       <a
-        href="tel:+919533304441"
+        href="tel:+919490237465"
         className="border border-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-[#0A2540] transition"
       >
         📞 Call Now
@@ -225,14 +225,14 @@ const Contact = () => {
         <div className="grid grid-cols-2 gap-4">
 
           <a
-            href="tel:+919533304441"
+            href="tel:+919490237465"
             className="bg-[#0A2540] text-white rounded-2xl py-5 text-center font-semibold hover:bg-[#163B65] transition"
           >
             📞 Call Now
           </a>
 
           <a
-            href="https://wa.me/919533304441"
+            href={whatsappLink()}
             target="_blank"
             rel="noreferrer"
             className="bg-green-600 text-white rounded-2xl py-5 text-center font-semibold hover:bg-green-700 transition"
@@ -377,7 +377,7 @@ const Contact = () => {
         </a>
 
         <a
-          href="https://wa.me/919533304441"
+          href="https://wa.me/919490237465"
           target="_blank"
           rel="noopener noreferrer"
           className="px-8 py-4 rounded-2xl bg-brand-green text-white font-bold 

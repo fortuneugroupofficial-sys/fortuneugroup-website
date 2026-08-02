@@ -157,7 +157,7 @@ const ProductCard = ({ icon: Icon, title, desc, highlights, tag, tagColor, iconB
           onMouseEnter={e => { e.currentTarget.style.background = `linear-gradient(135deg, ${C.gold}, ${C.gold2})`; e.currentTarget.style.color = C.navy; }}
           onMouseLeave={e => { e.currentTarget.style.background = `linear-gradient(135deg, ${C.navy}, ${C.blue})`; e.currentTarget.style.color = C.white; }}
         >Apply Now</a>
-        <a href={whatsappLink()} style={{
+        <a href="#contact" style={{
           flex: 1, textAlign: "center", padding: "9px 12px",
           background: C.gold,
           color: C.white,

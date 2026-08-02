@@ -1,4 +1,4 @@
-export const WHATSAPP_NUMBER = process.env.REACT_APP_WHATSAPP_NUMBER || "919533304441";
+export const WHATSAPP_NUMBER = process.env.REACT_APP_WHATSAPP_NUMBER || "919490237465";
 export const BUSINESS_EMAIL = process.env.REACT_APP_BUSINESS_EMAIL || "fortuneugroupofficial@gmail.com";
 
 
