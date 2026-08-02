@@ -232,7 +232,7 @@ const Contact = () => {
           </a>
 
           <a
-            href={whatsappLink()}
+            href="https://wa.me/919490237465"
             target="_blank"
             rel="noreferrer"
             className="bg-green-600 text-white rounded-2xl py-5 text-center font-semibold hover:bg-green-700 transition"
@@ -458,7 +458,7 @@ const Contact = () => {
                 <div className="font-display font-semibold text-brand-navy mt-1 break-all">{BUSINESS_EMAIL}</div>
               </a>
               <a
-  href={whatsappLink()}
+  href="https://wa.me/919490237465"
   target="_blank"
   rel="noreferrer"
   className="group rounded-3xl border border-gray-200 bg-white p-6 shadow-md hover:shadow-2xl hover:-translate-y-2 hover:border-[#D4AF37] transition-all duration-300"

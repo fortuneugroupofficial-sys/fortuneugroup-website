@@ -391,7 +391,7 @@ export default function ProductsPage() {
         </div>
 
        <a
-       href={whatsappLink()}
+         href="https://wa.me/919490237465"
        target="_blank"
        rel="noopener noreferrer"
        className="mt-10 bg-green-500 text-white font-bold px-8 
@@ -748,7 +748,7 @@ export default function ProductsPage() {
           FLOATING WHATSAPP BUTTON
       ════════════════════════════════════ */}
       <a
-        href={whatsappLink()}
+        href="https://wa.me/919490237465"
         target="_blank" rel="noreferrer"
         title="Chat on WhatsApp"
         style={{

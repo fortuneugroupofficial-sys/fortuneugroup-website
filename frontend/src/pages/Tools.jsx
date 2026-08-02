@@ -584,7 +584,7 @@ const downloadPDF = () => {
     </a>
 
     <a
-      href={whatsappLink()}
+      href="https://wa.me/919490237465"
       className="border border-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-blue-700"
     >
       WhatsApp Us

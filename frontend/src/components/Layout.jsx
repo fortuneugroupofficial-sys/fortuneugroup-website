@@ -78,7 +78,7 @@ export const Header = () => {
               <Phone className="w-4 h-4" /> Call Now
             </a>
             <a
-              href={whatsappLink()}
+              href="https://wa.me/919490237465"
               target="_blank" rel="noreferrer"
               onClick={()=>trackEvent("whatsapp_click",{source:"header"})} data-testid="header-whatsapp-btn"
               className="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full bg-[#25D366] text-white hover:bg-[#1DA851] transition-colors"
@@ -113,7 +113,7 @@ export const Header = () => {
               </NavLink>
             ))}
            <a
-   href={whatsappLink()}
+   href="https://wa.me/919490237465"
    target="_blank"
    rel="noreferrer"
    className="mt-2 px-3 py-2.5 rounded-md text-sm font-semibold"
@@ -211,7 +211,7 @@ export const Footer = () => {
      </a>
 
      <a
-       href={whatsappLink()}
+        href="https://wa.me/919490237465"
        target="_blank"
        rel="noreferrer"
      >
@@ -269,7 +269,7 @@ export const WhatsAppFab = () => (
       <Phone className="w-6 h-6" />
     </a>
     <a
-      href={whatsappLink()}
+       href="https://wa.me/919490237465"
       target="_blank" rel="noreferrer"
       onClick={()=>trackEvent("whatsapp_click",{source:"fab"})} data-testid="floating-whatsapp-fab"
       className="rounded-full shadow-2xl bg-[#25D366] text-white p-4 hover:scale-110 transition-transform"

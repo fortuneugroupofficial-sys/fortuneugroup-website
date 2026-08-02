@@ -78,7 +78,7 @@ const Home = () => {
                     {t("hero.ctaPrimary")} <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
-                <a href={whatsappLink()} target="_blank" rel="noreferrer">
+                <a href="https://wa.me/919490237465" target="_blank" rel="noreferrer">
                   <Button data-testid="hero-cta-whatsapp" variant="outline" 
                   className="h-12 px-6 rounded-full bg-[#25D366] hover:bg-[#1DA851] 
                   text-white text-sm font-semibold transition duration-300">
@@ -643,7 +643,7 @@ const Home = () => {
       </a>
 
       <a
-        href={whatsappLink()}
+          href="https://wa.me/919490237465"
         target="_blank"
         rel="noopener noreferrer"
         className="bg-[#25D366] border-2 border-[#25D366] text-white px-8 py-4 rounded-xl font-bold 

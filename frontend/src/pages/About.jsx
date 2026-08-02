@@ -583,7 +583,7 @@ const About = () => {
       </a>
       
       <a
-        href={whatsappLink()}
+          href="https://wa.me/919490237465"
         target="_blank"
         rel="noopener noreferrer"
         className="px-8 py-4 rounded-full bg-[#25D366] border-2 border-[#25D366] 

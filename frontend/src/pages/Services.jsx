@@ -61,7 +61,7 @@ const Services = () => {
           </a>
 
           <a
-           href={whatsappLink()}
+            href="https://wa.me/919490237465"
            target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg transition"
