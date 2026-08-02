@@ -148,7 +148,7 @@ const ProductCard = ({ icon: Icon, title, desc, highlights, tag, tagColor, iconB
       </div>
 
       <div style={{ display: "flex", gap: 10 }}>
-        <a href="tel:+919000000000" style={{
+        <a href="tel:+919490237465" style={{
           flex: 1, textAlign: "center", padding: "9px 12px",
           background: `linear-gradient(135deg, ${C.navy}, ${C.blue})`,
           color: C.white, borderRadius: 8, fontSize: 13, fontWeight: 600,
@@ -157,7 +157,7 @@ const ProductCard = ({ icon: Icon, title, desc, highlights, tag, tagColor, iconB
           onMouseEnter={e => { e.currentTarget.style.background = `linear-gradient(135deg, ${C.gold}, ${C.gold2})`; e.currentTarget.style.color = C.navy; }}
           onMouseLeave={e => { e.currentTarget.style.background = `linear-gradient(135deg, ${C.navy}, ${C.blue})`; e.currentTarget.style.color = C.white; }}
         >Apply Now</a>
-        <a href="#contact" style={{
+        <a href={whatsappLink()} style={{
           flex: 1, textAlign: "center", padding: "9px 12px",
           background: C.gold,
           color: C.white,
@@ -391,7 +391,7 @@ export default function ProductsPage() {
         </div>
 
        <a
-       href="https://wa.me/919533304441"
+       href={whatsappLink()}
        target="_blank"
        rel="noopener noreferrer"
        className="mt-10 bg-green-500 text-white font-bold px-8 
@@ -621,7 +621,7 @@ export default function ProductsPage() {
                 <MapPin size={12} /> Serving Andhra Pradesh & Telangana
               </div>
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <PrimaryBtn href="tel:+919533304441">
+                <PrimaryBtn href="tel:+919490237465">
                   <Phone size={15} /> Call Now
                 </PrimaryBtn>
                 <a  target="_blank" rel="noreferrer" style={{
@@ -748,7 +748,7 @@ export default function ProductsPage() {
           FLOATING WHATSAPP BUTTON
       ════════════════════════════════════ */}
       <a
-        href="https://wa.me/919533304441"
+        href={whatsappLink()}
         target="_blank" rel="noreferrer"
         title="Chat on WhatsApp"
         style={{
