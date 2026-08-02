@@ -40,7 +40,7 @@ const Blog = () => {
   {/* Background Image */}
   <div className="absolute inset-0">
     <img
-      src="/images/blog-hero.webp"
+      src="/images/blog-hero.jpg"
       alt="Financial Advisor"
       className="w-full h-full object-cover opacity-20"
     />
