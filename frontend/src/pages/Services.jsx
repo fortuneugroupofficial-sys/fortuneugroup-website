@@ -232,21 +232,6 @@ const Services = () => {
   </div>
 </section>
 
-    <section className="py-20 lg:py-28 bg-white">
-      <div className="max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-2 gap-12">
-        <div className="rounded-2xl border border-brand-line bg-white p-7 shadow-soft">
-          <SectionHeader eyebrow="SIP Planning Request" title="Get your SIP plan in 24 hours" />
-          <div className="mt-6"><SIPRequestForm /></div>
-        </div>
-        <div className="rounded-2xl border border-brand-line bg-white p-7 shadow-soft">
-          <SectionHeader eyebrow="Insurance Guidance" title="Protect your family. Free advisory." />
-          <div className="mt-6"><InsuranceForm /></div>
-        </div>
-      </div>
-    </section>
-
-    
-
     {/* Benefits Section */}
 <section className="py-20 bg-gray-50">
   <div className="max-w-7xl mx-auto px-5 lg:px-8">

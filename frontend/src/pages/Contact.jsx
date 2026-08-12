@@ -563,6 +563,7 @@ const Contact = () => {
                className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 
                text-base focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300"
               >
+              <option value="Insurance">Insurance</option>
               <option value="">Select Your Financial Goal</option>
               <option value="Retirement Planning">Retirement Planning</option>
               <option value="Child Education">Child Education</option>

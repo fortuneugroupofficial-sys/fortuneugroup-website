@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Gemini API
-const genAI = new GoogleGenerativeAI(
-  process.env.REACT_APP_GEMINI_API_KEY
-);
 
-console.log(process.env.REACT_APP_GEMINI_API_KEY);
 
 export default function AIChatWidget() {
   const [question, setQuestion] = useState("");
@@ -24,38 +18,8 @@ export default function AIChatWidget() {
     setLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-flash",
-      });
-
-     
-     const prompt = `
-నువ్వు Fortune U Group యొక్క AI Financial Assistant.
-
-Website: https://fortuneugroup.in
-
-Services:
-- Mutual Funds
-- Health Insurance
-- Term Insurance
-- SIP Planning
-- Retirement Planning
-- Financial Planning
-
-User Question:
-${question}
-
-సమాధానం తెలుగులో లేదా English లో user అడిగిన భాషలో ఇవ్వు.
-చివర్లో "మరింత సమాచారం కోసం Fortune U Group ని సంప్రదించండి." అని చెప్పు.
-`;
-
-      console.log("Question:", question);
-    
-      const result = await model.generateContent(prompt);
-     const aiResponse = result.response.text();
-
-    
-  await fetch("https://n8n.fortuneugroup.in/webhook/ai-chat", {
+      
+  const res = await fetch("https://n8n.fortuneugroup.in/webhook/ai-chat", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -64,16 +28,14 @@ ${question}
     name,
     mobile,
     question,
-    aiResponse,
   }),
 });
-
-setResponse(aiResponse);
+    const data = await res.json();
+    setResponse(data.answer);
 
     } catch (error) {
       console.error("Gemini Error:", error);
     }
-    
     setLoading(false);
   };
 

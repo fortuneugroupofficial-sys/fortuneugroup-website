@@ -41,6 +41,7 @@ export const ConsultationForm = () => {
         <Select value={f.financial_goal} onValueChange={(v)=>setF({...f, financial_goal:v})}>
           <SelectTrigger data-testid="consult-goal" className="bg-brand-soft/40 border-brand-line"><SelectValue placeholder="Select your primary goal" /></SelectTrigger>
           <SelectContent>
+            <SelectItem value="Insurance">Insurance</SelectItem>
             <SelectItem value="Retirement Planning">Retirement Planning</SelectItem>
             <SelectItem value="Child Education">Child Education</SelectItem>
             <SelectItem value="Home Purchase">Home Purchase</SelectItem>

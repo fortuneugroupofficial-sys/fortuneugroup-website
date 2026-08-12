@@ -40,7 +40,7 @@ const Home = () => {
     <div data-testid="home-page">
       <SEO
   title="Mutual Fund Distributor in Tirupati | SIP Investment Advisor"
-  description="Fortune U Group provides Mutual Fund Distribution, SIP Investments, Financial Planning, Retirement Planning and Insurance Solutions in Srikakulam."
+  description="Fortune U Group provides Mutual Fund Distribution, SIP Investments, Financial Planning, Retirement Planning and Insurance Solutions in Tirupati."
   path="/"
   schema={{
     "@context": "https://schema.org",
