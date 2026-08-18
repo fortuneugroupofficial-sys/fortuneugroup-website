@@ -17,6 +17,7 @@ import TermsConditions from "./pages/Terms&Conditions";
 import Disclosure from "./pages/Disclosure";
 import "./App.css";
 import AIChatWidget from "./components/ui/AIChatWidget";
+import Health from "./pages/Health";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/terms-and-conditions" element={<Layout><TermsConditions /></Layout>} />
 
           <Route path="/disclosure" element={<Layout><Disclosure /></Layout>} />
+          <Route path="/health" element={<Layout><Health /></Layout>} />
         </Routes>
         <AIChatWidget />
       </LangProvider>
