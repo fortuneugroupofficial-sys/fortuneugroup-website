@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIP illustration · Fortune U Group</title>
+  <meta name="description" content="Educational SIP illustration. Not a forecast or guarantee of mutual fund returns.">
+  <link rel="icon" href="/images/favicon-32.png">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div id="site-header"></div>
+<div class="page-hero">
+  <div class="wrap">
+    <div class="kicker">Tool</div>
+    <h1>SIP illustration</h1>
+    <p>A maths example only. It assumes a constant monthly rate. Real mutual fund NAVs go up and down. This is not a scheme offer.</p>
+  </div>
+</div>
+<section>
+  <div class="wrap">
+    <form class="calc" id="sipForm">
+      <div>
+        <label>Monthly amount <span id="sipAmtLabel"></span></label>
+        <input class="range" id="sipAmt" type="range" min="500" max="100000" step="500" value="5000">
+        <label>Years <span id="sipYrsLabel"></span></label>
+        <input class="range" id="sipYrs" type="range" min="1" max="30" value="15">
+        <label>Assumed annual rate <span id="sipRateLabel"></span></label>
+        <input class="range" id="sipRate" type="range" min="1" max="15" value="10">
+        <p class="disclaimer">
+          This is only an illustration. It is not a forecast, guarantee or promise of returns.
+          Actual mutual fund returns can be higher, lower or negative.
+          Past performance is not indicative of future results.
+          Mutual fund investments are subject to market risks. Read all scheme-related documents carefully.
+        </p>
+      </div>
+      <div class="result">
+        <div class="kicker">Hypothetical value</div>
+        <div class="big" id="sipEst">₹0</div>
+        <p>Amount you would have put in: <b id="sipInvested">₹0</b></p>
+        <p class="muted" style="color:#c9d4e3">We do not distribute mutual funds until an ARN is printed in the site footer.</p>
+        <a class="btn btn-gold" href="/contact.html">Ask a question</a>
+      </div>
+    </form>
+  </div>
+</section>
+<div id="site-footer"></div>
+<script src="/js/config.js"></script>
+<script src="/js/site.js"></script>
+</body>
+</html>

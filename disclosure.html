@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regulatory disclosures · Fortune U Group</title>
+  <meta name="description" content="IRDAI, AMFI and SEBI-related disclosures for Fortune U Group.">
+  <link rel="icon" href="/images/favicon-32.png">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div id="site-header"></div>
+<div class="page-hero">
+  <div class="wrap">
+    <div class="kicker">Disclosures</div>
+    <h1>How we are paid, and what we are not.</h1>
+  </div>
+</div>
+<section>
+  <div class="wrap" style="max-width:800px">
+    <div class="legal-box" id="liveLicence"></div>
+    <h2>Insurance</h2>
+    <p class="muted">Fortune U Group solicits insurance only for insurers where a valid appointment / code exists: life — LIC, HDFC Life; health — Care Health, Niva Bupa, Tata AIG, ICICI Lombard. We are not a broker for the whole market. Product ads that name a policy, benefit or premium need that insurer’s written approval.</p>
+    <p class="muted">Insurance is the subject matter of solicitation. Policy issuance, claims and servicing are the insurer’s responsibility.</p>
+    <h2>Mutual funds</h2>
+    <p class="muted">Distribution requires a valid AMFI ARN after NISM Series V-A. Until ARN appears in <code>js/config.js</code> and in the footer, we do not solicit or distribute mutual fund units. After ARN we will sell regular plans only and display “AMFI-registered Mutual Fund Distributor” with the ARN on this website, cards and WhatsApp status material.</p>
+    <p class="muted">Mutual fund investments are subject to market risks. Read all scheme-related documents carefully. We will not publish projected or guaranteed returns.</p>
+    <h2>Not a SEBI-registered Investment Adviser</h2>
+    <p class="muted">We do not charge a fee for investment advice. We do not use the words adviser, advisor, IFA or wealth manager for this business. Goal conversations are part of product solicitation / distribution, not SEBI RIA services.</p>
+    <h2>Commission</h2>
+    <p class="muted">Insurers and (after ARN) AMCs pay us commission. If you ask, we will tell you the commission scale for the product being discussed. You can buy the same insurance or a direct-plan mutual fund without us.</p>
+    <h2>Complaints</h2>
+    <p class="muted">Insurance grievances: the insurer’s grievance cell, then Bima Bharosa / IGMS on irdai.gov.in. Mutual fund grievances: the AMC, then AMFI / SCORES after we have an ARN.</p>
+  </div>
+</section>
+<div id="site-footer"></div>
+<script src="/js/config.js"></script>
+<script src="/js/site.js"></script>
+<script>
+  document.getElementById("liveLicence").innerHTML = window.FUG_licenceText(false);
+</script>
+</body>
+</html>

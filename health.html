@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Health Insurance Calculator · Care, Niva Bupa, Tata AIG, ICICI · Fortune U Group</title>
+  <meta name="description" content="Indicative health premium calculator. Care Health, Niva Bupa, Tata AIG, ICICI Lombard. Life: LIC, HDFC Life. Fortune U Group, Tirupati. Not an official quote.">
+  <link rel="icon" href="/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="hl-hero">
+  <div class="wrap hl-grid">
+    <div>
+      <div class="kicker">Health insurance · Tirupati</div>
+      <h1>Hospital bills should not wipe your SIPs.</h1>
+      <p class="lead">Indicative yearly premium in 20 seconds. Exact price only after the insurer’s proposal. Health codes: Care, Niva Bupa, Tata AIG, ICICI Lombard. Life codes: LIC, HDFC Life.</p>
+      <div class="trust">
+        <span>Health · Care</span>
+        <span>Health · Niva Bupa</span>
+        <span>Health · Tata AIG</span>
+        <span>Health · ICICI Lombard</span>
+        <span>Life · LIC</span>
+        <span>Life · HDFC Life</span>
+      </div>
+      <p class="muted" style="color:#b7c4d4;margin-top:18px;max-width:460px;font-size:13px">
+        Insurance is the subject matter of solicitation. This calculator is an illustration, not a quote, not a policy and not investment advice.
+      </p>
+    </div>
+
+    <aside class="hl-calc" id="calculator">
+      <div class="hl-calc-top">
+        <div>
+          <b>Premium illustration</b>
+          <div style="font-size:13px;opacity:.85">Live estimate · not a guaranteed premium</div>
+        </div>
+        <img src="/images/logo-64.png" alt="" width="40" height="40" style="border-radius:50%;background:#fff">
+      </div>
+      <div class="hl-calc-body">
+        <label>Who should this cover?</label>
+        <div class="chips">
+          <button type="button" class="chip" data-who="self">Self</button>
+          <button type="button" class="chip" data-who="couple">Self + spouse</button>
+          <button type="button" class="chip on" data-who="family">Family floater</button>
+        </div>
+
+        <div class="hl-row">
+          <div>
+            <label>Age of eldest member <span id="ageVal">32 yrs</span></label>
+            <input class="range" id="age" type="range" min="18" max="70" value="32">
+          </div>
+          <div id="kidsRow">
+            <label>Children on the floater <span id="kidsVal">1</span></label>
+            <input class="range" id="kids" type="range" min="0" max="4" value="1">
+          </div>
+        </div>
+
+        <label>City type</label>
+        <div class="chips">
+          <button type="button" class="chip" data-city="metro">Metro</button>
+          <button type="button" class="chip on" data-city="tier2">Tier-2 (Tirupati)</button>
+          <button type="button" class="chip" data-city="other">Other</button>
+        </div>
+
+        <label>Sum insured</label>
+        <div class="chips">
+          <button type="button" class="chip" data-sum="500000">₹5 L</button>
+          <button type="button" class="chip" data-sum="1000000">₹10 L</button>
+          <button type="button" class="chip on" data-sum="1500000">₹15 L</button>
+          <button type="button" class="chip" data-sum="2500000">₹25 L</button>
+          <button type="button" class="chip" data-sum="5000000">₹50 L</button>
+          <button type="button" class="chip" data-sum="10000000">₹1 Cr</button>
+        </div>
+
+        <div class="hl-row">
+          <div>
+            <label>Existing health cover</label>
+            <div class="chips">
+              <button type="button" class="chip on" data-exist="0">None</button>
+              <button type="button" class="chip" data-exist="500000">₹5 L</button>
+              <button type="button" class="chip" data-exist="1000000">₹10 L+</button>
+            </div>
+          </div>
+          <div>
+            <label>Pre-existing illness?</label>
+            <div class="chips">
+              <button type="button" class="chip on" data-ped="no">No</button>
+              <button type="button" class="chip" data-ped="yes">Yes</button>
+            </div>
+          </div>
+        </div>
+
+        <label>Ask quote through</label>
+        <div class="chips">
+          <button type="button" class="chip" data-via="Care Health">Care Health</button>
+          <button type="button" class="chip on" data-via="Niva Bupa">Niva Bupa</button>
+          <button type="button" class="chip" data-via="Tata AIG">Tata AIG</button>
+          <button type="button" class="chip" data-via="ICICI Lombard">ICICI Lombard</button>
+        </div>
+
+        <div class="hl-out">
+          <div class="kicker">Indicative annual premium</div>
+          <div class="big" id="outRange">₹0 – ₹0</div>
+          <div class="hl-metrics">
+            <div class="hl-m"><span>About</span><b id="outMonth">₹0/mo</b></div>
+            <div class="hl-m"><span>You selected</span><b id="outSi">₹15 L</b></div>
+            <div class="hl-m"><span>We suggest</span><b id="outRec">₹15 L</b></div>
+          </div>
+          <div class="bar"><i id="barFill"></i></div>
+          <p style="margin:10px 0 0;font-size:13px;color:#d5deea">Cover gap: <b id="outGap">—</b> · Quote via <b id="viaLabel">Niva Bupa</b></p>
+          <p style="margin:14px 0 0">
+            <a class="btn btn-gold" id="waQuote" target="_blank" rel="noopener">Get exact quote on WhatsApp</a>
+          </p>
+        </div>
+        <p class="disclaimer">
+          Illustration only. Premium depends on medical history, underwriting, room-rent option, riders and discounts.
+          The chosen insurer issues the contract — Fortune U Group does not. Care Health · Niva Bupa · Tata AIG · ICICI Lombard.
+          Tax benefit under Section 80D, if eligible. Insurance is the subject matter of solicitation.
+        </p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker" style="color:var(--gold-2)">Why this cover</div>
+      <h2>One admission in a private hospital can cost more than a year’s SIP.</h2>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <div class="icon">1</div>
+        <h3>Cashless network</h3>
+        <p class="muted">Hospitalisation through the insurer’s network, subject to policy terms. We help with intimation — the insurer approves the cashless request.</p>
+      </article>
+      <article class="card">
+        <div class="icon">2</div>
+        <h3>Protect the corpus</h3>
+        <p class="muted">Without cover, families break SIPs and gold. Health insurance is for the hospital bill. LIC / HDFC Life term is for income. Different jobs.</p>
+      </article>
+      <article class="card">
+        <div class="icon">3</div>
+        <h3>80D, if you pay tax</h3>
+        <p class="muted">Premiums may qualify under Section 80D. We are not tax advisers — confirm with your CA.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap two">
+    <div>
+      <h2>Typically covered</h2>
+      <p class="muted">In-patient hospitalisation, pre/post hospitalisation as per the plan, day-care procedures, and modern treatments if the product includes them. Waiting periods apply for PEDs and specific illnesses.</p>
+      <h2>Typically not a free lunch</h2>
+      <p class="muted">OPD unless bought, cosmetic treatment, non-payable consumables unless the plan says so, and anything in the exclusion list. Always read the prospectus and policy wording.</p>
+    </div>
+    <div class="card">
+      <h3>How we place the policy</h3>
+      <p class="muted">1. You share age, city, members.<br>2. We raise a proposal with one health insurer we hold a code with: <b>Care Health, Niva Bupa, Tata AIG or ICICI Lombard</b>.<br>3. Insurer may ask for medicals.<br>4. You pay the insurer. Fortune U Group earns commission from them.<br>5. Life / term is through <b>LIC</b> or <b>HDFC Life</b> — not this calculator.</p>
+      <a class="btn btn-navy" href="/contact.html">Prefer a callback</a>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap faq">
+    <h2>Questions we get in Tirupati</h2>
+    <details open>
+      <summary>Is this the official Niva Bupa / ICICI price?</summary>
+      <p class="muted">No. It is a planning range. Official premium is on the insurer quote after proposal and underwriting.</p>
+    </details>
+    <details>
+      <summary>Can you sell every company’s health plan?</summary>
+      <p class="muted">No. As an individual agent we solicit for the insurers that appointed us: Niva Bupa (health), LIC (life), ICICI Lombard (general). We are not a broker.</p>
+    </details>
+    <details>
+      <summary>Family floater or separate covers?</summary>
+      <p class="muted">Young family: floater is often enough. If parents are older, a separate senior cover is usually cleaner. We will say which we can actually place.</p>
+    </details>
+    <details>
+      <summary>Do you charge a fee?</summary>
+      <p class="muted">No advisory fee. The insurer pays us commission if the policy is issued.</p>
+    </details>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="/js/config.js"></script>
+<script src="/js/site.js"></script>
+<script src="/js/health-calc.js"></script>
+</body>
+</html>
