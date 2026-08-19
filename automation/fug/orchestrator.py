@@ -83,6 +83,22 @@ class Orchestrator:
     def _on_lead_captured(self, payload, execution_id):
         return self.website_agent.intake(payload, execution_id)
 
+    def _on_lead_validated(self, payload, execution_id):
+        """Re-validate an existing lead (from WF-02) and persist the result."""
+        result = self.lead_agent.ingest(payload, execution_id)
+        return result
+
+    def _on_approval_requested(self, payload, execution_id):
+        """Enqueue a human-approval request for a content/publish item."""
+        req = self.approvals.create_request(
+            item_type=payload.get("item_type", "content"),
+            item_ref=payload.get("item_ref", ""),
+            summary=payload.get("summary", ""),
+            payload=payload.get("payload", {}),
+            requires_human=payload.get("requires_human", True),
+        )
+        return {"approval_id": req["approval_id"], "state": req["state"]}
+
     def _on_inbound_message(self, payload, execution_id):
         lead = self.crm.get_lead(payload.get("lead_id") or "")
         if not lead:

@@ -12,7 +12,7 @@
           ]
         }
       },
-      "id": "98dac7f940c042109fb4d446",
+      "id": "7838613ee5b353faae0ce812",
       "name": "Every 15 min",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
@@ -30,7 +30,7 @@
         "jsonBody": "{\"type\": \"WORKFLOW_FAILURE\", \"payload\": {}}",
         "options": {}
       },
-      "id": "15ae77ee835543988437a316",
+      "id": "cabf4fe0a44a59a28ccf21e1",
       "name": "Process open errors",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -43,7 +43,7 @@
       "parameters": {
         "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
       },
-      "id": "b72b6c40cf8d49a5bfb0718e",
+      "id": "438464c1861d590cbdc132bc",
       "name": "Errors processed",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
@@ -81,6 +81,6 @@
     "executionOrder": "v1"
   },
   "active": true,
-  "versionId": "21b4143bd9aa4fabbef8cbb063b20f38",
+  "versionId": "1e8779628f915a1485b4f6dcb86f679e",
   "pinData": {}
 }

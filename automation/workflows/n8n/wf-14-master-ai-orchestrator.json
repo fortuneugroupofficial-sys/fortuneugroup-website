@@ -7,7 +7,7 @@
         "path": "master",
         "responseMode": "onReceived"
       },
-      "id": "2f2dbe1bb66e4f00babce71d",
+      "id": "7eed8d783ded5055beb714f0",
       "name": "Master Inbox",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
@@ -38,7 +38,7 @@
           ]
         }
       },
-      "id": "71104ffa85654556971b5818",
+      "id": "d0a3a02eaea75d2e929167ef",
       "name": "Is approval decision?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -51,7 +51,7 @@
       "parameters": {
         "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
       },
-      "id": "c6f262ef78534948955081e6",
+      "id": "edd486af184258869a6ca147",
       "name": "Route to approval",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
@@ -90,6 +90,6 @@
     "executionOrder": "v1"
   },
   "active": true,
-  "versionId": "7ab0f6a90194434a84ee75b4b9bbf7fd",
+  "versionId": "f3ce1a4eacb750b49de3f3acf0829ba6",
   "pinData": {}
 }

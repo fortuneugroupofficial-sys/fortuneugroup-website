@@ -12,7 +12,7 @@
           ]
         }
       },
-      "id": "98ce33c6e48d4686948f72d8",
+      "id": "f7d5ce36ca105004a83124e8",
       "name": "Weekly",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
@@ -30,7 +30,7 @@
         "jsonBody": "{\"type\": \"SCHEDULED_TASK\", \"payload\": {\"task\": \"seo\"}}",
         "options": {}
       },
-      "id": "ae2bdb86b04e460c811f1fc3",
+      "id": "3d28b8e259245d85909de9c4",
       "name": "Run SEO audit",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -43,7 +43,7 @@
       "parameters": {
         "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
       },
-      "id": "e3b0861c77574778b2d802db",
+      "id": "2803a70b37e0522f8882ee5e",
       "name": "Audit done",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
@@ -81,6 +81,6 @@
     "executionOrder": "v1"
   },
   "active": true,
-  "versionId": "2f483d5c79814ddda214bf0f64218084",
+  "versionId": "37d52826013c5b4981d88231d1bbb170",
   "pinData": {}
 }

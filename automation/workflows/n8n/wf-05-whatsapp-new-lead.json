@@ -12,7 +12,7 @@
           ]
         }
       },
-      "id": "a20ce169a49c4eb48ca02252",
+      "id": "9ab20c004bf75d2e80416744",
       "name": "Every 5 min",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
@@ -30,7 +30,7 @@
         "jsonBody": "{\"type\": \"LEAD_CAPTURED\", \"payload\": \"={{ $json }}\"}",
         "options": {}
       },
-      "id": "48f9b0a2b1f94ad38dde5bee",
+      "id": "fdba1acbaaca5a2ebb31896f",
       "name": "Send ack via FUG",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -43,7 +43,7 @@
       "parameters": {
         "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
       },
-      "id": "519c2691a6d448ecb44e719c",
+      "id": "764aede6222d5a30b1ad1053",
       "name": "Ack sent",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
@@ -81,6 +81,6 @@
     "executionOrder": "v1"
   },
   "active": true,
-  "versionId": "0cb5d306c30c46de85cee66de54d4b5c",
+  "versionId": "7b234ee17faa5566a69c9f84e2c0521c",
   "pinData": {}
 }

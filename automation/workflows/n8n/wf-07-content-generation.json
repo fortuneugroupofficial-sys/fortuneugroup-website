@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {},
-      "id": "b4c236949f164ea9be399b2e",
+      "id": "76147441c98c5e0b9e4d29e7",
       "name": "When clicking 'Execute'",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
@@ -21,7 +21,7 @@
         "jsonBody": "{\"type\": \"CONTENT_REQUEST\", \"payload\": \"={{ $json }}\"}",
         "options": {}
       },
-      "id": "ad9e7e36ae044bc9a5226c98",
+      "id": "143eb51796d55b0685b43d30",
       "name": "Generate content",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -34,7 +34,7 @@
       "parameters": {
         "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
       },
-      "id": "dcee86993fe84a078543b191",
+      "id": "c5443c0453c954d7b2f73aa9",
       "name": "Content drafted",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
@@ -72,6 +72,6 @@
     "executionOrder": "v1"
   },
   "active": true,
-  "versionId": "b17de30ee57f4963ab2a01bca0df46de",
+  "versionId": "a3ba9ffe734951c0b49718a286044ec0",
   "pinData": {}
 }

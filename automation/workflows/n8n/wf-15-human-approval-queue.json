@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {},
-      "id": "de8d7eefa3b14c26b180a877",
+      "id": "76147441c98c5e0b9e4d29e7",
       "name": "When clicking 'Execute'",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
@@ -34,7 +34,7 @@
           ]
         }
       },
-      "id": "ea9799708ab1432cb27496a6",
+      "id": "6bbdb892826f5495a6649f0c",
       "name": "Approved?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -52,7 +52,7 @@
         "jsonBody": "{\"type\": \"APPROVAL_DECIDED\", \"payload\": \"={{ $json }}\"}",
         "options": {}
       },
-      "id": "ce11733bcc3d4253a7137194",
+      "id": "7c7750fc9ccf55e2a8220d87",
       "name": "Notify approval",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -65,7 +65,7 @@
       "parameters": {
         "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
       },
-      "id": "69d28c593c3e463082c9960e",
+      "id": "864c77f59b6d5d96b2390811",
       "name": "Decision recorded",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
@@ -115,6 +115,6 @@
     "executionOrder": "v1"
   },
   "active": true,
-  "versionId": "8c81c2dd4a5d4cc4b7637cfd31fd5917",
+  "versionId": "bbfcac9495285cf2b0e6e792ce4ee3d5",
   "pinData": {}
 }

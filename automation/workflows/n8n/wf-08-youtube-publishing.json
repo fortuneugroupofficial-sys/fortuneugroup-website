@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {},
-      "id": "de63b4e35f9142b8be75a8e6",
+      "id": "76147441c98c5e0b9e4d29e7",
       "name": "When clicking 'Execute'",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
@@ -21,7 +21,7 @@
         "jsonBody": "{\"type\": \"PUBLISH_REQUEST\", \"payload\": \"={{ $json }}\"}",
         "options": {}
       },
-      "id": "ce3dc7003edd43c19619c0d0",
+      "id": "f9ae4779e3805fdf8c1f0ebf",
       "name": "Publish via FUG",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -34,7 +34,7 @@
       "parameters": {
         "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
       },
-      "id": "987a1a24304c492f90ebcb39",
+      "id": "e9cbb4388eb25c08873c4847",
       "name": "YouTube publish result",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
@@ -72,6 +72,6 @@
     "executionOrder": "v1"
   },
   "active": false,
-  "versionId": "3c201fe1396a42b08dfc6dc80242bfe4",
+  "versionId": "c5b663436470502f9d5da7a10975c98c",
   "pinData": {}
 }

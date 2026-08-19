@@ -18,14 +18,16 @@ OUT = Path(__file__).resolve().parents[1] / "workflows" / "n8n"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
-def nid() -> str:
-    return uuid.uuid4().hex[:24]
+def nid(*parts: str) -> str:
+    """Deterministic node id so regeneration is idempotent (stable diffs)."""
+    key = ":".join(parts)
+    return uuid.uuid5(uuid.NAMESPACE_DNS, key).hex[:24]
 
 
 def webhook_node(name, path, http_method="POST"):
     return {
         "parameters": {"httpMethod": http_method, "path": path, "responseMode": "onReceived"},
-        "id": nid(),
+        "id": nid(name),
         "name": name,
         "type": "n8n-nodes-base.webhook",
         "typeVersion": 2,
@@ -36,7 +38,7 @@ def webhook_node(name, path, http_method="POST"):
 def schedule_node(name, rule):
     return {
         "parameters": {"rule": rule},
-        "id": nid(),
+        "id": nid(name),
         "name": name,
         "type": "n8n-nodes-base.scheduleTrigger",
         "typeVersion": 1.2,
@@ -47,7 +49,7 @@ def schedule_node(name, rule):
 def manual_node(name="When clicking 'Execute'"):
     return {
         "parameters": {},
-        "id": nid(),
+        "id": nid(name),
         "name": name,
         "type": "n8n-nodes-base.manualTrigger",
         "typeVersion": 1,
@@ -73,7 +75,7 @@ def http_request_node(name, url, method="POST", send_body=True, json_body=None, 
         params["genericAuthType"] = auth
     return {
         "parameters": params,
-        "id": nid(),
+        "id": nid(name),
         "name": name,
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
@@ -84,7 +86,7 @@ def http_request_node(name, url, method="POST", send_body=True, json_body=None, 
 def if_node(name, condition_json):
     return {
         "parameters": {"conditions": {"options": {"caseSensitive": True, "leftValue": "", "typeValidation": "loose"}, "conditions": [condition_json]}},
-        "id": nid(),
+        "id": nid(name),
         "name": name,
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
@@ -95,7 +97,7 @@ def if_node(name, condition_json):
 def log_node(name):
     return {
         "parameters": {"content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"},
-        "id": nid(),
+        "id": nid(name),
         "name": name,
         "type": "n8n-nodes-base.noOp",
         "typeVersion": 1,
@@ -110,7 +112,7 @@ def build(name, active, nodes, connections, settings=None):
         "connections": connections,
         "settings": settings or {"executionOrder": "v1"},
         "active": active,
-        "versionId": uuid.uuid4().hex,
+        "versionId": uuid.uuid5(uuid.NAMESPACE_DNS, "wf:" + name).hex,
         "pinData": {},
     }
 
@@ -141,11 +143,20 @@ def wf02_lead_validation():
     nodes = [
         manual_node(),
         if_node("Phone present & 12 digits", [{"leftValue": "={{ $json.phone.length }}", "rightValue": 12, "operator": {"type": "number", "operation": "equals"}}]),
-        log_node("Valid lead"),
+        http_request_node("Send validated lead to FUG", FUG_URL,
+                          json_body={"type": "LEAD_CAPTURED", "payload": "={{ $json }}"}),
+        log_node("Valid lead forwarded"),
+        log_node("Invalid lead rejected"),
     ]
     connections = {
         "When clicking 'Execute'": {"main": [[{"node": "Phone present & 12 digits", "type": "main", "index": 0}]]},
-        "Phone present & 12 digits": {"main": [[{"node": "Valid lead", "type": "main", "index": 0}], []]},
+        "Phone present & 12 digits": {
+            "main": [
+                [{"node": "Send validated lead to FUG", "type": "main", "index": 0}],
+                [{"node": "Invalid lead rejected", "type": "main", "index": 0}],
+            ]
+        },
+        "Send validated lead to FUG": {"main": [[{"node": "Valid lead forwarded", "type": "main", "index": 0}]]},
     }
     return build("WF-02 Lead Validation", True, nodes, connections)
 

@@ -12,7 +12,7 @@
           ]
         }
       },
-      "id": "84ce434438a24cc6b2d25452",
+      "id": "cf176aeb8bd85f3686ed1753",
       "name": "Every hour",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
@@ -30,7 +30,7 @@
         "jsonBody": "{\"type\": \"FOLLOWUP_DUE\", \"payload\": {}}",
         "options": {}
       },
-      "id": "b8862d17195647948a0629ee",
+      "id": "32fc7cd4a0ed5899b27fbce7",
       "name": "Process due follow-ups",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -43,7 +43,7 @@
       "parameters": {
         "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
       },
-      "id": "275badd73d574d7bad63b632",
+      "id": "845729aeb10d54d78d91fbbc",
       "name": "Follow-up run",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
@@ -81,6 +81,6 @@
     "executionOrder": "v1"
   },
   "active": true,
-  "versionId": "6d3ce0f1261d48e382035228b84172d3",
+  "versionId": "0f8e002eae345cdebb35499b17ceca3b",
   "pinData": {}
 }

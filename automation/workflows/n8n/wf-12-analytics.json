@@ -12,7 +12,7 @@
           ]
         }
       },
-      "id": "68c96f5c895643b4a84f7b8c",
+      "id": "c4ea1fb42ec354efa5d412c2",
       "name": "Daily",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
@@ -30,7 +30,7 @@
         "jsonBody": "{\"type\": \"REPORT_REQUEST\", \"payload\": {\"kind\": \"daily\"}}",
         "options": {}
       },
-      "id": "002d9df16bcb423ca607fed5",
+      "id": "ce1063feee765451a59dcdeb",
       "name": "Generate report",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -43,7 +43,7 @@
       "parameters": {
         "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
       },
-      "id": "076773e927254a56a3d76f15",
+      "id": "47c64061cad457cdb40ae0fc",
       "name": "Report",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
@@ -81,6 +81,6 @@
     "executionOrder": "v1"
   },
   "active": true,
-  "versionId": "d17287c9c0cf4f25af8483e617cffec1",
+  "versionId": "6cbe7d5a1be65cd7af37fa86075c472f",
   "pinData": {}
 }

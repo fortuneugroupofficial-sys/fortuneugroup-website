@@ -62,6 +62,32 @@ class OrchestratorTests(unittest.TestCase):
         self.assertEqual(result["result"]["status"], "blocked")
         self.assertIn("approval_id", result["result"])
 
+    def test_all_event_types_have_handlers(self):
+        from fug import constants
+
+        for et in constants.EVENT_TYPES:
+            result = self.orch.route({"type": et, "payload": {}})
+            # Must not be "no handler" error.
+            if result.get("status") == "error":
+                self.assertNotIn("no handler", result.get("reason", ""), et)
+
+    def test_approval_requested_routes(self):
+        result = self.orch.route({
+            "type": "APPROVAL_REQUESTED",
+            "payload": {"item_type": "content", "item_ref": "t1", "summary": "s"},
+        })
+        self.assertEqual(result["status"], "ok")
+        self.assertIn("approval_id", result["result"])
+        self.assertEqual(result["result"]["state"], "DRAFT")
+
+    def test_lead_validated_routes(self):
+        result = self.orch.route({
+            "type": "LEAD_VALIDATED",
+            "payload": {"name": "Ravi", "mobile": "9490237465"},
+        })
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["result"]["status"], "new")
+
 
 if __name__ == "__main__":
     unittest.main()
