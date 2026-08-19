@@ -195,7 +195,7 @@ const Services = () => {
       <Card className="p-6 text-center">
         <div className="text-4xl mb-4">🎯</div>
         <h3 className="font-bold text-lg text-brand-navy">
-          Expert Financial Guidance
+          Transparent Financial Guidance
         </h3>
       </Card>
 
@@ -209,14 +209,14 @@ const Services = () => {
       <Card className="p-6 text-center">
         <div className="text-4xl mb-4">🤝</div>
         <h3 className="font-bold text-lg text-brand-navy">
-          Transparent Advice
+          Transparent Guidance
         </h3>
       </Card>
 
       <Card className="p-6 text-center">
         <div className="text-4xl mb-4">🛡️</div>
         <h3 className="font-bold text-lg text-brand-navy">
-          SEBI-Compliant
+          Investor-First Approach
         </h3>
       </Card>
 
@@ -303,7 +303,7 @@ const Services = () => {
       {[
         "Understand Your Goals",
         "Analyze Financial Situation",
-        "Recommend Best Products",
+        "Present Suitable Options",
         "Complete Documentation",
         "Ongoing Portfolio Review",
       ].map((step, index) => (

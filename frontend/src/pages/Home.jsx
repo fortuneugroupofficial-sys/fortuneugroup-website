@@ -18,7 +18,7 @@ const serviceCards = [
   { icon: PiggyBank, title: "SIP Planning", desc: "Disciplined monthly investing that compounds for decades." },
   { icon: GraduationCap, title: "Financial Education", desc: "Investor literacy, personal finance, smart money habits." },
   { icon: Shield, title: "Term & Health Insurance", desc: "Protect family income and shield savings from medical costs." },
-  { icon: BarChart3, title: "Retirement Planning", desc: "Build a crorepati retirement corpus with steady SIPs." },
+  { icon: BarChart3, title: "Retirement Planning", desc: "Build a retirement corpus over time through steady SIPs." },
 ];
 
 const seriesData = (() => {
@@ -68,7 +68,7 @@ const Home = () => {
                 <>
                  Achieve Your Financial Goals With
                 <br />
-                <span className="text-[#D4AF37]">Expert Planning</span>
+                <span className="text-[#D4AF37]">Goal-Based Planning</span>
                 </>
               </h1>
               <p className="mt-5 text-base sm:text-lg text-brand-mute leading-relaxed max-w-2xl reveal reveal-3">{t("hero.sub")}</p>
@@ -88,7 +88,7 @@ const Home = () => {
               </div>
 
               <div className="mt-12 grid grid-cols-3 gap-6 max-w-xl">
-                {[{n:"100+", l:"Invesors Educated"}, {n:"6+ Yrs", l:"Market Experience"}, {n:"Goal Based", l:"Financial Planning"}].map((s, i)=>(
+                {[{n:"100+", l:"Investors Educated"}, {n:"6+ Yrs", l:"Market Experience"}, {n:"Goal Based", l:"Financial Planning"}].map((s, i)=>(
                   <div key={i} className="reveal reveal-4">
                     <div className="font-display text-2xl md:text-3xl font-semibold text-brand-navy">{s.n}</div>
                     <div className="text-xs text-brand-mute mt-1">{s.l}</div>
@@ -106,7 +106,7 @@ const Home = () => {
                    />
                 <div className="p-5 grid grid-cols-2 gap-4 bg-white">
                   <div>
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-brand-yellow font-bold">Wealth (20-Yr SIP)</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-brand-yellow font-bold">Illustrative Wealth (20-Yr SIP)</div>
                     <div className="font-display text-2xl text-brand-navy font-semibold">₹98.9 L</div>
                   </div>
                   <div>
@@ -133,8 +133,8 @@ const Home = () => {
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 rounded-full bg-brand-navy/10 flex items-center justify-center text-brand-yellow"><Award className="w-5 h-5" /></div>
                   <div>
-                    <div className="text-xs font-semibold text-brand-navy">SEBI-aware</div>
-                    <div className="text-[10px] text-brand-mute">Investor-first approach</div>
+                    <div className="text-xs font-semibold text-brand-navy">Investor-first</div>
+                    <div className="text-[10px] text-brand-mute">Education-first approach</div>
                   </div>
                 </div>
               </div>
@@ -203,8 +203,8 @@ const Home = () => {
         <TrendingUp className="w-12 h-12 text-[#D4AF37] mb-5" />
         <h3 className="text-xl font-bold mb-3">Long Term Wealth</h3>
         <p className="text-gray-600">
-          SIP investments designed to build wealth consistently over
-          10–30 years.
+          SIP investing can help build wealth over the long term through
+          disciplined, regular contributions.
         </p>
       </Card>
 
@@ -297,10 +297,10 @@ const Home = () => {
           3
         </div>
         <h3 className="text-xl font-bold mb-3">
-          Personalized Plan
+          Goal-Based Plan
         </h3>
         <p className="text-gray-600">
-          Create a customized investment and protection strategy.
+          Create a goal-based investment and protection plan.
         </p>
       </Card>
 
@@ -377,7 +377,7 @@ const Home = () => {
       </h2>
 
       <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
-        Hundreds of investors trust Fortune U Group for SIP Planning,
+        Families across India turn to Fortune U Group for SIP Planning,
         Mutual Funds, Insurance and Goal-Based Financial Planning.
       </p>
     </div>
@@ -422,7 +422,7 @@ const Home = () => {
         <div className="text-yellow-500 text-xl">★★★★★</div>
 
         <p className="mt-5 text-gray-600">
-          Best Mutual Fund and Insurance consultation.
+          Clear Mutual Fund and Insurance guidance.
           Highly recommended for families.
         </p>
 
@@ -506,7 +506,7 @@ const Home = () => {
       <Card className="p-8 rounded-2xl shadow-lg">
 
         <h3 className="text-2xl font-bold mb-8">
-          Estimated Result
+          Illustrative Result
         </h3>
 
         <div className="space-y-5">
@@ -531,6 +531,11 @@ const Home = () => {
           </div>
 
         </div>
+
+        <p className="mt-6 text-xs text-brand-mute leading-relaxed">
+          Illustrative example only. Actual returns vary and are not guaranteed.
+          Mutual fund investments are subject to market risks.
+        </p>
 
       </Card>
 
@@ -595,7 +600,7 @@ const Home = () => {
           Do you provide financial planning?
         </h3>
         <p className="text-gray-600 mt-2">
-          Yes. We help you create personalized financial plans for retirement,
+          Yes. We help you work towards goal-based financial plans for retirement,
           child education, wealth creation and protection.
         </p>
       </Card>
@@ -606,7 +611,7 @@ const Home = () => {
         </h3>
         <p className="text-gray-600 mt-2">
           Click "Get Free Consultation" or contact us on WhatsApp. We'll help
-          you choose the right investment strategy.
+          you explore investment options.
         </p>
       </Card>
 

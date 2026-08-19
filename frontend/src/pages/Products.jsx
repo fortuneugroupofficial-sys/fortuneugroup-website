@@ -684,7 +684,7 @@ export default function ProductsPage() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                    <p className="text-xs text-white/50 mb-1">Recommended coverage range</p>
+                    <p className="text-xs text-white/50 mb-1">Suggested coverage range</p>
                     <p className="text-xl font-bold text-[#D4AF37]">{fmt(calc.low)} – {fmt(calc.high)}</p>
                   </div>
                   <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
@@ -700,7 +700,7 @@ export default function ProductsPage() {
                 </div>
 
                 <p className="mt-5 text-sm text-white/70 leading-relaxed">
-                  Your recommended cover of <strong className="text-white">{fmt(calc.low)}–{fmt(calc.high)}</strong> reflects
+                  Your suggested cover of <strong className="text-white">{fmt(calc.low)}–{fmt(calc.high)}</strong> reflects
                   a {planType} plan, {members} member{members > 1 ? "s" : ""}, age {age}, city tier and your chosen sum insured.
                 </p>
 
@@ -968,7 +968,7 @@ export default function ProductsPage() {
             Need Help Choosing the Right Health Insurance?
           </h2>
           <p className="mt-5 text-lg text-white/70 max-w-2xl mx-auto">
-            Our experts can help you understand your options and choose suitable coverage for your needs.
+            Our team can help you understand your options and choose suitable coverage for your needs.
           </p>
           <div className="flex flex-wrap justify-center gap-3 mt-9">
             <GoldBtn href="#calculator">Get Free Quote <ArrowRight className="w-4 h-4" /></GoldBtn>

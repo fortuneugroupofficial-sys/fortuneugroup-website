@@ -473,16 +473,20 @@ const downloadPDF = () => {
           {/* CAGR Badge */}
 
           <div className="absolute top-6 right-6 bg-green-100 text-green-700 font-bold rounded-full px-4 py-2 text-sm">
-            +12% CAGR
+            Illustrative
           </div>
 
           <p className="uppercase tracking-widest text-xs text-gray-500">
-            Projected Wealth
+            Illustrative Projection
           </p>
 
           <h2 className="mt-3 text-5xl font-bold text-[#0A2540]">
             ₹1,18,24,202
           </h2>
+
+          <p className="mt-2 text-xs text-gray-400">
+            Example only — assuming a 12% p.a. return. Actual returns vary and are not guaranteed.
+          </p>
 
           {/* Gold Line */}
 
@@ -563,6 +567,12 @@ const downloadPDF = () => {
           <TabsContent value="elss" className="mt-8"><ELSSCalc /></TabsContent>
           <TabsContent value="emi" className="mt-8"><EMICalc /></TabsContent>
         </Tabs>
+
+        <p className="mt-6 text-xs text-brand-mute text-center max-w-3xl mx-auto leading-relaxed">
+          All calculator results are illustrative estimates only and are not guaranteed returns.
+          Mutual fund investments are subject to market risks. Read all scheme-related documents carefully before investing.
+        </p>
+
         <section className="mt-20 rounded-3xl bg-gradient-to-r from-blue-700 to-blue-900 text-white p-10 text-center">
 
   <h2 className="text-4xl font-bold">
@@ -570,8 +580,8 @@ const downloadPDF = () => {
   </h2>
 
   <p className="mt-4 text-blue-100 max-w-2xl mx-auto">
-    Our financial experts can help you choose the right Mutual Funds,
-    Insurance and Loan solutions based on your goals.
+    Our team can help you explore Mutual Fund, Insurance and Loan options
+    based on your goals.
   </p>
 
   <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -766,39 +776,30 @@ const downloadPDF = () => {
         <p className="mt-3 text-gray-600">
           Long-term wealth creation through disciplined monthly investing.
         </p>
-        <div className="mt-6 text-3xl font-bold text-[#16A34A]">
-          ★★★★★
-        </div>
+        <p className="mt-6 text-xs text-brand-mute">
+          Market-linked — returns vary and are not guaranteed.
+        </p>
       </div>
 
       <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
         <h3 className="text-xl font-bold text-[#0A2540]">Fixed Deposit</h3>
         <p className="mt-3 text-gray-600">
-          Stable returns with lower risk but limited growth potential.
+          Fixed interest with comparatively lower risk but limited growth potential.
         </p>
-        <div className="mt-6 text-3xl font-bold text-yellow-500">
-          ★★★☆☆
-        </div>
       </div>
 
       <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
         <h3 className="text-xl font-bold text-[#0A2540]">Gold</h3>
         <p className="mt-3 text-gray-600">
-          Good for diversification and long-term value preservation.
+          Often used for diversification and long-term value preservation.
         </p>
-        <div className="mt-6 text-3xl font-bold text-yellow-500">
-          ★★★★☆
-        </div>
       </div>
 
       <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
         <h3 className="text-xl font-bold text-[#0A2540]">PPF</h3>
         <p className="mt-3 text-gray-600">
-          Safe tax-saving investment backed by the Government of India.
+          A government-backed, long-term tax-saving savings scheme.
         </p>
-        <div className="mt-6 text-3xl font-bold text-green-600">
-          ★★★★☆
-        </div>
       </div>
 
     </div>
@@ -875,11 +876,11 @@ const downloadPDF = () => {
         </div>
 
         <h3 className="mt-6 text-xl font-bold text-[#0A2540]">
-          Expert Guidance
+          Guidance
         </h3>
 
         <p className="mt-3 text-gray-600">
-          Connect with our team for personalized financial planning.
+          Connect with our team to learn more about financial planning.
         </p>
       </div>
 
@@ -909,13 +910,13 @@ const downloadPDF = () => {
           </h2>
 
           <p className="mt-4 text-blue-100 leading-8">
-            Get a personalized investment summary including SIP growth,
-            retirement corpus, goal planning and expert recommendations.
+            Get an educational summary including illustrative SIP growth,
+            retirement corpus and goal planning.
           </p>
 
           <ul className="mt-8 space-y-3 text-white">
 
-            <li>✅ SIP Projection Report</li>
+            <li>✅ SIP Projection Report (illustrative)</li>
 
             <li>✅ Retirement Planning Summary</li>
 
@@ -923,7 +924,7 @@ const downloadPDF = () => {
 
             <li>✅ Tax Saving Suggestions</li>
 
-            <li>✅ Expert Financial Tips</li>
+            <li>✅ Financial Tips</li>
 
           </ul>
 

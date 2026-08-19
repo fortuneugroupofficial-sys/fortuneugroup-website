@@ -172,7 +172,8 @@ export const Footer = () => {
             <li><Link to="/contact">Contact</Link></li>
             <li><Link to="/privacy-policy">Privacy Policy</Link></li>
             <li><Link to="/terms-and-conditions">Terms & Conditions</Link></li>
-            <li><Link to="/disclosure">Disclosure</Link></li>
+            <li><Link to="/disclaimer">Disclaimer</Link></li>
+            <li><Link to="/regulatory-disclosures">Regulatory Disclosures</Link></li>
           </ul>
         </div>
         <div>

@@ -30,7 +30,7 @@ const Blog = () => {
     <div data-testid="blog-page" className="bg-brand-bg">
       <SEO
   title="Investment & Financial Planning Blog | Fortune U Group"
-  description="Read expert articles on Mutual Funds, SIP Investments, Retirement Planning, Tax Saving, Insurance and Wealth Creation strategies."
+  description="Read informative articles on Mutual Funds, SIP Investments, Retirement Planning, Tax Saving, Insurance and Wealth Creation strategies."
   path="/blog"
    />
       {/* ================= HERO SECTION ================= */}
@@ -141,7 +141,7 @@ const Blog = () => {
           date: "June 2026"
         },
         {
-          title: "Best Health Insurance Plans",
+          title: "Health Insurance Plans Explained",
           image: "/images/blog2.png",
           category: "Insurance",
           date: "June 2026"
@@ -233,8 +233,8 @@ const Blog = () => {
       </h2>
 
       {[
-        "Top 10 Mutual Fund Investment Tips",
-        "Best Term Insurance Plans 2026",
+        "Mutual Fund Investment Tips",
+        "Term Insurance Plans — Key Considerations",
         "How to Improve Your Credit Score",
         "Personal Loan vs Home Loan",
         "Tax Saving Investment Guide"
@@ -332,10 +332,10 @@ const Blog = () => {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
 
       {[
-        { number: "100+", label: "Happy Clients" },
-        { number: "50+", label: "Financial Articles" },
-        { number: "₹10+ Cr", label: "Assets Guided" },
-        { number: "98%", label: "Client Satisfaction" },
+        { number: "Goal Based", label: "Financial Planning" },
+        { number: "Education First", label: "Investor Approach" },
+        { number: "Long Term", label: "Wealth Focus" },
+        { number: "Transparent", label: "Guidance" },
       ].map((item, index) => (
 
         <div
@@ -343,7 +343,7 @@ const Blog = () => {
           className="bg-white/10 backdrop-blur-md rounded-3xl p-8 text-center border border-white/20 hover:bg-white/20 transition duration-300"
         >
 
-          <h3 className="text-4xl font-bold text-yellow-400">
+          <h3 className="text-xl md:text-2xl font-bold text-yellow-400">
             {item.number}
           </h3>
 
@@ -366,7 +366,7 @@ const Blog = () => {
       </h2>
 
       <p className="text-gray-600 mt-5 max-w-2xl mx-auto">
-        Get personalized guidance on Mutual Funds, Insurance,
+        Get guidance on Mutual Funds, Insurance,
         Loans, Credit Cards and Wealth Creation from Fortune U Group.
       </p>
 
@@ -411,7 +411,7 @@ const Blog = () => {
       </h2>
 
       <p className="text-gray-600 mt-3">
-        Trusted by thousands of families across India.
+        What families across India share about their experience.
       </p>
 
     </div>
@@ -425,7 +425,7 @@ const Blog = () => {
         },
         {
           name: "Priya Sharma",
-          text: "Helped me choose the best SIP and insurance plan."
+          text: "Helped me understand and choose a SIP and insurance plan."
         },
         {
           name: "Suresh Reddy",

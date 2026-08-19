@@ -16,6 +16,7 @@ import Contact from "./pages/Contact";
 import PrivacyPolicy from "./pages/Privacypolicy";
 import TermsConditions from "./pages/Terms&Conditions";
 import Disclosure from "./pages/Disclosure";
+import Disclaimer from "./pages/Disclaimer";
 import "./App.css";
 import AIChatWidget from "./components/ui/AIChatWidget";
 
@@ -39,6 +40,8 @@ function App() {
           <Route path="/terms-and-conditions" element={<Layout><TermsConditions /></Layout>} />
 
           <Route path="/disclosure" element={<Layout><Disclosure /></Layout>} />
+          <Route path="/regulatory-disclosures" element={<Layout><Disclosure /></Layout>} />
+          <Route path="/disclaimer" element={<Layout><Disclaimer /></Layout>} />
           <Route path="/health" element={<Layout><Health /></Layout>} />
         </Routes>
         <AIChatWidget />

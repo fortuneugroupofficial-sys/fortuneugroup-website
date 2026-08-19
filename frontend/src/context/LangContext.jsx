@@ -8,7 +8,7 @@ const DICT = {
     hero: {
      eyebrow: "Mutual Fund Distributor • Financial Planning • SIP Investments",
 
-     title: "Achieve Your Financial Goals With Expert Planning",
+     title: "Achieve Your Financial Goals With Goal-Based Planning",
 
      sub: "Mutual Funds • SIP Planning • Goal-Based Investing • Retirement Planning • Insurance Guidance",
 

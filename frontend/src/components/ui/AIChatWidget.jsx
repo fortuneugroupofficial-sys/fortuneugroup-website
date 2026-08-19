@@ -180,6 +180,17 @@ export default function AIChatWidget() {
           }}
         >
           {response || "👋 Welcome to Fortune U Group AI.\n\nమీ ప్రశ్న అడగండి."}
+          <div style={{
+            fontSize: "10px",
+            color: "#888",
+            lineHeight: "1.4",
+            paddingTop: "10px",
+            marginTop: "10px",
+            borderTop: "1px solid #e0e0e0",
+          }}>
+            This assistant provides general educational information only, not personalised investment advice.
+            Final premiums and claims are subject to insurer underwriting and policy terms.
+          </div>
         </div>
       </div>
     )}

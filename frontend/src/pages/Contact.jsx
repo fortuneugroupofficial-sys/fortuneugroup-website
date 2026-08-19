@@ -45,7 +45,7 @@ const Contact = () => {
   <>
     <SEO
       title="Contact Fortune U Group | Mutual Fund Distributor in Tirupati"
-      description="Contact Fortune U Group for expert guidance on Mutual Funds, SIP Investments, 
+      description="Contact Fortune U Group for guidance on Mutual Funds, SIP Investments, 
       Financial Planning, Retirement Planning and Insurance solutions."
       path="/contact"
     />
@@ -63,7 +63,7 @@ const Contact = () => {
     </h1>
 
     <p className="mt-6 text-lg text-gray-200 max-w-3xl mx-auto">
-      Get expert guidance on Mutual Funds, SIP Planning, Insurance,
+      Get guidance on Mutual Funds, SIP Planning, Insurance,
       Retirement Planning and Wealth Creation.
     </p>
 
@@ -168,7 +168,7 @@ const Contact = () => {
           Trusted Guidance
         </h3>
         <p className="mt-3 text-gray-600">
-          Transparent advice with an investor-first approach.
+          Transparent guidance with an investor-first approach.
         </p>
       </div>
 

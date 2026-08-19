@@ -7,7 +7,7 @@ import { useLang } from "../context/LangContext";
 
 const values = [
   { icon: "Trust", desc: "Investor-first conversations, always." },
-  { icon: "Transparency", desc: "Clear costs, clear advice, clear outcomes." },
+  { icon: "Transparency", desc: "Clear costs, clear guidance, clear outcomes." },
   { icon: "Long-Term Thinking", desc: "Decades, not days. Compounding does the magic." },
   { icon: "Investor Education", desc: "We teach you the 'why', not just the 'what'." },
   { icon: "Client-Centric", desc: "Your goals lead our recommendations." },
@@ -155,7 +155,7 @@ const About = () => {
 
         <p className="text-gray-600 leading-8 mb-5">
           Our mission is to simplify investing, insurance, loans and wealth
-          planning through honest advice, goal-based planning and long-term
+          planning through honest guidance, goal-based planning and long-term
           relationships.
         </p>
 
@@ -188,7 +188,7 @@ const About = () => {
 
       <p className="mt-5 text-gray-600 max-w-3xl mx-auto">
         We are committed to helping Indian families achieve financial
-        independence through trusted advice and disciplined planning.
+        independence through trusted guidance and disciplined planning.
       </p>
       </div>
 
@@ -208,9 +208,9 @@ const About = () => {
 
         <p className="mt-5 text-gray-600 leading-8">
           To simplify financial planning and empower individuals and families
-          with expert guidance in Mutual Funds, SIPs, Insurance, Loans and
+          with clear guidance in Mutual Funds, SIPs, Insurance, Loans and
           Wealth Creation. We believe every family deserves honest,
-          transparent and goal-based financial advice.
+          transparent and goal-based financial guidance.
         </p>
 
       </div>
@@ -487,7 +487,7 @@ const About = () => {
       </h2>
 
       <p className="mt-5 text-gray-600 max-w-3xl mx-auto leading-8">
-        We combine financial expertise, transparent guidance and long-term
+        We combine financial knowledge, transparent guidance and long-term
         relationships to help you build, protect and grow your wealth.
       </p>
     </div>
@@ -506,7 +506,7 @@ const About = () => {
       {/* Card 2 */}
       <div className="bg-white rounded-3xl p-8 border border-gray-200 shadow-lg hover:shadow-2xl hover:-translate-y-2 hover:border-[#D4AF37] transition-all duration-300">
         <div className="w-16 h-16 rounded-2xl bg-[#FFF8E1] flex items-center justify-center text-3xl">📈</div>
-        <h3 className="mt-6 text-2xl font-bold text-[#0A2540]">Mutual Fund Expertise</h3>
+        <h3 className="mt-6 text-2xl font-bold text-[#0A2540]">Mutual Fund Knowledge</h3>
         <p className="mt-4 text-gray-600 leading-7">
           SIPs, ELSS, Equity, Hybrid and Debt Funds selected to suit your goals.
         </p>
@@ -524,7 +524,7 @@ const About = () => {
       {/* Card 4 */}
       <div className="bg-white rounded-3xl p-8 border border-gray-200 shadow-lg hover:shadow-2xl hover:-translate-y-2 hover:border-[#D4AF37] transition-all duration-300">
         <div className="w-16 h-16 rounded-2xl bg-[#FFF8E1] flex items-center justify-center text-3xl">🤝</div>
-        <h3 className="mt-6 text-2xl font-bold text-[#0A2540]">Transparent Advice</h3>
+        <h3 className="mt-6 text-2xl font-bold text-[#0A2540]">Transparent Guidance</h3>
         <p className="mt-4 text-gray-600 leading-7">
           Honest recommendations with complete transparency and no unnecessary complexity.
         </p>
