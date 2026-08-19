@@ -8,7 +8,6 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import Health from "./pages/Health";
-import Products from "./pages/Products";
 import Tools from "./pages/Tools";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -30,7 +29,7 @@ function App() {
           <Route path="/about" element={<Layout><About /></Layout>} />
           <Route path="/services" element={<Layout><Services /></Layout>} />
           <Route path="/tools" element={<Layout><Tools /></Layout>} />
-          <Route path="/products" element={<Layout><Products /></Layout>} />
+          <Route path="/Products" element={<Layout><Health /></Layout>} />
           <Route path="/blog" element={<Layout><Blog /></Layout>} />
           <Route path="/blog/:slug" element={<Layout><BlogPost /></Layout>} />
           <Route path="/contact" element={<Layout><Contact /></Layout>} />
@@ -39,7 +38,6 @@ function App() {
           <Route path="/terms-and-conditions" element={<Layout><TermsConditions /></Layout>} />
 
           <Route path="/disclosure" element={<Layout><Disclosure /></Layout>} />
-          <Route path="/health" element={<Layout><Health /></Layout>} />
         </Routes>
         <AIChatWidget />
       </LangProvider>
