@@ -1,0 +1,5 @@
+# Fortune U Group automation system — Python stdlib only.
+# No third-party runtime dependencies are required.
+#
+# Optional, for development only:
+#   pytest            # run the test suite

@@ -1,0 +1,124 @@
+{
+  "name": "WF-01 Website Lead Intake",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "book-consultation",
+        "responseMode": "onReceived"
+      },
+      "id": "6e93aba315e54bb99cb50e4c",
+      "name": "Website Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://{{your-domain}}/webhook/lead",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"type\": \"LEAD_CAPTURED\", \"payload\": \"={{ $json.body }}\"}",
+        "options": {}
+      },
+      "id": "0900f437b66145f0821236dd",
+      "name": "Send to FUG CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            [
+              {
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "ok",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ]
+          ]
+        }
+      },
+      "id": "36ea1d5a547f4503b7a4565d",
+      "name": "Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
+      },
+      "id": "7cd3dc8af891468ca1f71d98",
+      "name": "Log",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Website Lead": {
+      "main": [
+        [
+          {
+            "node": "Send to FUG CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to FUG CRM": {
+      "main": [
+        [
+          {
+            "node": "Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valid?": {
+      "main": [
+        [
+          {
+            "node": "Log",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": true,
+  "versionId": "26fb85ec923648e9829e6276f4bafb09",
+  "pinData": {}
+}

@@ -1,0 +1,86 @@
+{
+  "name": "WF-12 Analytics",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "68c96f5c895643b4a84f7b8c",
+      "name": "Daily",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://{{your-domain}}/webhook/lead",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"type\": \"REPORT_REQUEST\", \"payload\": {\"kind\": \"daily\"}}",
+        "options": {}
+      },
+      "id": "002d9df16bcb423ca607fed5",
+      "name": "Generate report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
+      },
+      "id": "076773e927254a56a3d76f15",
+      "name": "Report",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Daily": {
+      "main": [
+        [
+          {
+            "node": "Generate report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate report": {
+      "main": [
+        [
+          {
+            "node": "Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": true,
+  "versionId": "d17287c9c0cf4f25af8483e617cffec1",
+  "pinData": {}
+}

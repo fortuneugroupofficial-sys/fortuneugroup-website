@@ -1,0 +1,86 @@
+{
+  "name": "WF-13 Error Monitoring",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "98dac7f940c042109fb4d446",
+      "name": "Every 15 min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://{{your-domain}}/webhook/lead",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"type\": \"WORKFLOW_FAILURE\", \"payload\": {}}",
+        "options": {}
+      },
+      "id": "15ae77ee835543988437a316",
+      "name": "Process open errors",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
+      },
+      "id": "b72b6c40cf8d49a5bfb0718e",
+      "name": "Errors processed",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Every 15 min": {
+      "main": [
+        [
+          {
+            "node": "Process open errors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process open errors": {
+      "main": [
+        [
+          {
+            "node": "Errors processed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": true,
+  "versionId": "21b4143bd9aa4fabbef8cbb063b20f38",
+  "pinData": {}
+}

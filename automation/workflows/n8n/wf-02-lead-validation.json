@@ -1,0 +1,91 @@
+{
+  "name": "WF-02 Lead Validation",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "2c93f18071bb4dbe982760d3",
+      "name": "When clicking 'Execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            [
+              {
+                "leftValue": "={{ $json.phone.length }}",
+                "rightValue": 12,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ]
+          ]
+        }
+      },
+      "id": "a8468a5584644bee8414d517",
+      "name": "Phone present & 12 digits",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
+      },
+      "id": "04c83d0f11be4bbb91ddeb8b",
+      "name": "Valid lead",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking 'Execute'": {
+      "main": [
+        [
+          {
+            "node": "Phone present & 12 digits",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Phone present & 12 digits": {
+      "main": [
+        [
+          {
+            "node": "Valid lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": true,
+  "versionId": "e3c1064ded8e4db99a71a35d4cc6e7eb",
+  "pinData": {}
+}

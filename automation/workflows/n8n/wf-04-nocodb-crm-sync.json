@@ -1,0 +1,77 @@
+{
+  "name": "WF-04 NocoDB CRM Sync",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "87f1bc936f2143a18ff607e1",
+      "name": "When clicking 'Execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://{{your-domain}}/webhook/lead",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"type\": \"LEAD_CAPTURED\", \"payload\": \"={{ $json }}\"}",
+        "options": {}
+      },
+      "id": "098f6f3211c940d68440c4bc",
+      "name": "Sync to NocoDB",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
+      },
+      "id": "3ef8c33f6a634d199b1a7f61",
+      "name": "CRM synced",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking 'Execute'": {
+      "main": [
+        [
+          {
+            "node": "Sync to NocoDB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sync to NocoDB": {
+      "main": [
+        [
+          {
+            "node": "CRM synced",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": true,
+  "versionId": "16e859d208ac48f0bf0c710c9b763636",
+  "pinData": {}
+}

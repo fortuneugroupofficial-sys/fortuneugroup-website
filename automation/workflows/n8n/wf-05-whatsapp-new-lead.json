@@ -1,0 +1,86 @@
+{
+  "name": "WF-05 WhatsApp New Lead",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "a20ce169a49c4eb48ca02252",
+      "name": "Every 5 min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://{{your-domain}}/webhook/lead",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"type\": \"LEAD_CAPTURED\", \"payload\": \"={{ $json }}\"}",
+        "options": {}
+      },
+      "id": "48f9b0a2b1f94ad38dde5bee",
+      "name": "Send ack via FUG",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
+      },
+      "id": "519c2691a6d448ecb44e719c",
+      "name": "Ack sent",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Every 5 min": {
+      "main": [
+        [
+          {
+            "node": "Send ack via FUG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send ack via FUG": {
+      "main": [
+        [
+          {
+            "node": "Ack sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": true,
+  "versionId": "0cb5d306c30c46de85cee66de54d4b5c",
+  "pinData": {}
+}

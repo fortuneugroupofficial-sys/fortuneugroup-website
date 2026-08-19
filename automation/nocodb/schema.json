@@ -1,0 +1,174 @@
+{
+  "database": "fug_crm",
+  "description": "NocoDB schema for the Fortune U Group Master AI Agent. Create these tables (plus the lookup/link columns noted) in NocoDB, or import the reference DDL. Column names match the Python models so the CRM facade maps 1:1.",
+  "tables": {
+    "Leads": {
+      "columns": [
+        {"name": "lead_id", "type": "SingleLineText", "pk": true},
+        {"name": "name", "type": "SingleLineText"},
+        {"name": "phone", "type": "PhoneNumber"},
+        {"name": "email", "type": "Email"},
+        {"name": "city", "type": "SingleLineText"},
+        {"name": "source", "type": "SingleSelect", "options": ["WEBSITE_CONTACT", "WEBSITE_HEALTH", "WHATSAPP", "INSTAGRAM", "FACEBOOK", "YOUTUBE", "REFERRAL", "MANUAL", "OTHER"]},
+        {"name": "service", "type": "SingleLineText"},
+        {"name": "message", "type": "LongText"},
+        {"name": "status", "type": "SingleSelect", "options": ["NEW", "CONTACTED", "INTERESTED", "FOLLOW_UP", "QUALIFIED", "CONVERTED", "NOT_INTERESTED", "LOST", "HUMAN_HANDOFF"]},
+        {"name": "priority", "type": "SingleSelect", "options": ["LOW", "MEDIUM", "HIGH", "URGENT"]},
+        {"name": "assigned_to", "type": "SingleLineText"},
+        {"name": "created_at", "type": "DateTime"},
+        {"name": "updated_at", "type": "DateTime"},
+        {"name": "last_contacted_at", "type": "DateTime"},
+        {"name": "next_followup_at", "type": "DateTime"},
+        {"name": "notes", "type": "LongText"},
+        {"name": "whatsapp_status", "type": "SingleLineText"},
+        {"name": "conversion_status", "type": "SingleLineText"},
+        {"name": "followup_count", "type": "Number"},
+        {"name": "opted_out", "type": "Checkbox"},
+        {"name": "dedup_key", "type": "SingleLineText"},
+        {"name": "human_handoff", "type": "SingleLineText"}
+      ],
+      "lookup": "Linked to Interactions, FollowUps"
+    },
+    "Contacts": {
+      "columns": [
+        {"name": "contact_id", "type": "SingleLineText", "pk": true},
+        {"name": "name", "type": "SingleLineText"},
+        {"name": "phone", "type": "PhoneNumber"},
+        {"name": "email", "type": "Email"},
+        {"name": "city", "type": "SingleLineText"},
+        {"name": "created_at", "type": "DateTime"},
+        {"name": "notes", "type": "LongText"}
+      ]
+    },
+    "Interactions": {
+      "columns": [
+        {"name": "interaction_id", "type": "SingleLineText", "pk": true},
+        {"name": "lead_id", "type": "Link", "target": "Leads"},
+        {"name": "type", "type": "SingleSelect", "options": ["whatsapp", "call", "email", "website"]},
+        {"name": "direction", "type": "SingleSelect", "options": ["inbound", "outbound"]},
+        {"name": "template", "type": "SingleLineText"},
+        {"name": "detail", "type": "LongText"},
+        {"name": "timestamp", "type": "DateTime"}
+      ]
+    },
+    "FollowUps": {
+      "columns": [
+        {"name": "followup_id", "type": "SingleLineText", "pk": true},
+        {"name": "lead_id", "type": "Link", "target": "Leads"},
+        {"name": "step", "type": "Number"},
+        {"name": "scheduled_at", "type": "DateTime"},
+        {"name": "sent_at", "type": "DateTime"},
+        {"name": "template", "type": "SingleLineText"},
+        {"name": "status", "type": "SingleSelect", "options": ["PENDING", "SENT", "FAILED", "SKIPPED"]}
+      ]
+    },
+    "Content": {
+      "columns": [
+        {"name": "content_id", "type": "SingleLineText", "pk": true},
+        {"name": "platform", "type": "SingleSelect", "options": ["youtube", "instagram", "facebook", "website", "whatsapp"]},
+        {"name": "topic", "type": "SingleLineText"},
+        {"name": "hook", "type": "LongText"},
+        {"name": "title", "type": "SingleLineText"},
+        {"name": "caption", "type": "LongText"},
+        {"name": "description", "type": "LongText"},
+        {"name": "hashtags", "type": "LongText"},
+        {"name": "cta", "type": "SingleLineText"},
+        {"name": "thumbnail_concept", "type": "LongText"},
+        {"name": "claim_flags", "type": "LongText"},
+        {"name": "needs_human_review", "type": "Checkbox"},
+        {"name": "status", "type": "SingleSelect", "options": ["DRAFT", "AI_REVIEW", "HUMAN_REVIEW", "APPROVED", "REJECTED", "SCHEDULED", "PUBLISHED", "FAILED"]}
+      ]
+    },
+    "PublishingQueue": {
+      "columns": [
+        {"name": "pipeline_id", "type": "SingleLineText", "pk": true},
+        {"name": "platform", "type": "SingleLineText"},
+        {"name": "topic", "type": "SingleLineText"},
+        {"name": "stage", "type": "SingleSelect", "options": ["IDEA", "RESEARCH", "DRAFT", "FACT_CHECK", "APPROVAL", "GENERATION", "QUEUE", "PUBLISH", "ANALYTICS", "RECOMMENDATION"]},
+        {"name": "status", "type": "SingleLineText"},
+        {"name": "note", "type": "LongText"}
+      ]
+    },
+    "SocialPosts": {
+      "columns": [
+        {"name": "post_id", "type": "SingleLineText", "pk": true},
+        {"name": "platform", "type": "SingleLineText"},
+        {"name": "package_ref", "type": "SingleLineText"},
+        {"name": "metadata", "type": "LongText"},
+        {"name": "external_ref", "type": "SingleLineText"},
+        {"name": "publish_status", "type": "SingleSelect", "options": ["PENDING_APPROVAL", "SCHEDULED", "PUBLISHED", "FAILED"]},
+        {"name": "created_at", "type": "DateTime"}
+      ]
+    },
+    "Campaigns": {
+      "columns": [
+        {"name": "campaign_id", "type": "SingleLineText", "pk": true},
+        {"name": "name", "type": "SingleLineText"},
+        {"name": "objective", "type": "SingleLineText"},
+        {"name": "status", "type": "SingleLineText"},
+        {"name": "start_at", "type": "DateTime"},
+        {"name": "end_at", "type": "DateTime"}
+      ]
+    },
+    "Tasks": {
+      "columns": [
+        {"name": "task_id", "type": "SingleLineText", "pk": true},
+        {"name": "type", "type": "SingleSelect", "options": ["SEO", "content", "publish", "followup", "other"]},
+        {"name": "ref", "type": "SingleLineText"},
+        {"name": "detail", "type": "LongText"},
+        {"name": "status", "type": "SingleSelect", "options": ["OPEN", "IN_PROGRESS", "DONE"]},
+        {"name": "created_at", "type": "DateTime"}
+      ]
+    },
+    "Approvals": {
+      "columns": [
+        {"name": "approval_id", "type": "SingleLineText", "pk": true},
+        {"name": "item_type", "type": "SingleLineText"},
+        {"name": "item_ref", "type": "SingleLineText"},
+        {"name": "summary", "type": "LongText"},
+        {"name": "payload", "type": "LongText"},
+        {"name": "state", "type": "SingleSelect", "options": ["DRAFT", "AI_REVIEW", "HUMAN_REVIEW", "APPROVED", "REJECTED", "SCHEDULED", "PUBLISHED", "FAILED"]},
+        {"name": "requires_human", "type": "Checkbox"},
+        {"name": "created_at", "type": "DateTime"},
+        {"name": "decided_at", "type": "DateTime"},
+        {"name": "decided_by", "type": "SingleLineText"},
+        {"name": "decision", "type": "SingleLineText"}
+      ]
+    },
+    "AutomationLogs": {
+      "columns": [
+        {"name": "log_id", "type": "SingleLineText", "pk": true},
+        {"name": "workflow_name", "type": "SingleLineText"},
+        {"name": "execution_id", "type": "SingleLineText"},
+        {"name": "timestamp", "type": "DateTime"},
+        {"name": "event_type", "type": "SingleLineText"},
+        {"name": "lead_id", "type": "SingleLineText"},
+        {"name": "status", "type": "SingleLineText"},
+        {"name": "error_message", "type": "LongText"},
+        {"name": "retry_count", "type": "Number"},
+        {"name": "duration", "type": "Number"},
+        {"name": "result", "type": "LongText"}
+      ]
+    },
+    "Errors": {
+      "columns": [
+        {"name": "error_id", "type": "SingleLineText", "pk": true},
+        {"name": "workflow_name", "type": "SingleLineText"},
+        {"name": "lead_id", "type": "SingleLineText"},
+        {"name": "timestamp", "type": "DateTime"},
+        {"name": "error_message", "type": "LongText"},
+        {"name": "trace", "type": "LongText"},
+        {"name": "retry_count", "type": "Number"},
+        {"name": "resolved", "type": "Checkbox"},
+        {"name": "resolved_at", "type": "DateTime"}
+      ]
+    },
+    "Settings": {
+      "columns": [
+        {"name": "key", "type": "SingleLineText", "pk": true},
+        {"name": "value", "type": "LongText"},
+        {"name": "updated_at", "type": "DateTime"}
+      ]
+    }
+  }
+}

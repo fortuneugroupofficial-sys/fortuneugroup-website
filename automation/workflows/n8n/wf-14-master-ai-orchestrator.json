@@ -1,0 +1,95 @@
+{
+  "name": "WF-14 Master AI Orchestrator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "master",
+        "responseMode": "onReceived"
+      },
+      "id": "2f2dbe1bb66e4f00babce71d",
+      "name": "Master Inbox",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            [
+              {
+                "leftValue": "={{ $json.type }}",
+                "rightValue": "APPROVAL_DECIDED",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ]
+          ]
+        }
+      },
+      "id": "71104ffa85654556971b5818",
+      "name": "Is approval decision?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
+      },
+      "id": "c6f262ef78534948955081e6",
+      "name": "Route to approval",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Master Inbox": {
+      "main": [
+        [
+          {
+            "node": "Is approval decision?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is approval decision?": {
+      "main": [
+        [
+          {
+            "node": "Route to approval",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": true,
+  "versionId": "7ab0f6a90194434a84ee75b4b9bbf7fd",
+  "pinData": {}
+}

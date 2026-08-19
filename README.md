@@ -4,6 +4,14 @@ Public website for [fortuneugroup.in](https://www.fortuneugroup.in/)
 
 Static HTML (no React). Health insurance calculator, IRDAI disclosures, social dock.
 
+## Automation
+
+The **Fortune U Group Master AI Agent** automation system lives in [`automation/`](automation/README.md):
+a central orchestrator (Python, stdlib-only) routing to specialist agents for Leads/CRM, WhatsApp,
+Content, YouTube, Instagram, Facebook, Website/SEO, Follow-up, Analytics and Error Monitoring —
+with n8n workflow definitions (WF-01…15), a NocoDB schema, and an approval-gated publishing model.
+External integrations are credential-gated (see [`automation/docs/CREDENTIALS.md`](automation/docs/CREDENTIALS.md)).
+
 ## Local preview
 
 ```bash

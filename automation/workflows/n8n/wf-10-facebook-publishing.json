@@ -1,0 +1,77 @@
+{
+  "name": "WF-10 Facebook Publishing",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "3fe9618bd2b6488c8137e1ea",
+      "name": "When clicking 'Execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://{{your-domain}}/webhook/lead",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"type\": \"PUBLISH_REQUEST\", \"payload\": \"={{ $json }}\"}",
+        "options": {}
+      },
+      "id": "f94b80c74d88426cabf0cb35",
+      "name": "Publish via FUG",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Workflow '{{ $workflow.name }}' executed.\nEvent: {{ $json.eventType }}\nStatus: {{ $json.status }}"
+      },
+      "id": "e83c429fe8dc4fb4a0f9ce66",
+      "name": "YouTube publish result",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking 'Execute'": {
+      "main": [
+        [
+          {
+            "node": "Publish via FUG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish via FUG": {
+      "main": [
+        [
+          {
+            "node": "YouTube publish result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "versionId": "2b75cdb53098412c87359e4b57bc6b51",
+  "pinData": {}
+}
