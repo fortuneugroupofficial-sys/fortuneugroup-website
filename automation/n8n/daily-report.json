@@ -1,0 +1,106 @@
+{
+  "name": "Daily Analytics Report",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "days", "daysInterval": 1 },
+            { "field": "hours", "hoursInterval": 9 }
+          ]
+        }
+      },
+      "id": "30000000-0000-4000-8000-000000000001",
+      "name": "Daily at 09:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-640, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/meta/tables/{{ $env.LEADS_TABLE_ID }}/records?fields=CreatedAt,Status&limit=1000",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "genericAuthCredential": {
+          "__rl": true,
+          "value": "NocoDB API Token",
+          "mode": "list",
+          "cachedResultName": "NocoDB API Token"
+        },
+        "options": {}
+      },
+      "id": "30000000-0000-4000-8000-000000000002",
+      "name": "Fetch Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-420, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const leads = $input.first().json.list || [];\nconst today = new Date().toISOString().slice(0, 10);\nconst todayLeads = leads.filter(l => (l.CreatedAt || '').slice(0, 10) === today);\nconst byStatus = {};\nleads.forEach(l => { const s = l.Status || 'unknown'; byStatus[s] = (byStatus[s] || 0) + 1; });\nconst report = [\n  'Fortune U Group — Daily Report ' + today,\n  '------------------------------------',\n  'New leads today: ' + todayLeads.length,\n  'Total leads: ' + leads.length,\n  'Status breakdown: ' + JSON.stringify(byStatus),\n  'Follow-ups needed: ' + todayLeads.length + ' (status = new)'\n].join('\\n');\nreturn [{ json: { report, date: today, newLeads: todayLeads.length } }];"
+      },
+      "id": "30000000-0000-4000-8000-000000000003",
+      "name": "Build Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [-200, 0]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "note-1",
+              "name": "delivery",
+              "value": "ATTACH_DELIVERY_CHANNEL_HERE",
+              "type": "string"
+            },
+            {
+              "id": "note-2",
+              "name": "note",
+              "value": "Wire an Email / Slack / WhatsApp node to send $json.report. Add GA4 + WorkflowRuns metrics in Build Report once those credentials are available.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "30000000-0000-4000-8000-000000000004",
+      "name": "Deliver (placeholder)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [20, 0]
+    }
+  ],
+  "connections": {
+    "Daily at 09:00": {
+      "main": [
+        [
+          { "node": "Fetch Leads", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Fetch Leads": {
+      "main": [
+        [
+          { "node": "Build Report", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Build Report": {
+      "main": [
+        [
+          { "node": "Deliver (placeholder)", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "fortuneugroup"
+  }
+}

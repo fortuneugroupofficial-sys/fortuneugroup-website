@@ -1,0 +1,141 @@
+{
+  "name": "WhatsApp Follow-up (template-compliant, opt-out aware)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "minutes", "minutesInterval": 5 }
+          ]
+        }
+      },
+      "id": "20000000-0000-4000-8000-000000000001",
+      "name": "Every 5 min (placeholder trigger)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-640, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// WIRE THIS: in production, replace the schedule trigger with a NocoDB trigger\n// that fires when a Lead's Status becomes 'new'. This code just documents the guard.\nconst lead = $input.first().json;\nreturn [{ json: {\n  mobile: lead.Mobile || lead.mobile,\n  name: lead.Name || lead.name,\n  optedOut: !!lead.OptedOut,\n  status: lead.Status || lead.status\n} }];"
+      },
+      "id": "20000000-0000-4000-8000-000000000002",
+      "name": "Read Lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [-420, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "optout-1",
+              "leftValue": "={{ $json.optedOut }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "20000000-0000-4000-8000-000000000003",
+      "name": "Opted Out?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [-200, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'https://graph.facebook.com/v19.0/' + $env.WHATSAPP_PHONE_ID + '/messages' }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ messaging_product: 'whatsapp', to: $json.mobile, type: 'template', template: { name: 'lead_followup', language: { code: 'en' }, components: [{ type: 'body', parameters: [{ type: 'text', text: $json.name }] }] } }) }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "genericAuthCredential": {
+          "__rl": true,
+          "value": "WhatsApp Cloud API",
+          "mode": "list",
+          "cachedResultName": "WhatsApp Cloud API"
+        },
+        "options": {}
+      },
+      "id": "20000000-0000-4000-8000-000000000004",
+      "name": "Send WhatsApp Template",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [20, -160]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "skip-1",
+              "name": "skipped",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "skip-2",
+              "name": "reason",
+              "value": "opted_out",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "20000000-0000-4000-8000-000000000005",
+      "name": "Skip (opted out)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [20, 120]
+    }
+  ],
+  "connections": {
+    "Every 5 min (placeholder trigger)": {
+      "main": [
+        [
+          { "node": "Read Lead", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Read Lead": {
+      "main": [
+        [
+          { "node": "Opted Out?", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Opted Out?": {
+      "main": [
+        [
+          { "node": "Skip (opted out)", "type": "main", "index": 0 }
+        ],
+        [
+          { "node": "Send WhatsApp Template", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "fortuneugroup"
+  }
+}

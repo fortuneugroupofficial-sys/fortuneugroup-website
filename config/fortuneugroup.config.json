@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "company": {
+    "brand": "Fortune U Group",
+    "legal_name": "Fortune U Group",
+    "tagline": "Financial Education → Financial Planning → Financial Freedom",
+    "website_url": "https://www.fortuneugroup.in",
+    "domain": "fortuneugroup.in",
+    "city": "Tirupati, Andhra Pradesh, India",
+    "phone": "9490237465",
+    "phone_display": "+91 94902 37465",
+    "email": "fortuneugroupofficial@gmail.com",
+    "logo": "/images/logo-180.png",
+    "favicon": "/images/favicon-32.png",
+    "assets": [
+      "/images/logo.png",
+      "/images/logo-64.png",
+      "/images/logo-256.png",
+      "/financial-advisor.png",
+      "/fortune-logo.png"
+    ],
+    "target_audience": [
+      "Salaried Employees",
+      "Business Owners",
+      "Families (financial planning)",
+      "First-Time Investors",
+      "Professionals",
+      "Retirement Planners"
+    ],
+    "services": [
+      "Mutual Fund Distribution",
+      "Goal-Based Investing",
+      "SIP Planning",
+      "Financial Education",
+      "Term & Health Insurance",
+      "Retirement Planning"
+    ]
+  },
+
+  "licenses": {
+    "irdai_licence": "LIC0159665T",
+    "amfi_arn": "",
+    "life_insurers": ["LIC", "HDFC Life"],
+    "health_insurers": ["Care Health", "Niva Bupa", "Tata AIG", "ICICI Lombard"],
+    "disclaimer_notes": [
+      "Insurance is the subject matter of solicitation. Policies are issued by the insurer, not by Fortune U Group.",
+      "Mutual fund distribution: AMFI ARN not yet allotted. SIP figures are educational illustrations only.",
+      "Fortune U Group is not a SEBI-registered Investment Adviser. Commission is paid by insurers."
+    ]
+  },
+
+  "social_accounts": {
+    "instagram": "https://www.instagram.com/fortuneugroup/?hl=en",
+    "youtube": "https://www.youtube.com/@FortuneUGroupOfficial",
+    "facebook": "https://www.facebook.com/profile.php?id=61589015788132",
+    "whatsapp_number": "919490237465",
+    "whatsapp_display": "+91 94902 37465"
+  },
+
+  "webhooks": {
+    "n8n_base_url": "https://n8n.fortuneugroup.in",
+    "book_consultation": "https://n8n.fortuneugroup.in/webhook/book-consultation",
+    "insurance": "https://n8n.fortuneugroup.in/webhook/insurance",
+    "sip": "https://n8n.fortuneugroup.in/webhook/sip",
+    "ai_chat": "https://n8n.fortuneugroup.in/webhook/ai-chat"
+  },
+
+  "crm": {
+    "provider": "NocoDB",
+    "status": "NOT_CONFIGURED",
+    "base_url": null,
+    "api_token_env": "NOCODB_API_TOKEN",
+    "note": "No NocoDB instance or credentials found during audit. Must be provisioned and connected."
+  },
+
+  "analytics": {
+    "ga4_measurement_id": "G-5P0R5EM9C6",
+    "tracking_active": true
+  },
+
+  "content": {
+    "languages": ["en", "te"],
+    "default_language": "en",
+    "brand_voice": "Trustworthy, clear, education-first, premium, family-oriented. Avoid hype and fear tactics.",
+    "posting_rules": [
+      "Every financial post must include a risk disclaimer where applicable.",
+      "Do not promise guaranteed returns.",
+      "Use only approved brand colors: Navy #0A2540 and Green #10B981 on white.",
+      "English primary; Telugu adaptation for regional reach.",
+      "No duplicate posts. Check ContentPosts table before scheduling."
+    ],
+    "content_pillars": [
+      "Financial Education",
+      "SIP & Mutual Funds",
+      "Insurance Guidance",
+      "Goal-Based Planning",
+      "Retirement Planning"
+    ]
+  },
+
+  "lead_handling": {
+    "rules": [
+      "Every lead must be stored in NocoDB with a stable dedupe key.",
+      "Normalize mobile numbers to E.164 (India: 91XXXXXXXXXX).",
+      "De-duplicate on normalized mobile before creating a new record.",
+      "Tag source (website / instagram / facebook / youtube / whatsapp).",
+      "Respect opt-out: never contact a lead that has opted out."
+    ],
+    "statuses": ["new", "contacted", "qualified", "in-progress", "converted", "lost", "opted-out", "duplicate"],
+    "priorities": ["high", "medium", "low"],
+    "followup_rules": [
+      "First follow-up within 24 business hours of lead capture.",
+      "Send only WhatsApp Business template-approved messages.",
+      "Never send bulk unsolicited messages.",
+      "Stop follow-up if the lead opts out or status becomes lost/converted."
+    ],
+    "business_hours": {
+      "timezone": "Asia/Kolkata",
+      "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      "hours": "10:00-18:00"
+    }
+  },
+
+  "approval_rules": {
+    "require_approval_for": [
+      "Public social posts and publishing",
+      "Bulk or mass messages",
+      "Purchases or paid actions",
+      "Deleting data or records",
+      "Production infrastructure changes",
+      "Irreversible actions"
+    ],
+    "default_mode": "approval_required",
+    "note": "Unless permanent authorization is explicitly given, the Master Agent must pause and request approval before these actions."
+  },
+
+  "integrations": {
+    "n8n": { "status": "LIVE_BUT_NO_ACCESS", "note": "Instance reachable at n8n.fortuneugroup.in; credentials required." },
+    "nocodb": { "status": "MISSING" },
+    "youtube": { "status": "NOT_CONFIGURED", "note": "Channel @FortuneUGroupOfficial; no API/OAuth credentials found." },
+    "instagram": { "status": "NOT_CONFIGURED", "note": "No Meta Graph API access found." },
+    "facebook": { "status": "NOT_CONFIGURED", "note": "No Meta Graph API / Page token found." },
+    "whatsapp_business": { "status": "NOT_CONFIGURED", "note": "Only wa.me click-to-chat links present; no WhatsApp Cloud API." },
+    "google": { "status": "PARTIAL", "note": "GA4 configured (G-5P0R5EM9C6). Gemini SDK dependency present but no API key." },
+    "website": { "status": "LIVE", "note": "Production is the React app in frontend/ on Vercel; static HTML site not yet deployed." },
+    "github": { "status": "CONNECTED", "note": "Repo fortuneugroupofficial-sys/fortuneugroup-website; bot write access via gh CLI." }
+  },
+
+  "environment": {
+    "secrets_required": [
+      "NOCODB_API_TOKEN",
+      "N8N_API_KEY",
+      "YOUTUBE_API_KEY_OR_OAUTH",
+      "META_ACCESS_TOKEN",
+      "WHATSAPP_CLOUD_API_TOKEN",
+      "GOOGLE_GEMINI_API_KEY",
+      "GA4_MEASUREMENT_ID"
+    ],
+    "secret_policy": "Never commit secrets. Use n8n credentials store, environment variables, or a secrets manager.",
+    "logging": "All automation workflows must log runs to a WorkflowRuns table or n8n execution history."
+  }
+}
