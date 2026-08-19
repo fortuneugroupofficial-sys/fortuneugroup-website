@@ -83,8 +83,14 @@ python3 -m fug.cli serve --port 8080
 
 ```bash
 cd automation
-python3 -m unittest discover -s tests -v   # 30 tests, all pass
+python3 -m unittest discover -s tests -v   # 39 tests, all pass
 ```
+
+The suite includes a **NocoDB integration test** (`tests/test_nocodb_integration.py`) that
+exercises the real client against a faithful NocoDB REST *contract stub*: read-only
+connectivity check, creating the 13 tables from `nocodb/schema.json` (idempotent), dry-run
+lead creation into `Leads`, and duplicate detection. This verifies the integration code path
+offline; a live connection still requires real `NOCODB_URL` / `NOCODB_API_TOKEN` (currently BLOCKED).
 
 ## Configuration & security
 

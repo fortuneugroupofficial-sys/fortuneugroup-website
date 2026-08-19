@@ -32,12 +32,25 @@ class Crm:
         lead.touch()
         if self.nocodb:
             try:
-                self.nocodb.create_row("Leads", lead.to_dict())
+                self._nocodb_upsert_lead(lead)
             except Exception as exc:  # surface for error agent, fallback safe
                 self._record_error("Leads", lead.lead_id, str(exc))
                 raise
         self.store.upsert_lead(lead)
         return lead
+
+    def _nocodb_upsert_lead(self, lead: Lead) -> None:
+        """True upsert: update the existing NocoDB row for this lead_id, or
+        create one. Prevents duplicate rows when a lead is written multiple
+        times (e.g. create + acknowledgement)."""
+        existing = self.nocodb.list_rows(
+            "Leads", where=f"(lead_id,eq,{lead.lead_id})", limit=1
+        )
+        if existing:
+            row_id = existing[0].get("Id")
+            self.nocodb.update_row("Leads", row_id, lead.to_dict())
+        else:
+            self.nocodb.create_row("Leads", lead.to_dict())
 
     def get_lead(self, lead_id: str) -> Optional[Lead]:
         return self.store.get_lead(lead_id)
