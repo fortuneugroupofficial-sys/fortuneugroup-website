@@ -6,20 +6,18 @@ import {
   MessageCircle,
   ArrowUpRight,
   Phone,
-  Facebook,
-  Instagram,
-  Youtube
 } from "lucide-react";
 import { useLang } from "../context/LangContext";
 import { whatsappLink, BUSINESS_EMAIL, WHATSAPP_NUMBER } from "../lib/api";
 import { trackEvent } from "./Analytics";
 import { Button } from "./ui/button";
+import { SOCIALS, SocialIconButton } from "./SocialIcons";
 
 const navItems = [
   { to: "/", key: "home" },
   { to: "/about", key: "about" },
   { to: "/services", key: "services" },
-  { to: "/products", key: "products" },
+  { to: "/products", key: "products", label: "Health Insurance" },
   { to: "/tools", key: "tools" },
   { to: "/blog", key: "blog" },
   { to: "/contact", key: "contact" },
@@ -51,14 +49,14 @@ export const Header = () => {
                 to={item.to}
                 data-testid={`nav-${item.key}`}
                 className={({ isActive }) =>
-                  `px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                  `px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap transition-colors ${
                     isActive 
                     ? "text-yellow-400"
                     : "text-white hover:text-yellow-400"
                   }`
                 }
                 >
-               {t(`nav.${item.key}`)}
+               {item.label || t(`nav.${item.key}`)}
               </NavLink>
             ))}
           </nav>
@@ -109,7 +107,7 @@ export const Header = () => {
           <div className="px-5 py-4 grid gap-1">
             {navItems.map((it) => (
               <NavLink key={it.to} to={it.to} className="px-3 py-2.5 rounded-md text-sm font-medium hover:bg-brand-soft" data-testid={`mobile-nav-${it.key}`}>
-                {t(`nav.${it.key}`)}
+                {it.label || t(`nav.${it.key}`)}
               </NavLink>
             ))}
            <a
@@ -183,64 +181,16 @@ export const Footer = () => {
             <li>Email: <a className="hover:text-brand-green" href={`mailto:${BUSINESS_EMAIL}`}>{BUSINESS_EMAIL}</a></li>
             <li>WhatsApp: +{WHATSAPP_NUMBER}</li>
             <li>Domain: www.fortuneugroup.in</li>
-            <li className="mt-4">
-   <div className="flex gap-4">
-
-     <a
-       href="https://www.facebook.com/profile.php?id=61589015788132"
-       target="_blank"
-       rel="noreferrer"
-     >
-       <Facebook className="w-5 h-5 text-blue-500 hover:scale-110 transition" />
-     </a>
-
-     <a
-       href="https://www.instagram.com/fortuneugroup/?hl=en"
-       target="_blank"
-       rel="noreferrer"
-     >
-       <Instagram className="w-5 h-5 text-pink-500 hover:scale-110 transition" />
-     </a>
-
-     <a
-       href="https://www.youtube.com/@FortuneUGroupOfficial"
-       target="_blank"
-       rel="noreferrer"
-     >
-       <Youtube className="w-5 h-5 text-red-500 hover:scale-110 transition" />
-     </a>
-
-     <a
-        href="https://wa.me/919490237465"
-       target="_blank"
-       rel="noreferrer"
-     >
-       <MessageCircle className="w-5 h-5 text-green-500 hover:scale-110 transition" />
-     </a>
-
-   </div>
-</li>
-
-<li>
-   <a
-     href="https://www.instagram.com/fortuneugroup/?hl=en"
-     target="_blank"
-     rel="noreferrer"
-   >
-     Instagram
-   </a>
-</li>
-
-<li>
-   <a
-     href="https://www.youtube.com/@FortuneUGroupOfficial"
-     target="_blank"
-     rel="noreferrer"
-   >
-     YouTube
-   </a>
-</li>
           </ul>
+
+          <h4 className="font-display font-semibold mt-6 mb-3 text-sm tracking-wide text-[#D4AF37]">
+            Connect With Fortune U Group
+          </h4>
+          <div className="flex flex-wrap gap-3" data-testid="footer-social">
+            {SOCIALS.map((s) => (
+              <SocialIconButton key={s.id} social={s} variant="footer" />
+            ))}
+          </div>
         </div>
       </div>
       <div className="border-t border-white/10">
@@ -280,11 +230,28 @@ export const WhatsAppFab = () => (
   </div>
 );
 
+/* Floating vertical social stack — positioned above the AI chatbot
+   (bottom ~140px) and the WhatsApp/Call FABs (bottom ~24px), so the
+   controls never overlap. Order (top → bottom): Instagram, YouTube,
+   Facebook, WhatsApp. */
+export const SocialFloatingStack = () => (
+  <div
+    className="fixed z-40 flex flex-col items-center gap-2.5 right-3 sm:right-5"
+    style={{ bottom: 216 }}
+    data-testid="floating-social-stack"
+  >
+    {SOCIALS.map((s) => (
+      <SocialIconButton key={s.id} social={s} variant="floating" />
+    ))}
+  </div>
+);
+
 const Layout = ({ children }) => (
   <div className="min-h-screen flex flex-col bg-brand-bg">
     <Header />
     <main className="flex-1">{children}</main>
     <Footer />
+    <SocialFloatingStack />
     <WhatsAppFab />
   </div>
 );

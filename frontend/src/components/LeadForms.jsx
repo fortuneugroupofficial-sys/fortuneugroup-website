@@ -22,7 +22,7 @@ export const ConsultationForm = () => {
     e.preventDefault(); setLoading(true);
     try {
       await submitLead("consultation", f); trackEvent("generate_lead", { form_type: "consultation" });
-      toast.success("Thanks! Our advisor will contact you shortly.");
+      toast.success("Thanks! Our team will contact you shortly.");
       setF({ name: "", mobile: "", email: "", city: "", financial_goal: "" });
     } catch (err) { toast.error("Something went wrong. Please try again."); }
     finally { setLoading(false); 
@@ -120,7 +120,7 @@ export const InsuranceForm = () => {
   coverageRequirement: f.coverage_requirement
 });
       console.log("INSURANCE SUBMIT", f); trackEvent("generate_lead", { form_type: "insurance" });
-      toast.success("Request received! Our insurance advisor will call you.");
+      toast.success("Request received! Our insurance team will call you.");
       setF({ name: "", mobile: "", age: "", "familyMembers": "", coverage_requirement: "" });
     } catch { toast.error("Could not submit. Try again."); }
     finally { setLoading(false); }

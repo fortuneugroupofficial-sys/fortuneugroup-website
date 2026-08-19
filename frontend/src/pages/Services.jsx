@@ -383,7 +383,7 @@ const Services = () => {
           Home Loan ఎలా Apply చేయాలి?
         </h3>
         <p className="mt-2 text-brand-mute">
-          మా Financial Advisor ని సంప్రదించండి. మీ Documents verify చేసి, మీకు సరిపోయే Home Loan ఎంపికను సూచిస్తాము.
+          మా బృందాన్ని సంప్రదించండి. మీ Documents verify చేసి, మీకు సరిపోయే Home Loan ఎంపికను సూచిస్తాము.
         </p>
       </Card>
 

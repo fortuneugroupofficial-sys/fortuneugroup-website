@@ -44,7 +44,7 @@ const Contact = () => {
   return (
   <>
     <SEO
-      title="Contact Fortune U Group | Mutual Fund Advisor in Tirupati"
+      title="Contact Fortune U Group | Mutual Fund Distributor in Tirupati"
       description="Contact Fortune U Group for expert guidance on Mutual Funds, SIP Investments, 
       Financial Planning, Retirement Planning and Insurance solutions."
       path="/contact"

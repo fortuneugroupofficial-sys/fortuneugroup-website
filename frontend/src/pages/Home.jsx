@@ -39,7 +39,7 @@ const Home = () => {
   return (
     <div data-testid="home-page">
       <SEO
-  title="Mutual Fund Distributor in Tirupati | SIP Investment Advisor"
+  title="Mutual Fund Distributor in Tirupati | SIP Investment Planning"
   description="Fortune U Group provides Mutual Fund Distribution, SIP Investments, Financial Planning, Retirement Planning and Insurance Solutions in Tirupati."
   path="/"
   schema={{
@@ -101,7 +101,7 @@ const Home = () => {
               <div className="relative rounded-2xl 
                 overflow-hidden border border-brand-line shadow-soft bg-white reveal reveal-3">
                 <img src="/images/family-advisor.png"
-                   alt="Family Advisor"
+                   alt="Family Financial Planning"
                     className="w-full h-full object-cover"
                    />
                 <div className="p-5 grid grid-cols-2 gap-4 bg-white">
@@ -236,7 +236,7 @@ const Home = () => {
 
       <Card className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300">
       <Award className="w-12 h-12 text-orange-500 mb-5" />
-       <h3 className="text-xl font-bold mb-3">Trusted Advisor</h3>
+       <h3 className="text-xl font-bold mb-3">Trusted Guidance</h3>
        <p className="text-gray-600">
        Transparent guidance with regular reviews to keep you on track towards your financial goals.
        </p>
@@ -351,7 +351,7 @@ const Home = () => {
           <div>
           <SectionHeader eyebrow={t("home.consultEyebrow")} title={t("home.consultTitle")} sub={t("home.consultSub")} />
             <ul className="mt-8 space-y-3 text-sm text-brand-mute">
-              {["Personalised goal-mapping","Tax-efficient SIP mix","Insurance gap analysis","Lifetime advisor relationship"].map((s,i)=>(
+              {["Personalised goal-mapping","Tax-efficient SIP mix","Insurance gap analysis","Lifetime support relationship"].map((s,i)=>(
                 <li key={i} className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-brand-g mt-0.5" /> <span>{s}</span></li>
               ))}
             </ul>

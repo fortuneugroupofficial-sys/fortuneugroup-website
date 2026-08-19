@@ -454,7 +454,7 @@ const downloadPDF = () => {
             className="px-8 py-4 rounded-full
             bg-[#D4AF37] text-[#0A2540] font-semibold shadow-lg hover:bg-[#B68D22] hover:text-white
             hover:shadow-2xl hover:scale-105 transition-all duration-300" >
-            Talk to Advisor
+            Talk to Our Team
            </button>
           </Link
           
@@ -879,7 +879,7 @@ const downloadPDF = () => {
         </h3>
 
         <p className="mt-3 text-gray-600">
-          Connect with our advisor for personalized financial planning.
+          Connect with our team for personalized financial planning.
         </p>
       </div>
 
@@ -1063,7 +1063,7 @@ const downloadPDF = () => {
         </h3>
 
         <p className="mt-4 text-blue-100">
-          Speak with our financial advisor and receive a customized investment plan.
+          Speak with our financial planning team and receive a customized investment plan.
         </p>
 
         <button

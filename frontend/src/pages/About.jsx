@@ -18,7 +18,7 @@ const About = () => {
   return (
   <div data-testid="about-page" className="bg-brand-bg">
     <SEO
-  title="About Fortune U Group | Financial Planning & Investment Advisory"
+  title="About Fortune U Group | Financial Planning & Investment Guidance"
   description="Learn about Fortune U Group, your trusted partner for Mutual Funds, SIP Investments, Financial Planning, Retirement Planning and Wealth Creation solutions."
   path="/about"
   />
@@ -96,7 +96,7 @@ const About = () => {
 
         <img
           src="/images/about-advisor.jpg"
-          alt="Financial Advisor"
+          alt="Financial Planning Support"
           className="rounded-3xl shadow-2xl w-full"
         />
 

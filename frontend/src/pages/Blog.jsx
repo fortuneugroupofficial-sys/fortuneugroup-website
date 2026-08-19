@@ -41,7 +41,7 @@ const Blog = () => {
   <div className="absolute inset-0">
     <img
       src="/images/blog-hero.jpg"
-      alt="Financial Advisor"
+      alt="Financial Planning Support"
       className="w-full h-full object-cover opacity-20"
     />
   </div>
