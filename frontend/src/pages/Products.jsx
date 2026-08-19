@@ -1,842 +1,699 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
-  Shield, Heart, Car, Home, Briefcase, CreditCard, TrendingUp,
-  PiggyBank, Phone, MessageCircle, Star,
-  Users, Zap, Award, Eye, Handshake, HeadphonesIcon,
-  Building2, Landmark, FileText, MapPin, BadgeCheck, PhoneCall,
-  ChevronDown, BarChart3,
+  User, Users, HeartHandshake, HeartPulse, Layers, Baby, Building2, Shield,
+  Hospital, CreditCard, ShieldCheck, Banknote, Percent, TrendingUp,
+  ClipboardList, BarChart3, FileCheck, CheckCircle2,
+  PhoneCall, FileText, ClipboardCheck, BadgeCheck, Wallet,
+  MessageCircle, Phone, ChevronDown, ArrowRight, Sparkles, Check,
+  Calculator, AlertCircle,
 } from "lucide-react";
+import SEO from "../components/SEO";
+import { whatsappLink } from "../lib/api";
 
 /* ─────────────────────────────────────────
-   DESIGN TOKENS
+   HELPERS
 ───────────────────────────────────────── */
-const C = {
-  navy:   "#0A1931",
-  navy2:  "#0D2040",
-  blue:   "#1E3A8A",
-  gold:   "#D4AF37",
-  gold2:  "#E8C55A",
-  goldLt: "#FBF3D5",
-  white:  "#FFFFFF",
-  muted:  "#6B7280",
-};
+const fmt = (n) =>
+  n >= 10000000
+    ? "₹" + (n / 10000000).toLocaleString("en-IN", { maximumFractionDigits: 2 }) + " Cr"
+    : "₹" + (n / 100000).toLocaleString("en-IN", { maximumFractionDigits: 1 }) + " L";
 
 /* ─────────────────────────────────────────
-   SHARED COMPONENTS
+   SHARED UI
 ───────────────────────────────────────── */
-const SectionEyebrow = ({ text }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-    <div style={{ width: 28, height: 2, background: C.gold, flexShrink: 0 }} />
-    <span style={{ color: C.gold, fontSize: 11, fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase" }}>
-      {text}
-    </span>
+const Eyebrow = ({ children }) => (
+  <div className="flex items-center gap-2 mb-3">
+    <span className="h-px w-7 bg-[#D4AF37]" />
+    <span className="text-[#D4AF37] text-xs font-bold tracking-[0.2em] uppercase">{children}</span>
   </div>
 );
 
-const SectionTitle = ({ children, light = false }) => (
-  <h2 style={{
-    fontFamily: "'Playfair Display', Georgia, serif",
-    fontSize: "clamp(24px, 3vw, 34px)",
-    fontWeight: 700,
-    color: light ? C.white : C.navy,
-    lineHeight: 1.2,
-    marginBottom: 10,
-  }}>
+const SectionTitle = ({ children, light = false, center = false }) => (
+  <h2 className={`font-display text-3xl md:text-4xl font-semibold tracking-tight leading-tight ${
+    light ? "text-white" : "text-brand-navy"} ${center ? "text-center" : ""}`}>
     {children}
   </h2>
 );
 
-const PrimaryBtn = ({ children, href = "#", style = {} }) => (
+const IconBadge = ({ icon: Icon, size = "md" }) => (
+  <div className={`${size === "lg" ? "w-16 h-16" : "w-14 h-14"} rounded-full bg-[#D4AF37]/15 text-[#D4AF37] flex items-center justify-center shrink-0`}>
+    <Icon className={`${size === "lg" ? "w-7 h-7" : "w-6 h-6"}`} strokeWidth={1.75} />
+  </div>
+);
+
+const GoldBtn = ({ href, children, target }) => (
   <a
     href={href}
-    style={{
-      display: "inline-flex", alignItems: "center", gap: 8,
-      background: `linear-gradient(135deg, ${C.gold}, ${C.gold2})`,
-      color: C.navy, fontWeight: 700, fontSize: 14,
-      padding: "11px 24px", borderRadius: 50,
-      textDecoration: "none", transition: "all .25s ease",
-      boxShadow: "0 4px 18px rgba(212,175,55,.35)",
-      cursor: "pointer", ...style,
-    }}
-    onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(212,175,55,.5)"; }}
-    onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 18px rgba(212,175,55,.35)"; }}
+    target={target}
+    rel={target ? "noopener noreferrer" : undefined}
+    className="inline-flex items-center justify-center gap-2 bg-[#D4AF37] hover:bg-[#C49A2C] text-[#0A2540] font-semibold px-6 py-3 rounded-full transition-all duration-300 hover:-translate-y-0.5 shadow-[0_4px_18px_rgba(212,175,55,0.35)]"
   >
     {children}
   </a>
 );
 
-const OutlineBtn = ({ children, href = "#", light = false }) => (
+const OutlineBtn = ({ href, children, icon: Icon, target }) => (
   <a
     href={href}
-    style={{
-      display: "inline-flex", alignItems: "center", gap: 8,
-      border: `2px solid ${light ? "rgba(255,255,255,.4)" : C.blue}`,
-      color: light ? C.white : C.blue,
-      fontWeight: 600, fontSize: 14,
-      padding: "10px 22px", borderRadius: 50,
-      textDecoration: "none", transition: "all .25s ease", cursor: "pointer",
-    }}
-    onMouseEnter={e => { e.currentTarget.style.borderColor = C.gold; e.currentTarget.style.color = C.gold; e.currentTarget.style.background = "rgba(212,175,55,.08)"; }}
-    onMouseLeave={e => { e.currentTarget.style.borderColor = light ? "rgba(255,255,255,.4)" : C.blue; e.currentTarget.style.color = light ? C.white : C.blue; e.currentTarget.style.background = ""; }}
+    target={target}
+    rel={target ? "noopener noreferrer" : undefined}
+    className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white hover:border-[#D4AF37] hover:text-[#D4AF37] font-semibold px-6 py-3 rounded-full transition-all duration-300 hover:-translate-y-0.5"
   >
+    {Icon && <Icon className="w-4 h-4" />}
     {children}
   </a>
+);
+
+const WhatsAppBtn = ({ href, children }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1DA851] text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 hover:-translate-y-0.5 shadow-[0_4px_18px_rgba(37,211,102,0.3)]"
+  >
+    <MessageCircle className="w-4 h-4" />
+    {children}
+  </a>
+);
+
+const Chip = ({ on, onClick, children }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className={`px-3.5 py-1.5 rounded-full text-sm font-semibold border transition-colors ${
+      on
+        ? "bg-[#D4AF37] text-[#0A2540] border-[#D4AF37]"
+        : "bg-white text-brand-navy border-brand-line hover:border-[#D4AF37]"
+    }`}
+  >
+    {children}
+  </button>
 );
 
 /* ─────────────────────────────────────────
-   PRODUCT CARD
+   SECTION COMPONENTS
 ───────────────────────────────────────── */
-const ProductCard = ({ icon: Icon, title, desc, highlights, tag, tagColor, iconBg, whatsappText }) => {
-  const [hovered, setHovered] = useState(false);
+function ProductCard({ icon: Icon, name, desc, benefits, extra }) {
+  const [open, setOpen] = useState(false);
+  const wa = whatsappLink(`Hi Fortune U Group, I'd like a quote for ${name} health insurance.`);
   return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: C.white, borderRadius: 16, padding: "28px 24px",
-        border: "1px solid rgba(10,25,49,.08)",
-        boxShadow: hovered ? "0 20px 48px rgba(10,25,49,.14)" : "0 2px 14px rgba(10,25,49,.06)",
-        transform: hovered ? "translateY(-6px)" : "none",
-        transition: "all .32s cubic-bezier(.34,1.56,.64,1)",
-        display: "flex", flexDirection: "column",
-        position: "relative", overflow: "hidden", cursor: "default",
-      }}
-    >
-      {/* Gold sweep line */}
-      <div style={{
-        position: "absolute", top: 0, left: 0, right: 0, height: 3,
-        background: `linear-gradient(90deg, ${C.gold}, ${C.gold2})`,
-        transform: `scaleX(${hovered ? 1 : 0})`,
-        transformOrigin: "left", transition: "transform .35s ease",
-      }} />
-
-      {/* Tag */}
-      <div style={{
-        position: "absolute", top: 14, right: 14,
-        background: tagColor.bg, color: tagColor.text,
-        fontSize: 10, fontWeight: 700, letterSpacing: "1.2px",
-        textTransform: "uppercase", padding: "3px 9px", borderRadius: 50,
-      }}>{tag}</div>
-
-      {/* Icon */}
-      <div style={{
-        width: 56, height: 56, borderRadius: 12, background: iconBg,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        marginBottom: 16,
-        transform: hovered ? "scale(1.08)" : "scale(1)",
-        transition: "transform .3s ease",
-      }}>
-        <Icon size={26} style={{ color: C.blue }} />
+    <div className="group relative flex flex-col rounded-2xl border border-brand-line bg-white p-6 shadow-card hover:shadow-soft hover:-translate-y-1.5 transition-all duration-300">
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#D4AF37] to-[#E8C55A] rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="flex items-start justify-between mb-4">
+        <IconBadge icon={Icon} />
+        <ArrowRight className="w-5 h-5 text-[#D4AF37]/40 group-hover:text-[#D4AF37] group-hover:translate-x-1 transition-all" />
       </div>
-
-      <h3 style={{
-        fontFamily: "'Playfair Display', Georgia, serif",
-        fontSize: 19, fontWeight: 700, color: C.navy, marginBottom: 8,
-      }}>{title}</h3>
-
-      <p style={{ fontSize: 13.5, color: C.muted, lineHeight: 1.65, flexGrow: 1, marginBottom: 16 }}>
-        {desc}
-      </p>
-
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 18 }}>
-        {highlights.map(h => (
-          <span key={h} style={{
-            fontSize: 11, fontWeight: 600, color: C.blue,
-            background: "#EEF3FB", padding: "3px 9px", borderRadius: 50,
-          }}>{h}</span>
+      <h3 className="font-display text-lg font-semibold text-brand-navy mb-2">{name}</h3>
+      <p className="text-sm text-brand-mute leading-relaxed mb-4">{desc}</p>
+      <div className="flex flex-wrap gap-1.5 mb-5">
+        {benefits.map((b) => (
+          <span key={b} className="text-[11px] font-semibold text-brand-navy bg-brand-soft rounded-full px-2.5 py-1">{b}</span>
         ))}
       </div>
-
-      <div style={{ display: "flex", gap: 10 }}>
-        <a href="tel:+919490237465" style={{
-          flex: 1, textAlign: "center", padding: "9px 12px",
-          background: `linear-gradient(135deg, ${C.navy}, ${C.blue})`,
-          color: C.white, borderRadius: 8, fontSize: 13, fontWeight: 600,
-          textDecoration: "none", transition: "all .25s",
-        }}
-          onMouseEnter={e => { e.currentTarget.style.background = `linear-gradient(135deg, ${C.gold}, ${C.gold2})`; e.currentTarget.style.color = C.navy; }}
-          onMouseLeave={e => { e.currentTarget.style.background = `linear-gradient(135deg, ${C.navy}, ${C.blue})`; e.currentTarget.style.color = C.white; }}
-        >Apply Now</a>
-        <a href="#contact" style={{
-          flex: 1, textAlign: "center", padding: "9px 12px",
-          background: C.gold,
-          color: C.white,
-          border: "1.5px solid #D4AF37",
-          borderRadius: 8,
-          fontSize: 13, fontWeight: 600, textDecoration: "none", transition: "all .25s",
-        }}
-          onMouseEnter={(e) => {
-         e.currentTarget.style.background = C.gold2;
-        }}
-
-          onMouseLeave={(e) => {
-         e.currentTarget.style.background = C.gold;
-        }}
-        >Get Free Consultation</a>
+      {open && (
+        <p className="text-[13px] text-brand-mute leading-relaxed bg-[#D4AF37]/5 border-l-2 border-[#D4AF37] rounded-r-lg px-3 py-2 mb-5">
+          {extra}
+        </p>
+      )}
+      <div className="mt-auto flex gap-3">
+        <button
+          onClick={() => setOpen(!open)}
+          className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full border border-brand-navy/20 text-brand-navy hover:border-brand-navy hover:bg-brand-navy hover:text-white text-sm font-semibold px-4 py-2.5 transition-colors"
+        >
+          {open ? "Hide Details" : "View Details"}
+          <ChevronDown className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`} />
+        </button>
+        <a
+          href={wa}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#D4AF37] hover:bg-[#C49A2C] text-[#0A2540] text-sm font-semibold px-4 py-2.5 transition-colors"
+        >
+          Get Quote
+        </a>
       </div>
     </div>
   );
-};
+}
+
+function WhyCard({ icon: Icon, title, desc }) {
+  return (
+    <div className="group rounded-2xl border border-brand-line bg-white p-6 shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300 text-center">
+      <div className="mx-auto w-14 h-14 rounded-full bg-[#D4AF37]/15 text-[#D4AF37] flex items-center justify-center mb-4 group-hover:bg-[#D4AF37] group-hover:text-[#0A2540] transition-colors">
+        <Icon className="w-6 h-6" strokeWidth={1.75} />
+      </div>
+      <h3 className="font-display text-base font-semibold text-brand-navy mb-2">{title}</h3>
+      <p className="text-sm text-brand-mute leading-relaxed">{desc}</p>
+    </div>
+  );
+}
+
+function StepCard({ icon: Icon, step, title, desc }) {
+  return (
+    <div className="relative rounded-2xl border border-brand-line bg-white p-6 shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300">
+      <span className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#D4AF37] text-[#0A2540] font-bold text-sm flex items-center justify-center shadow">
+        {step}
+      </span>
+      <div className="w-14 h-14 rounded-full bg-[#D4AF37]/15 text-[#D4AF37] flex items-center justify-center mb-4">
+        <Icon className="w-6 h-6" strokeWidth={1.75} />
+      </div>
+      <h3 className="font-display text-base font-semibold text-brand-navy mb-1.5">{title}</h3>
+      <p className="text-sm text-brand-mute leading-relaxed">{desc}</p>
+    </div>
+  );
+}
+
+function FaqItem({ q, a, open, onToggle }) {
+  return (
+    <div className={`rounded-xl border bg-white transition-colors ${open ? "border-[#D4AF37]" : "border-brand-line"}`}>
+      <button
+        onClick={onToggle}
+        aria-expanded={open}
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
+      >
+        <span className="font-semibold text-brand-navy text-[15px]">{q}</span>
+        <ChevronDown className={`w-5 h-5 text-brand-mute shrink-0 transition-transform duration-300 ${open ? "rotate-180 text-[#D4AF37]" : ""}`} />
+      </button>
+      {open && (
+        <div className="px-5 pb-5">
+          <p className="text-sm text-brand-mute leading-relaxed">{a}</p>
+        </div>
+      )}
+    </div>
+  );
+}
 
 /* ─────────────────────────────────────────
    DATA
 ───────────────────────────────────────── */
-const INSURANCE = [
+const PRODUCTS = [
   {
-    icon: Heart, title: "Health Insurance",
-    tag: "Insurance", tagColor: { bg: "#E8F4FD", text: "#1565C0" },
-    iconBg: "linear-gradient(135deg,#E8F4FD,#BFE0F9)",
-    desc: "Comprehensive medical cover for individuals and families. Cashless hospitalisation, OPD benefits, and critical illness add-ons available across leading insurers.",
-    whatsappText: "Hi Fortune U Group, I am interested in Health Insurance",
-    highlights: ["Cashless Network", "Family Floater", "Critical Illness", "No Claim Bonus"],
+    icon: User,
+    name: "Individual Health Insurance",
+    desc: "Complete medical cover for a single person — hospitalisation, day-care procedures and pre & post-hospitalisation expenses.",
+    benefits: ["Cashless hospitalisation", "Day-care cover", "No-claim bonus", "Tax benefit 80D"],
+    extra: "Ideal for salaried individuals and young adults. Covers hospitalisation, ICU charges, ambulance and optional OPD benefits, with portability and lifelong renewability across leading insurers.",
   },
   {
-    icon: Shield, title: "Term Insurance",
-    tag: "Insurance", tagColor: { bg: "#E8F4FD", text: "#1565C0" },
-    iconBg: "linear-gradient(135deg,#EDE9FE,#C4B5FD)",
-    desc: "Pure life protection at affordable premiums. Secure your family's financial independence with a high sum assured — we help you compare and choose the right plan.",
-    whatsappText: "Hi Fortune U Group, I am interested in Term Insurance",
-    highlights: ["High Cover", "Low Premium", "Tax Benefit 80C", "Riders Available"],
+    icon: Users,
+    name: "Family Floater Health Insurance",
+    desc: "One sum insured shared by the whole family — cost-effective protection for you, your spouse and children.",
+    benefits: ["Single shared cover", "Spouse & children", "Lower premium", "Tax benefit 80D"],
+    extra: "Covers the entire family under one policy at a lower premium than separate plans, with optional maternity add-on, newborn cover and restoration benefit.",
   },
   {
-    icon: Car, title: "Vehicle Insurance",
-    tag: "Insurance", tagColor: { bg: "#E8F4FD", text: "#1565C0" },
-    iconBg: "linear-gradient(135deg,#E8F4FD,#BFE0F9)",
-    desc: "Protect your car, bike, or commercial vehicle. We assist with third-party cover, own-damage policies, and renewals from top general insurance companies.",
-    whatsappText: "Hi Fortune U Group, I am interested in Vehicle Insurance",
-    highlights: ["Third-Party Cover", "Own Damage", "Zero Depreciation", "Quick Renewal"],
-  },
-];
-
-const LOANS = [
-  {
-    icon: Home, title: "Home Loan",
-    tag: "Loans", tagColor: { bg: "#FFF3E0", text: "#E65100" },
-    iconBg: "linear-gradient(135deg,#FFF3E0,#FFE0A3)",
-    desc: "We help you find the right home loan from multiple banks and NBFCs. Compare interest rates, tenure options, and documentation requirements — all in one place.",
-    whatsappText: "Hi Fortune U Group, I am interested in Home Loan",
-    highlights: ["Multiple Lenders", "Long Tenure", "Balance Transfer", "Tax Benefits"],
+    icon: HeartHandshake,
+    name: "Senior Citizen Health Insurance",
+    desc: "Specialised health cover for parents and elders, with higher limits and dedicated features for the 60+ age group.",
+    benefits: ["Entry up to 65+", "Pre-existing cover", "Domiciliary care", "Annual check-up"],
+    extra: "Designed for the 60+ age group with higher sum insured options, coverage for pre-existing diseases after the waiting period, domiciliary hospitalisation and AYUSH treatment.",
   },
   {
-    icon: Briefcase, title: "Personal Loan",
-    tag: "Loans", tagColor: { bg: "#FFF3E0", text: "#E65100" },
-    iconBg: "linear-gradient(135deg,#FFF8E1,#FFE082)",
-    desc: "Need funds quickly? We assist salaried and self-employed individuals in finding personal loan offers with minimal documentation and transparent terms.",
-    whatsappText: "Hi Fortune U Group, I am interested in Personal Loan",
-    highlights: ["No Collateral", "Multiple Banks", "Flexible Tenure", "Minimal Docs"],
+    icon: HeartPulse,
+    name: "Critical Illness Insurance",
+    desc: "Lump-sum payout on diagnosis of listed critical illnesses like cancer, heart attack and stroke.",
+    benefits: ["Lump-sum payout", "Cancer & heart cover", "No bills required", "Fixed benefit"],
+    extra: "Pays a fixed lump sum on diagnosis of a covered critical illness, independent of hospital bills — helping with treatment, income loss and recovery costs.",
   },
   {
-    icon: Building2, title: "Business Loan",
-    tag: "Loans", tagColor: { bg: "#FFF3E0", text: "#E65100" },
-    iconBg: "linear-gradient(135deg,#FFF3E0,#FFE0A3)",
-    desc: "Grow your business with the right financing. We connect MSMEs, startups, and established businesses with working capital and term loan options from leading lenders.",
-    whatsappText: "Hi Fortune U Group, I am interested in Business Loan",
-    highlights: ["MSME Focused", "Collateral-Free Options", "Working Capital", "Govt Schemes"],
-  },
-];
-
-const BANKING = [
-  {
-    icon: CreditCard, title: "Credit Cards",
-    tag: "Banking", tagColor: { bg: "#E8F5E9", text: "#2E7D32" },
-    iconBg: "linear-gradient(135deg,#E8F5E9,#B9E4BB)",
-    desc: "We help you choose the right credit card based on your lifestyle and spending habits — from cashback and reward points to travel benefits, across major banks.",
-    whatsappText: "Hi Fortune U Group, I am interested in Credit Cards",
-    highlights: ["Cashback Cards", "Reward Points", "Travel Perks", "Lifetime Free Options"],
+    icon: Layers,
+    name: "Super Top-Up Health Insurance",
+    desc: "Extra coverage that activates after your base policy's deductible is crossed — big cover at a small premium.",
+    benefits: ["High cover, low cost", "Activates above deductible", "Covers single big bill", "Complements base plan"],
+    extra: "A cost-effective way to increase your cover. It pays for hospitalisation once bills cross a deductible you choose, protecting you from very large claims.",
   },
   {
-    icon: PiggyBank, title: "Zero Balance Account",
-    tag: "Banking", tagColor: { bg: "#E8F5E9", text: "#2E7D32" },
-    iconBg: "linear-gradient(135deg,#E8F5E9,#B9E4BB)",
-    desc: "Open a zero balance savings account with premium banking features — instant digital access, free transfers, and high interest rates — through our bank partners.",
-    whatsappText: "Hi Fortune U Group, I am interested in Savings Account",
-    highlights: ["Zero Balance", "Digital Banking", "Free Transfers", "High Interest"],
+    icon: Baby,
+    name: "Maternity Health Insurance",
+    desc: "Covers pregnancy, delivery (normal & C-section) and newborn care — usually as an add-on with a waiting period.",
+    benefits: ["Normal & C-section", "Newborn cover", "Pre/post-natal care", "Waiting period applies"],
+    extra: "Covers maternity expenses including delivery, pre- and post-natal care and newborn medical costs, typically after a waiting period of 9 to 36 months depending on the plan.",
   },
   {
-    icon: TrendingUp, title: "Demat Account",
-    tag: "Investment", tagColor: { bg: "#E8F5E9", text: "#2E7D32" },
-    iconBg: "linear-gradient(135deg,#E8F5E9,#B9E4BB)",
-    desc: "Start investing in the stock market with a seamlessly linked demat and trading account. Access equities, IPOs, ETFs, and bonds through our trusted broker partners.",
-    whatsappText: "Hi Fortune U Group, I am interested in Demat Account",
-    highlights: ["Stocks & ETFs", "IPO Access", "SIP Enabled", "Low Brokerage"],
+    icon: Building2,
+    name: "Group Health Insurance",
+    desc: "Custom health cover for employers, SMEs and associations, covering employees and their families.",
+    benefits: ["Corporate plans", "Employees + dependents", "Maternity & OPD options", "Tax-efficient"],
+    extra: "Tailored group medical cover for companies of any size, with options for maternity, OPD and pre-existing disease coverage for employees and their dependents.",
+  },
+  {
+    icon: Shield,
+    name: "Personal Accident Cover",
+    desc: "Financial protection against accidental death, disability and injury — a low-cost essential add-on.",
+    benefits: ["Accidental death cover", "Disability benefit", "Hospital cash option", "Low premium"],
+    extra: "Pays a lump sum on accidental death or permanent disability, and can include weekly hospital cash and ambulance cover — protecting your family's income.",
   },
 ];
 
-const INVESTMENTS = [
-  {
-    icon: BarChart3, title: "Mutual Fund Distribution",
-    tag: "Investment", tagColor: { bg: "#F3E8FF", text: "#7E22CE" },
-    iconBg: "linear-gradient(135deg,#F3E8FF,#DDD6FE)",
-    desc: "SIP Planning, Lumpsum Investments, Goal-Based Investing, Retirement Planning, ELSS Tax Saving Funds, and Wealth Creation Solutions — guided by our registered advisors.",
-    whatsappText: "Hi Fortune U Group, I am interested in Investment Solutions",
-    highlights: ["SIP Planning", "Lumpsum Investment", "ELSS Tax Saving", "Retirement Planning"],
-  },
+const WHY = [
+  { icon: Hospital, title: "Hospitalization Protection", desc: "Covers hospital bills, ICU charges and treatment costs so a medical emergency never drains your savings." },
+  { icon: CreditCard, title: "Cashless Treatment", desc: "Get treated at network hospitals without paying upfront — the insurer settles the bill directly." },
+  { icon: ShieldCheck, title: "Family Protection", desc: "One policy protects your spouse, children and parents from rising healthcare costs." },
+  { icon: Banknote, title: "Financial Security", desc: "Keeps your investments and long-term goals intact by absorbing unexpected medical expenses." },
+  { icon: Percent, title: "Tax Benefits", desc: "Premiums are eligible for deduction under Section 80D of the Income Tax Act." },
+  { icon: TrendingUp, title: "Protection Against Medical Inflation", desc: "Healthcare costs rise faster than general inflation — a health plan locks in affordable protection." },
 ];
 
-const WHY_US = [
-  { icon: Users,          title: "Client-First Approach",     desc: "We prioritise your financial goals and offer unbiased guidance across all products." },
-  { icon: Zap,            title: "Fast Turnaround",           desc: "Quick assistance with documentation, application, and follow-up at every step." },
-  { icon: Award,          title: "Qualified Advisors",        desc: "Our team holds relevant registrations and is trained across insurance, loans, and investments." },
-  { icon: Eye,            title: "Transparent Process",       desc: "No hidden charges. We clearly explain all terms before you commit to anything." },
-  { icon: Handshake,      title: "Multiple Bank Tie-ups",     desc: "Access to a wide range of lenders, insurers, and investment platforms in one place." },
-  { icon: HeadphonesIcon, title: "End-to-End Support",        desc: "From enquiry to final approval — we guide you through the entire process." },
+const STEPS = [
+  { icon: ClipboardList, title: "Choose Coverage", desc: "Pick a sum insured and plan type that fits your family's needs and budget." },
+  { icon: BarChart3, title: "Compare Plans", desc: "We compare coverage, waiting periods and premiums across leading insurers." },
+  { icon: FileCheck, title: "Buy Policy", desc: "Complete the proposal and medical checks (if any) — the policy is issued in your name." },
+  { icon: CheckCircle2, title: "Claim When Needed", desc: "Get cashless or reimbursement treatment and file a claim when required." },
 ];
 
-const PARTNERS = [
-  { name: "HDFC Bank",           abbr: "HDFC"  },
-  { name: "ICICI Bank",          abbr: "ICICI" },
-  { name: "State Bank of India", abbr: "SBI"   },
-  { name: "Axis Bank",           abbr: "AXIS"  },
-  { name: "LIC",                 abbr: "LIC"   },
-  { name: "Star Health",         abbr: "STAR"  },
+const CLAIM_STEPS = [
+  { icon: PhoneCall, title: "Inform Insurer", desc: "Notify the insurer — cashless within 24 hrs, reimbursement within the set window." },
+  { icon: FileText, title: "Submit Documents", desc: "Share bills, discharge summary, reports and ID / claim forms." },
+  { icon: ClipboardCheck, title: "Claim Verification", desc: "The insurer verifies documents and treatment details." },
+  { icon: BadgeCheck, title: "Approval", desc: "The claim is approved as per policy terms and conditions." },
+  { icon: Wallet, title: "Settlement", desc: "Cashless bills are settled directly; reimbursement is credited to your account." },
+];
+
+const CHECKLIST = [
+  { t: "Sum insured", d: "Choose adequate cover — ₹5–10L is a common starting point per family." },
+  { t: "Waiting period", d: "Initial period before certain conditions (and pre-existing diseases) are covered." },
+  { t: "Room rent limits", d: "Check the cap on room rent — exceeding it can reduce your claim amount." },
+  { t: "Co-payment", d: "The share of each claim you pay out of pocket." },
+  { t: "Deductibles", d: "The amount you bear before the insurer starts paying." },
+  { t: "Disease sub-limits", d: "Caps on specific treatments like cataract or knee replacement." },
+  { t: "Network hospitals", d: "More network hospitals mean easier cashless treatment." },
+  { t: "Exclusions", d: "Treatments the policy does not cover — read them carefully." },
+  { t: "Pre-existing disease coverage", d: "When and how pre-existing conditions get covered." },
+  { t: "Restoration benefit", d: "Auto-restores the sum insured after it is used up." },
+];
+
+const COMPARE_PLANS = ["Individual", "Family Floater", "Senior Citizen", "Critical Illness"];
+
+const COMPARE_ROWS = [
+  { feature: "Coverage", values: ["Single person", "Whole family (shared)", "60+ age group", "Lump-sum on diagnosis"] },
+  { feature: "Hospitalization", values: ["Yes", "Yes", "Yes", "Not linked to bills"] },
+  { feature: "Room rent", values: ["Varies by plan", "Varies by plan", "Varies by plan", "N/A"] },
+  { feature: "Pre-existing diseases", values: ["After waiting period", "After waiting period", "After waiting period", "Varies"] },
+  { feature: "Waiting period", values: ["2–4 years", "2–4 years", "1–4 years", "90 days"] },
+  { feature: "Maternity", values: ["Add-on", "Add-on", "Usually not", "Not covered"] },
+  { feature: "Critical illness", values: ["Add-on", "Add-on", "Add-on", "Core benefit"] },
+  { feature: "Cashless hospitals", values: ["Wide network", "Wide network", "Wide network", "N/A"] },
+  { feature: "No-claim benefits", values: ["Yes (NCB)", "Yes (NCB)", "Yes", "Limited"] },
+  { feature: "Tax benefits", values: ["80D", "80D", "80D", "80D"] },
 ];
 
 const FAQS = [
-  {
-    q: "What services does Fortune U Group provide?",
-    a: "We provide assistance with insurance (health, term, vehicle), loans (home, personal, business), banking products (credit cards, zero balance accounts, demat), and mutual fund distribution including SIP planning and ELSS investments.",
-  },
-  {
-    q: "Are you an insurance company or a bank?",
-    a: "No. Fortune U Group is a financial services intermediary. We help clients compare and apply for products from leading banks, insurance companies, and investment platforms — we do not underwrite policies or disburse loans directly.",
-  },
-  {
-    q: "Which areas do you serve?",
-    a: "We currently serve clients across Andhra Pradesh and Telangana, including Hyderabad, Vijayawada, Guntur, Visakhapatnam, Tirupati, and surrounding regions.",
-  },
-  {
-    q: "How do I get started?",
-    a: "Simply call us, WhatsApp us, or fill the callback form below. One of our advisors will reach out to understand your requirement and recommend the most suitable options.",
-  },
-  {
-    q: "Is there any fee for your advisory services?",
-    a: "For most products, our services are free to the customer as we receive distributor commissions from product providers. Any applicable fees, if any, are disclosed upfront before you proceed.",
-  },
+  { q: "What is health insurance?", a: "Health insurance is a contract where the insurer covers your medical and hospitalisation expenses in exchange for a premium. It protects your savings from unexpected healthcare costs." },
+  { q: "How much health insurance do I need?", a: "It depends on your family size, age, city and existing cover. ₹5–10 lakh per family is a common starting point, with higher amounts recommended in metro cities or for larger families." },
+  { q: "What is a waiting period?", a: "A waiting period is the initial duration after buying a policy during which certain conditions or benefits (like pre-existing diseases or maternity) are not yet covered." },
+  { q: "What is a cashless hospital?", a: "A cashless hospital is part of the insurer's network where the insurer settles your bill directly with the hospital, so you don't pay upfront (subject to policy terms)." },
+  { q: "Can senior citizens get health insurance?", a: "Yes. Dedicated senior citizen plans are available, typically with entry up to 65+ years (some up to 75) and coverage for pre-existing diseases after a waiting period." },
+  { q: "What is a family floater?", a: "A family floater is a single policy where one sum insured is shared by the entire family — you, your spouse and children — usually at a lower premium than separate plans." },
+  { q: "What is a super top-up?", a: "A super top-up provides additional cover above a deductible threshold. It activates only after your bills cross that threshold, giving high coverage at a low premium." },
+  { q: "Does health insurance cover pre-existing diseases?", a: "Yes, but typically after a waiting period of 2–4 years. Some senior citizen and specific plans offer a shorter waiting period for pre-existing conditions." },
+  { q: "What is co-payment?", a: "Co-payment is the percentage of each claim that you pay yourself, with the insurer paying the rest. A higher co-payment usually lowers your premium." },
+  { q: "Can I claim tax benefits?", a: "Yes. Health insurance premiums qualify for deduction under Section 80D of the Income Tax Act, subject to the limits in force." },
 ];
 
 /* ─────────────────────────────────────────
-   MAIN COMPONENT
+   PAGE
 ───────────────────────────────────────── */
 export default function ProductsPage() {
-  const [callbackForm, setCallbackForm] = useState({ name: "", phone: "", service: "" });
-  const [callbackSent, setCallbackSent] = useState(false);
+  const [age, setAge] = useState(32);
+  const [members, setMembers] = useState(4);
+  const [city, setCity] = useState("tier2");
+  const [income, setIncome] = useState("10-20");
+  const [existing, setExisting] = useState(0);
+  const [preferred, setPreferred] = useState(1000000);
   const [openFaq, setOpenFaq] = useState(null);
 
-  const handleCallback = (e) => {
-    e.preventDefault();
-    setCallbackSent(true);
-    setTimeout(() => setCallbackSent(false), 5000);
-    setCallbackForm({ name: "", phone: "", service: "" });
-  };
+  const heroWa = whatsappLink("Hi Fortune U Group, I'd like to know more about health insurance.");
+  const quoteWa = whatsappLink(
+    `Hi Fortune U Group, I'd like a personalized health insurance quote.\nAge: ${age}\nFamily members: ${members}\nCity: ${city}\nAnnual income: ${income}\nExisting cover: ${existing === 0 ? "None" : fmt(existing)}\nPreferred cover: ${fmt(preferred)}`
+  );
+
+  const calc = useMemo(() => {
+    const cityBase = { metro: 1000000, tier2: 750000, other: 500000 }[city] || 750000;
+    let rec = cityBase + Math.max(0, members - 1) * 250000;
+    if (age >= 45) rec += 250000;
+    if (age >= 60) rec += 500000;
+    const incomeAdj = { under5: 0, "5-10": 250000, "10-20": 500000, "20+": 750000 }[income] || 0;
+    rec += incomeAdj;
+    const low = rec;
+    const high = rec + 500000;
+    const required = Math.max(rec, preferred);
+    const gap = Math.max(0, required - existing);
+    return { low, high, required, gap };
+  }, [age, members, city, income, existing, preferred]);
 
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", background: "#F7F6F2", color: C.navy, overflowX: "hidden" }}>
+    <div data-testid="products-page" className="bg-brand-bg">
+      <SEO
+        title="Health Insurance"
+        description="Compare and choose health insurance plans — individual, family floater, senior citizen, critical illness, super top-up and more. Get free guidance from Fortune U Group, Tirupati."
+        path="/products"
+      />
 
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
-        html { scroll-behavior: smooth; }
-        * { box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: ${C.navy}; }
-        ::-webkit-scrollbar-thumb { background: ${C.gold}; border-radius: 3px; }
-        .scroll-mt { scroll-margin-top: 80px; }
-        input::placeholder, textarea::placeholder { color: rgba(255,255,255,.4); }
-        select option { color: #000; background: #fff; }
-      `}</style>
+      {/* ═══════════ 1. HERO ═══════════ */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2540] via-[#0D2A50] to-[#0A2540] text-white">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#D4AF37]/10 rounded-full blur-3xl" />
+        <div className="absolute top-20 right-20 w-72 h-72 bg-cyan-400/10 rounded-full blur-3xl" />
 
-      {/* ════════════════════════════════════
-          HERO  (compact — ~38% less height)
-      ════════════════════════════════════ */}
-      {/* ================= HERO SECTION ================= */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A1931] via-[#102A56] to-[#1E3A8A] text-white">
-
-     {/* Background Effects */}
-     <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
-     <div className="absolute bottom-0 right-0 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl"></div>
-     <div className="absolute top-20 right-20 w-72 h-72 bg-yellow-400/10 rounded-full blur-3xl"></div>
-     <div className="absolute bottom-10 left-20 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
-
-     <div className="relative max-w-7xl mx-auto px-6 pt-0 pb-6 lg:pt-0 lg:pb-8">
-
-    <div className="grid lg:grid-cols-2 gap-6 items-center">
-
-      {/* Left Content */}
-      <div>
-
-        <span className="inline-flex items-center bg-yellow-500/15 border border-yellow-400/30 
-        text-yellow-300 px-4 py-2 rounded-full text-sm font-semibold mb-8">
-          ⭐ Trusted Financial Services
-        </span>
-
-        <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-           Secure Your
-          <span className="block text-yellow-400">
-            Financial Future
-          </span>
-           With Fortune U Group
-         </h1><div className="flex flex-wrap gap-6 mt-2 mb-10">
-
-        <span className="bg-white/10 px-6 py-3 rounded-full text-sm">
-         ✔ Trusted Advisors
-        </span>
-
-        <span className="bg-white/10 px-6 py-3 rounded-full text-sm">
-         ✔ Fast Approval
-        </span>
-
-        <span className="bg-white/10 px-6 py-3 rounded-full text-sm">
-         ✔ Expert Support
-        </span>
-
-        </div>
-
-       <a
-         href="https://wa.me/919490237465"
-       target="_blank"
-       rel="noopener noreferrer"
-       className="mt-10 bg-green-500 text-white font-bold px-8 
-       py-4 rounded-xl hover:bg-green-600 transition-all
-        duration-300 hover:scale-105"
-      >
-        WhatsApp Us
-      </a>
-      </div>
-
-      {/* Right Side */}
-      <div className="relative flex justify-center lg:justify-end">
-
-        <div className="bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-4 
-        shadow-2xl w-full max-w-md">
-
-          {/* IMAGE CONTAINER */}
-          <div className="overflow-hidden rounded-2xl flex justify-center">
-            <img
-              src="/images/financial-advisor.png"
-              alt="Financial Expert"
-              className="w-[450px] lg:w-[550px] h-auto object-contain mx-auto drop-shadow-2xl"
-            />
-          </div>
-
-          {/* Bottom Stats */}
-          <div className="grid grid-cols-2 gap-4 mt-6">
-
-            <div className="text-center">
-              <h4 className="text-yellow-400 text-2xl font-bold">10+</h4>
-              <p className="text-white text-sm">Financial Services</p>
-            </div>
-
-            <div className="text-center">
-              <h4 className="text-yellow-400 text-2xl font-bold">100%</h4>
-              <p className="text-white text-sm">Customer Support</p>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </div>
- </section>
-      
-      {/* ════════════════════════════════════
-          INSURANCE
-      ════════════════════════════════════ */}
-      <section id="insurance" className="scroll-mt" style={{ padding: "56px 24px 48px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <SectionEyebrow text="Protection Plans" />
-          <SectionTitle>Insurance Products</SectionTitle>
-          <p style={{ color: C.muted, fontSize: 14, maxWidth: 480, marginBottom: 32 }}>
-            We help you compare and select the right insurance cover from leading insurers.
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 22 }}>
-            {INSURANCE.map(p => <ProductCard key={p.title} {...p} />)}
-          </div>
-        </div>
-      </section>
-
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-        <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(212,175,55,.3), transparent)" }} />
-      </div>
-
-      {/* ════════════════════════════════════
-          LOANS
-      ════════════════════════════════════ */}
-      <section id="loans" className="scroll-mt" style={{ padding: "52px 24px 48px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <SectionEyebrow text="Credit Solutions" />
-          <SectionTitle>Loan Products</SectionTitle>
-          <p style={{ color: C.muted, fontSize: 14, maxWidth: 480, marginBottom: 32 }}>
-            We connect you with the best loan offers from multiple banks and NBFCs.
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 22 }}>
-            {LOANS.map(p => <ProductCard key={p.title} {...p} />)}
-          </div>
-        </div>
-      </section>
-
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-        <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(212,175,55,.3), transparent)" }} />
-      </div>
-
-      {/* ════════════════════════════════════
-          BANKING
-      ════════════════════════════════════ */}
-      <section id="banking" className="scroll-mt" style={{ padding: "52px 24px 48px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <SectionEyebrow text="Banking Products" />
-          <SectionTitle>Banking & Accounts</SectionTitle>
-          <p style={{ color: C.muted, fontSize: 14, maxWidth: 480, marginBottom: 32 }}>
-            Open the right account or card with guidance tailored to your profile.
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 22 }}>
-            {BANKING.map(p => <ProductCard key={p.title} {...p} />)}
-          </div>
-        </div>
-      </section>
-
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-        <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(212,175,55,.3), transparent)" }} />
-      </div>
-
-      {/* ════════════════════════════════════
-          INVESTMENTS
-      ════════════════════════════════════ */}
-      <section id="investments" className="scroll-mt" style={{ padding: "52px 24px 56px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <SectionEyebrow text="Wealth Creation" />
-          <SectionTitle>Mutual Fund Distribution</SectionTitle>
-          <p style={{ color: C.muted, fontSize: 14, maxWidth: 480, marginBottom: 32 }}>
-            AMFI-registered distribution services for SIPs, lumpsum, and goal-based investing.
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 22, maxWidth: 680 }}>
-            {INVESTMENTS.map(p => <ProductCard key={p.title} {...p} />)}
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════
-          WHY CHOOSE US
-      ════════════════════════════════════ */}
-      <section id="why" style={{
-        background: `linear-gradient(160deg, ${C.navy} 0%, ${C.blue} 100%)`,
-        padding: "64px 24px",
-      }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 44 }}>
-            <SectionEyebrow text="Our Edge" />
-            <SectionTitle light>Why Choose Fortune U Group?</SectionTitle>
-            <p style={{ color: "rgba(255,255,255,.58)", fontSize: 14, maxWidth: 460, margin: "0 auto" }}>
-              We're not just advisors — we're your long-term financial partners.
-            </p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 20 }}>
-            {WHY_US.map(({ icon: Icon, title, desc }) => (
-              <WhyCard key={title} Icon={Icon} title={title} desc={desc} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════
-          PARTNER LOGOS
-      ════════════════════════════════════ */}
-      <section style={{ padding: "52px 24px", background: C.white }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center" }}>
-          <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: C.muted, marginBottom: 28 }}>
-            Products from India's Leading Institutions
-          </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center", alignItems: "center" }}>
-            {PARTNERS.map(p => (
-              <div key={p.abbr} style={{
-                padding: "12px 24px", borderRadius: 10,
-                border: "1.5px solid rgba(10,25,49,.1)",
-                background: "#F8F6F2", transition: "all .25s",
-              }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = C.gold; e.currentTarget.style.background = C.goldLt; e.currentTarget.style.transform = "translateY(-2px)"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(10,25,49,.1)"; e.currentTarget.style.background = "#F8F6F2"; e.currentTarget.style.transform = ""; }}
-              >
-                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontWeight: 700, color: C.navy }}>{p.abbr}</div>
-                <div style={{ fontSize: 10, color: C.muted, marginTop: 2 }}>{p.name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════
-          FAQ
-      ════════════════════════════════════ */}
-      <section id="faq" style={{ padding: "64px 24px", background: "#F7F6F2" }}>
-        <div style={{ maxWidth: 780, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 40 }}>
-            <SectionEyebrow text="Common Questions" />
-            <SectionTitle>Frequently Asked Questions</SectionTitle>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {FAQS.map((item, i) => (
-              <FaqItem key={i} item={item} open={openFaq === i} onToggle={() => setOpenFaq(openFaq === i ? null : i)} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════
-          CTA + CALLBACK FORM
-      ════════════════════════════════════ */}
-      <section id="contact" style={{
-        background: `linear-gradient(160deg, ${C.navy} 0%, #112240 50%, ${C.blue} 100%)`,
-        padding: "72px 24px", position: "relative", overflow: "hidden",
-      }}>
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 15% 50%, rgba(212,175,55,.07) 0%, transparent 50%), radial-gradient(circle at 85% 30%, rgba(30,58,138,.4) 0%, transparent 50%)", pointerEvents: "none" }} />
-
-        <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 48, alignItems: "center" }}>
-
-            {/* Left — CTA copy */}
+        <div className="relative max-w-7xl mx-auto px-5 lg:px-8 py-16 lg:py-24">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 11, fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: C.gold2, marginBottom: 16 }}>
-                ✦ Get in Touch
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/30 text-[#E8C55A] text-sm font-semibold mb-6">
+                <Sparkles className="w-4 h-4" /> Health Insurance
               </div>
-              <h2 style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "clamp(26px, 3.5vw, 42px)",
-                fontWeight: 800, color: C.white, lineHeight: 1.15, marginBottom: 14,
-              }}>
-                Secure Your{" "}
-                <span style={{ background: `linear-gradient(135deg, ${C.gold}, ${C.gold2})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                  Financial Future
-                </span>{" "}
-                Today
-              </h2>
-              <p style={{ fontSize: 15, color: "rgba(255,255,255,.6)", marginBottom: 10, fontWeight: 300, lineHeight: 1.65 }}>
-                Our advisors are available to help you compare options and get started — with no pressure and no hidden fees.
+              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                Protect Your Health. <span className="text-[#D4AF37]">Protect Your Family.</span> Choose the Right Health Insurance.
+              </h1>
+              <p className="mt-5 text-lg text-white/70 leading-relaxed max-w-xl">
+                Hospital bills rise every year. The right health insurance keeps a medical emergency from
+                draining your savings and your financial goals. Compare plans across leading insurers with Fortune U Group.
               </p>
-              <div style={{
-                display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12,
-                color: C.gold2, background: "rgba(212,175,55,.1)", border: "1px solid rgba(212,175,55,.25)",
-                padding: "5px 13px", borderRadius: 50, marginBottom: 28, fontWeight: 600,
-              }}>
-                <MapPin size={12} /> Serving Andhra Pradesh & Telangana
+              <div className="flex flex-wrap gap-3 mt-8">
+                <GoldBtn href="#calculator">Get a Free Quote <ArrowRight className="w-4 h-4" /></GoldBtn>
+                <OutlineBtn href="#contact" icon={Phone}>Talk to an Advisor</OutlineBtn>
+                <WhatsAppBtn href={heroWa}>WhatsApp</WhatsAppBtn>
               </div>
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <PrimaryBtn href="tel:+919490237465">
-                  <Phone size={15} /> Call Now
-                </PrimaryBtn>
-                <a  target="_blank" rel="noreferrer" style={{
-                  display: "inline-flex", alignItems: "center", gap: 8,
-                  background: "#25D366", color: C.white, fontWeight: 700, fontSize: 14,
-                  padding: "11px 22px", borderRadius: 50, textDecoration: "none",
-                  transition: "all .25s", boxShadow: "0 4px 18px rgba(37,211,102,.28)",
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = ""; }}
-                >
-                  <MessageCircle size={15} /> WhatsApp Us
-                </a>
+              <div className="flex flex-wrap gap-2 mt-8">
+                {["Care Health", "Niva Bupa", "Tata AIG", "ICICI Lombard"].map((t) => (
+                  <span key={t} className="text-xs font-semibold border border-white/20 rounded-full px-3 py-1.5 bg-white/5 text-white/80">
+                    {t}
+                  </span>
+                ))}
               </div>
             </div>
 
-            {/* Right — Callback Form */}
-            <div style={{
-              background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.12)",
-              borderRadius: 18, padding: "32px 28px",
-            }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: C.white, marginBottom: 6, fontWeight: 700 }}>
-                Request a Callback
-              </h3>
-              <p style={{ fontSize: 13, color: "rgba(255,255,255,.5)", marginBottom: 22 }}>We'll call you back within a few hours.</p>
-              {callbackSent ? (
-                <div style={{
-                  background: "rgba(212,175,55,.12)", border: "1px solid rgba(212,175,55,.3)",
-                  borderRadius: 10, padding: "20px", textAlign: "center",
-                  color: C.gold2, fontSize: 15, fontWeight: 600,
-                }}>
-                  ✓ Thank you! We'll reach out to you shortly.
+            <div className="relative">
+              <div className="relative rounded-3xl border border-white/15 bg-white/5 backdrop-blur-md p-6 shadow-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-14 h-14 rounded-2xl bg-[#D4AF37] text-[#0A2540] flex items-center justify-center">
+                    <ShieldCheck className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold">Complete Health Cover</p>
+                    <p className="text-white/60 text-sm">Individual · Family · Senior</p>
+                  </div>
                 </div>
-              ) : (
-                <form onSubmit={handleCallback} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div className="rounded-2xl bg-[#0A2540]/60 border border-white/10 p-5">
+                  <p className="text-xs text-[#D4AF37] font-bold tracking-widest uppercase mb-1">Coverage range</p>
+                  <p className="text-3xl font-bold text-white">₹5L – ₹1Cr</p>
+                  <p className="text-sm text-white/60 mt-1">Sum insured tailored to your family</p>
+                </div>
+                <div className="grid grid-cols-3 gap-3 mt-4">
                   {[
-                    { type: "text", placeholder: "Your Name",     key: "name",  req: true },
-                    { type: "tel",  placeholder: "Mobile Number", key: "phone", req: true },
-                  ].map(f => (
-                    <input
-                      key={f.key} type={f.type} placeholder={f.placeholder} required={f.req}
-                      value={callbackForm[f.key]}
-                      onChange={e => setCallbackForm(p => ({ ...p, [f.key]: e.target.value }))}
-                      style={{
-                        padding: "11px 15px", borderRadius: 9, fontSize: 14,
-                        border: "1.5px solid rgba(255,255,255,.18)", background: "rgba(255,255,255,.07)",
-                        color: C.white, outline: "none",
-                      }}
-                    />
+                    ["10k+", "Cashless hospitals"],
+                    ["80D", "Tax benefit"],
+                    ["24×7", "Claim support"],
+                  ].map(([v, l]) => (
+                    <div key={l} className="text-center rounded-xl bg-white/5 border border-white/10 py-3">
+                      <p className="text-lg font-bold text-[#D4AF37]">{v}</p>
+                      <p className="text-[11px] text-white/60">{l}</p>
+                    </div>
                   ))}
-                  <select
-                    value={callbackForm.service}
-                    onChange={e => setCallbackForm(p => ({ ...p, service: e.target.value }))}
-                    style={{
-                      padding: "11px 15px", borderRadius: 9, fontSize: 14,
-                      border: "1.5px solid rgba(255,255,255,.18)", background: "rgba(20,40,80,.85)",
-                      color: callbackForm.service ? C.white : "rgba(255,255,255,.45)", outline: "none",
-                    }}
-                  >
-                    <option value="">Service Interested In</option>
-                    {["Health Insurance","Term Insurance","Vehicle Insurance","Home Loan","Personal Loan","Business Loan","Credit Card","Zero Balance Account","Demat Account","Mutual Fund / SIP"].map(s => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
-                  </select>
-                  <button type="submit" style={{
-                    background: `linear-gradient(135deg, ${C.gold}, ${C.gold2})`,
-                    color: C.navy, fontWeight: 700, fontSize: 14,
-                    padding: "13px", borderRadius: 9, border: "none", cursor: "pointer",
-                    transition: "all .25s", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                  }}
-                    onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(212,175,55,.4)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}
-                  >
-                    <PhoneCall size={15} /> Request Callback
-                  </button>
-                </form>
-              )}
+                </div>
+              </div>
+              <div className="absolute -top-4 -right-4 bg-[#25D366] text-white text-xs font-semibold rounded-full px-4 py-2 shadow-lg hidden sm:flex items-center gap-1.5">
+                <HeartPulse className="w-4 h-4" /> 24×7 Support
+              </div>
+              <div className="absolute -bottom-4 -left-4 bg-white text-brand-navy text-xs font-semibold rounded-full px-4 py-2 shadow-lg hidden sm:flex items-center gap-1.5">
+                <BadgeCheck className="w-4 h-4 text-[#D4AF37]" /> Cashless Claims
+              </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* ════════════════════════════════════
-          SEO CONTENT
-      ════════════════════════════════════ */}
-      <section style={{ background: C.white, padding: "56px 24px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <SectionEyebrow text="About Our Services" />
-          <SectionTitle>Comprehensive Financial Services in AP & Telangana</SectionTitle>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 28, marginTop: 24 }}>
-            {[
-              {
-                title: "Insurance Guidance",
-                body: "Fortune U Group works with leading insurers to help clients select health, term, and vehicle insurance plans. Our advisors help you compare coverage, understand terms, and complete the application process.",
-              },
-              {
-                title: "Loan Facilitation",
-                body: "We connect individuals and businesses with banks and NBFCs for home, personal, and business loans. Our role is to help you understand your options and navigate the documentation process.",
-              },
-              {
-                title: "Investments & Banking",
-                body: "From demat accounts and SIP plans to zero-balance savings accounts, we guide you toward banking and investment products that suit your goals and risk profile.",
-              },
-            ].map(({ title, body }) => (
-              <div key={title}>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 700, color: C.navy, marginBottom: 8 }}>
-                  {title}
-                </h3>
-                <p style={{ fontSize: 13.5, color: C.muted, lineHeight: 1.75 }}>{body}</p>
+      {/* ═══════════ 2. PRODUCTS ═══════════ */}
+      <section id="products" className="scroll-mt-24 py-20 px-5 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="flex justify-center"><Eyebrow>Health Insurance Products</Eyebrow></div>
+            <SectionTitle>Choose the Right Cover for Your Family</SectionTitle>
+            <p className="mt-4 text-brand-mute">
+              From individuals to senior citizens — explore health insurance plans that fit your needs and budget.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {PRODUCTS.map((p) => (
+              <ProductCard key={p.name} {...p} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ 3. CALCULATOR ═══════════ */}
+      <section id="calculator" className="scroll-mt-24 bg-[#0A2540] py-20 px-5 lg:px-8 text-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="flex justify-center"><Eyebrow>Coverage Calculator</Eyebrow></div>
+            <SectionTitle light>Health Insurance Coverage Calculator</SectionTitle>
+            <p className="mt-4 text-white/60">
+              Get an indicative estimate of the coverage you need. This is not an actual insurance premium quote.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+            {/* Inputs */}
+            <div className="bg-white text-brand-navy rounded-3xl p-6 md:p-8 shadow-2xl">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-11 h-11 rounded-full bg-[#D4AF37]/15 text-[#D4AF37] flex items-center justify-center">
+                  <Calculator className="w-5 h-5" />
+                </div>
+                <h3 className="font-display text-lg font-semibold">Your Details</h3>
+              </div>
+
+              <label className="block font-semibold text-sm mb-2">Age of eldest member · <span className="text-[#D4AF37]">{age} yrs</span></label>
+              <input type="range" min="18" max="80" value={age} onChange={(e) => setAge(+e.target.value)} className="w-full accent-[#D4AF37]" />
+
+              <label className="block font-semibold text-sm mt-5 mb-2">Number of family members · <span className="text-[#D4AF37]">{members}</span></label>
+              <input type="range" min="1" max="8" value={members} onChange={(e) => setMembers(+e.target.value)} className="w-full accent-[#D4AF37]" />
+
+              <p className="font-semibold text-sm mt-5 mb-2">City</p>
+              <div className="flex flex-wrap gap-2">
+                <Chip on={city === "metro"} onClick={() => setCity("metro")}>Metro</Chip>
+                <Chip on={city === "tier2"} onClick={() => setCity("tier2")}>Tier-2 (Tirupati)</Chip>
+                <Chip on={city === "other"} onClick={() => setCity("other")}>Other</Chip>
+              </div>
+
+              <p className="font-semibold text-sm mt-5 mb-2">Annual income</p>
+              <div className="flex flex-wrap gap-2">
+                <Chip on={income === "under5"} onClick={() => setIncome("under5")}>Under ₹5L</Chip>
+                <Chip on={income === "5-10"} onClick={() => setIncome("5-10")}>₹5–10L</Chip>
+                <Chip on={income === "10-20"} onClick={() => setIncome("10-20")}>₹10–20L</Chip>
+                <Chip on={income === "20+"} onClick={() => setIncome("20+")}>₹20L+</Chip>
+              </div>
+
+              <p className="font-semibold text-sm mt-5 mb-2">Existing health insurance coverage</p>
+              <div className="flex flex-wrap gap-2">
+                {[0, 250000, 500000, 1000000, 1500000, 2500000].map((v) => (
+                  <Chip key={v} on={existing === v} onClick={() => setExisting(v)}>{v === 0 ? "None" : fmt(v)}</Chip>
+                ))}
+              </div>
+
+              <p className="font-semibold text-sm mt-5 mb-2">Preferred coverage amount</p>
+              <div className="flex flex-wrap gap-2">
+                {[500000, 750000, 1000000, 1500000, 2500000, 5000000, 10000000].map((v) => (
+                  <Chip key={v} on={preferred === v} onClick={() => setPreferred(v)}>{fmt(v)}</Chip>
+                ))}
+              </div>
+            </div>
+
+            {/* Result */}
+            <div className="flex flex-col">
+              <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 flex-1">
+                <p className="text-xs text-[#D4AF37] font-bold tracking-widest uppercase mb-4">Your indicative coverage</p>
+                <p className="text-sm text-white/60 mb-1">Recommended coverage range</p>
+                <p className="font-display text-4xl font-bold text-[#D4AF37]">{fmt(calc.low)} – {fmt(calc.high)}</p>
+
+                <div className="grid sm:grid-cols-2 gap-4 mt-6">
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <p className="text-xs text-white/50 mb-1">Estimated requirement</p>
+                    <p className="text-xl font-bold text-white">{fmt(calc.required)}</p>
+                  </div>
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <p className="text-xs text-white/50 mb-1">Coverage gap</p>
+                    <p className="text-xl font-bold text-white">{calc.gap > 0 ? fmt(calc.gap) : "Adequate"}</p>
+                  </div>
+                </div>
+
+                <p className="mt-6 text-sm text-white/70 leading-relaxed">
+                  Your recommended cover of <strong className="text-white">{fmt(calc.low)}–{fmt(calc.high)}</strong> is based on
+                  {" "}{members} family member{members > 1 ? "s" : ""}, age {age}, city tier and income level.
+                  This is an indicative coverage estimate only — not an insurance premium quote.
+                </p>
+
+                <div className="flex items-start gap-2 mt-5 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/25 p-3">
+                  <AlertCircle className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <p className="text-xs text-white/70 leading-relaxed">
+                    Actual premiums depend on the insurer, plan, age, medical history and other factors. This calculator
+                    estimates coverage requirement only.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <GoldBtn href={quoteWa} target="_blank">Get Personalized Quote <ArrowRight className="w-4 h-4" /></GoldBtn>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ 4. COMPARE ═══════════ */}
+      <section id="compare" className="scroll-mt-24 py-20 px-5 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="flex justify-center"><Eyebrow>Compare Health Insurance</Eyebrow></div>
+            <SectionTitle>Compare Plans at a Glance</SectionTitle>
+            <p className="mt-4 text-brand-mute">
+              Understand how different health insurance plans differ across the features that matter most.
+            </p>
+          </div>
+
+          <div className="overflow-x-auto rounded-2xl border border-brand-line shadow-card">
+            <table className="w-full text-sm min-w-[760px]">
+              <thead>
+                <tr className="bg-[#0A2540] text-white">
+                  <th className="text-left px-5 py-4 font-semibold">Feature</th>
+                  {COMPARE_PLANS.map((p) => (
+                    <th key={p} className="text-left px-5 py-4 font-semibold">{p}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARE_ROWS.map((row, i) => (
+                  <tr key={row.feature} className={i % 2 === 0 ? "bg-white" : "bg-brand-soft/40"}>
+                    <td className="px-5 py-3.5 font-semibold text-brand-navy">{row.feature}</td>
+                    {row.values.map((v, j) => (
+                      <td key={j} className={`px-5 py-3.5 ${j === 0 ? "text-brand-mute" : "text-brand-mute"}`}>{v}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-brand-mute mt-3">
+            * Indicative summary for general understanding. Actual features and waiting periods vary by insurer and plan.
+          </p>
+        </div>
+      </section>
+
+      {/* ═══════════ 5. WHY IMPORTANT ═══════════ */}
+      <section id="why" className="scroll-mt-24 py-20 px-5 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="flex justify-center"><Eyebrow>Why It Matters</Eyebrow></div>
+            <SectionTitle>Why Health Insurance Is Important</SectionTitle>
+            <p className="mt-4 text-brand-mute">
+              One hospital stay can set your finances back years. Here's how health insurance protects you.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {WHY.map((w) => (
+              <WhyCard key={w.title} {...w} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ 6. HOW IT WORKS ═══════════ */}
+      <section id="how" className="scroll-mt-24 py-20 px-5 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="flex justify-center"><Eyebrow>Simple Process</Eyebrow></div>
+            <SectionTitle>How Health Insurance Works</SectionTitle>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {STEPS.map((s, i) => (
+              <StepCard key={s.title} step={i + 1} {...s} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ 7. CLAIM PROCESS ═══════════ */}
+      <section id="claims" className="scroll-mt-24 py-20 px-5 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="flex justify-center"><Eyebrow>Claim Process</Eyebrow></div>
+            <SectionTitle>How to Claim Your Health Insurance</SectionTitle>
+            <p className="mt-4 text-brand-mute">
+              A clear, step-by-step claim process so you know exactly what to do when it matters.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            {CLAIM_STEPS.map((s, i) => (
+              <StepCard key={s.title} step={i + 1} {...s} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ 8. CHECKLIST ═══════════ */}
+      <section id="checklist" className="scroll-mt-24 py-20 px-5 lg:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="flex justify-center"><Eyebrow>Buyer's Checklist</Eyebrow></div>
+            <SectionTitle>Key Things to Check Before Buying</SectionTitle>
+            <p className="mt-4 text-brand-mute">
+              Read the fine print. These ten points can make a big difference at claim time.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {CHECKLIST.map((item) => (
+              <div key={item.t} className="flex gap-3 rounded-xl border border-brand-line bg-white p-4 hover:border-[#D4AF37]/50 transition-colors">
+                <span className="mt-0.5 w-6 h-6 rounded-full bg-[#D4AF37]/15 text-[#D4AF37] flex items-center justify-center shrink-0">
+                  <Check className="w-3.5 h-3.5" strokeWidth={3} />
+                </span>
+                <div>
+                  <h3 className="font-semibold text-brand-navy text-[15px]">{item.t}</h3>
+                  <p className="text-sm text-brand-mute leading-relaxed">{item.d}</p>
+                </div>
               </div>
             ))}
           </div>
-          <div style={{ marginTop: 28, padding: "18px 22px", background: "#F7F6F2", borderRadius: 10, borderLeft: `4px solid ${C.gold}` }}>
-            <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.7 }}>
-              <strong style={{ color: C.navy }}>Mutual Fund Distributor</strong> | SIP Planning | Financial Planning | Insurance Guidance | Credit Cards | Demat Accounts | Zero Balance Accounts —
-              Fortune U Group assists clients across Hyderabad, Vijayawada, Guntur, Visakhapatnam, and all major cities in Andhra Pradesh and Telangana.
-            </p>
+        </div>
+      </section>
+
+      {/* ═══════════ 9. FAQ ═══════════ */}
+      <section id="faq" className="scroll-mt-24 py-20 px-5 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="flex justify-center"><Eyebrow>Common Questions</Eyebrow></div>
+            <SectionTitle>Health Insurance FAQs</SectionTitle>
+          </div>
+          <div className="flex flex-col gap-3">
+            {FAQS.map((item, i) => (
+              <FaqItem key={i} q={item.q} a={item.a} open={openFaq === i} onToggle={() => setOpenFaq(openFaq === i ? null : i)} />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ════════════════════════════════════
-          FLOATING WHATSAPP BUTTON
-      ════════════════════════════════════ */}
-      <a
-        href="https://wa.me/919490237465"
-        target="_blank" rel="noreferrer"
-        title="Chat on WhatsApp"
-        style={{
-          position: "fixed", bottom: 28, right: 24, zIndex: 999,
-          width: 54, height: 54, borderRadius: "50%",
-          background: "#25D366",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: "0 4px 20px rgba(37,211,102,.45)",
-          textDecoration: "none", transition: "all .3s ease",
-        }}
-        onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.12)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(37,211,102,.6)"; }}
-        onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 20px rgba(37,211,102,.45)"; }}
-      >
-        <MessageCircle size={24} style={{ color: C.white }} />
-        <span style={{
-          position: "absolute", inset: -4, borderRadius: "50%",
-          border: "2px solid rgba(37,211,102,.35)",
-          animation: "wapulse 2s infinite",
-        }} />
-        <style>{`@keyframes wapulse { 0%,100%{transform:scale(1);opacity:.55} 50%{transform:scale(1.16);opacity:0} }`}</style>
-      </a>
-
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────
-   SUB-COMPONENTS
-───────────────────────────────────────── */
-function WhyCard({ Icon, title, desc }) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: hovered ? "rgba(255,255,255,.1)" : "rgba(255,255,255,.05)",
-        border: `1px solid ${hovered ? "rgba(212,175,55,.4)" : "rgba(255,255,255,.1)"}`,
-        borderRadius: 14, padding: "24px 22px",
-        transition: "all .3s ease",
-        transform: hovered ? "translateY(-4px)" : "none",
-      }}
-    >
-      <div style={{
-        width: 46, height: 46, borderRadius: 11,
-        background: hovered ? `linear-gradient(135deg, ${C.gold}, ${C.gold2})` : "rgba(212,175,55,.14)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        marginBottom: 14, transition: "all .3s ease",
-      }}>
-        <Icon size={20} style={{ color: hovered ? C.navy : C.gold2 }} />
-      </div>
-      <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, fontWeight: 700, color: C.white, marginBottom: 6 }}>
-        {title}
-      </h3>
-      <p style={{ fontSize: 13, color: "rgba(255,255,255,.52)", lineHeight: 1.6 }}>{desc}</p>
-    </div>
-  );
-}
-
-function FaqItem({ item, open, onToggle }) {
-  return (
-    <div style={{
-      background: C.white, borderRadius: 12,
-      border: `1px solid ${open ? C.gold : "rgba(10,25,49,.09)"}`,
-      overflow: "hidden", transition: "border-color .25s",
-      boxShadow: open ? "0 4px 20px rgba(10,25,49,.07)" : "0 1px 6px rgba(10,25,49,.04)",
-    }}>
-      <button
-        onClick={onToggle}
-        style={{
-          width: "100%", textAlign: "left",
-          display: "flex", justifyContent: "space-between", alignItems: "center",
-          padding: "18px 22px", background: "none", border: "none",
-          cursor: "pointer", gap: 16,
-        }}
-      >
-        <span style={{ fontWeight: 600, fontSize: 15, color: C.navy, lineHeight: 1.4 }}>{item.q}</span>
-        <ChevronDown size={18} style={{
-          color: open ? C.gold : C.muted, flexShrink: 0,
-          transform: open ? "rotate(180deg)" : "rotate(0deg)",
-          transition: "transform .25s ease",
-        }} />
-      </button>
-      {open && (
-        <div style={{ padding: "0 22px 18px", borderTop: "1px solid rgba(10,25,49,.06)" }}>
-          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.72, paddingTop: 14 }}>{item.a}</p>
+      {/* ═══════════ 10. FINAL CTA ═══════════ */}
+      <section id="contact" className="scroll-mt-24 relative overflow-hidden bg-gradient-to-br from-[#0A2540] via-[#0D2A50] to-[#0A2540] text-white py-20 px-5 lg:px-8">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="relative max-w-3xl mx-auto text-center">
+          <div className="w-16 h-16 mx-auto rounded-full bg-[#D4AF37] text-[#0A2540] flex items-center justify-center mb-6">
+            <ShieldCheck className="w-8 h-8" />
+          </div>
+          <h2 className="font-display text-3xl md:text-5xl font-bold leading-tight">
+            Need Help Choosing the Right Health Insurance?
+          </h2>
+          <p className="mt-5 text-lg text-white/70 max-w-2xl mx-auto">
+            Our experts can help you understand your options and choose suitable coverage for your needs.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3 mt-9">
+            <GoldBtn href="#calculator">Get Free Quote <ArrowRight className="w-4 h-4" /></GoldBtn>
+            <WhatsAppBtn href={quoteWa}>WhatsApp Us</WhatsAppBtn>
+            <OutlineBtn href="tel:+919490237465" icon={Phone}>Talk to an Advisor</OutlineBtn>
+          </div>
+          <p className="mt-8 text-xs text-white/40 leading-relaxed max-w-2xl mx-auto">
+            Insurance is the subject matter of solicitation. Policies are issued by the insurer, not by Fortune U Group.
+            Fortune U Group is not a SEBI-registered Investment Adviser. Premiums and coverage vary by insurer, plan and individual medical history.
+          </p>
         </div>
-      )}
+      </section>
     </div>
   );
 }

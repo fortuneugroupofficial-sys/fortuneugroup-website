@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import Health from "./pages/Health";
+import Products from "./pages/Products";
 import Tools from "./pages/Tools";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -17,7 +18,6 @@ import TermsConditions from "./pages/Terms&Conditions";
 import Disclosure from "./pages/Disclosure";
 import "./App.css";
 import AIChatWidget from "./components/ui/AIChatWidget";
-import Health from "./pages/Health";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
           <Route path="/about" element={<Layout><About /></Layout>} />
           <Route path="/services" element={<Layout><Services /></Layout>} />
           <Route path="/tools" element={<Layout><Tools /></Layout>} />
-          <Route path="/Health" element={<Layout><Products /></Layout>} />
+          <Route path="/products" element={<Layout><Products /></Layout>} />
           <Route path="/blog" element={<Layout><Blog /></Layout>} />
           <Route path="/blog/:slug" element={<Layout><BlogPost /></Layout>} />
           <Route path="/contact" element={<Layout><Contact /></Layout>} />
