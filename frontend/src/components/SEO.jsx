@@ -31,7 +31,11 @@ const setSchema = (id, json) => {
 
 const SEO = ({ title, description, path = "", image, schema }) => {
   useEffect(() => {
-    const fullTitle = title ? `${title} · ${DEFAULTS.site}` : DEFAULTS.site;
+    const fullTitle = !title
+      ? DEFAULTS.site
+      : title.toLowerCase().includes(DEFAULTS.site.toLowerCase())
+        ? title
+        : `${title} · ${DEFAULTS.site}`;
     document.title = fullTitle;
     const url = `${DEFAULTS.url}${path}`;
     const img = image || DEFAULTS.image;

@@ -429,7 +429,7 @@ const COMPARE_ROWS = [
 /* ─────────────────────────────────────────
    PAGE
 ───────────────────────────────────────── */
-export default function ProductsPage() {
+export default function HealthInsurancePage() {
   const [age, setAge] = useState(32);
   const [planType, setPlanType] = useState("family");
   const [members, setMembers] = useState(4);
@@ -489,11 +489,11 @@ export default function ProductsPage() {
   }, [age, planType, members, city, sumInsured, existing, ped, deductible, coPay, roomRent]);
 
   return (
-    <div data-testid="products-page" className="bg-brand-bg">
+    <div data-testid="health-insurance-page" className="bg-brand-bg">
       <SEO
-        title="Health Insurance | Coverage, Plans, Claims & Guidance"
-        description="Compare health insurance plans, estimate your coverage and indicative premium, and understand claims, waiting periods and grievance redressal — all in one place from Fortune U Group, Tirupati."
-        path="/products"
+        title="Health Insurance | Fortune U Group"
+        description="Health insurance guidance covering coverage, policy features, claims and support."
+        path="/health-insurance"
       />
 
       {/* ═══════════ 1. HERO ═══════════ */}
@@ -573,7 +573,7 @@ export default function ProductsPage() {
       </section>
 
       {/* ═══════════ 2. PRODUCTS ═══════════ */}
-      <section id="products" className="scroll-mt-24 py-20 px-5 lg:px-8">
+      <section id="health-insurance-products" className="scroll-mt-24 py-20 px-5 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <div className="flex justify-center"><Eyebrow>Health Insurance Products</Eyebrow></div>

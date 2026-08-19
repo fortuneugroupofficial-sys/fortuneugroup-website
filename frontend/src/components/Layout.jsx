@@ -17,7 +17,7 @@ const navItems = [
   { to: "/", key: "home" },
   { to: "/about", key: "about" },
   { to: "/services", key: "services" },
-  { to: "/products", key: "products", label: "Health Insurance" },
+  { to: "/health-insurance", key: "health-insurance", label: "Health Insurance" },
   { to: "/tools", key: "tools" },
   { to: "/blog", key: "blog" },
   { to: "/contact", key: "contact" },
@@ -160,6 +160,7 @@ export const Footer = () => {
             <li><Link to="/services">Tax Saving Planning</Link></li>
             <li><Link to="/services">Child Education Planning</Link></li>
             <li><Link to="/services">Wealth Creation Planning</Link></li>
+            <li><Link to="/health-insurance">Health Insurance</Link></li>
             <li><Link to="/services">Health & Term Insurance</Link></li>
           </ul>
         </div>

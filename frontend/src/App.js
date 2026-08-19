@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import Analytics from "./components/Analytics";
 import { LangProvider } from "./context/LangContext";
@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import Health from "./pages/Health";
-import Products from "./pages/Products";
+import HealthInsurance from "./pages/Products";
 import Tools from "./pages/Tools";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -31,7 +31,8 @@ function App() {
           <Route path="/about" element={<Layout><About /></Layout>} />
           <Route path="/services" element={<Layout><Services /></Layout>} />
           <Route path="/tools" element={<Layout><Tools /></Layout>} />
-          <Route path="/products" element={<Layout><Products /></Layout>} />
+          <Route path="/health-insurance" element={<Layout><HealthInsurance /></Layout>} />
+          <Route path="/products" element={<Navigate to="/health-insurance" replace />} />
           <Route path="/blog" element={<Layout><Blog /></Layout>} />
           <Route path="/blog/:slug" element={<Layout><BlogPost /></Layout>} />
           <Route path="/contact" element={<Layout><Contact /></Layout>} />

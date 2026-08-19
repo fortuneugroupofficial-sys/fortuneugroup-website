@@ -4,7 +4,7 @@ const LangContext = createContext(null);
 
 const DICT = {
   en: {
-    nav: { home: "Home", about: "About", services: "Services", products: "Products", tools: "Tools", blog: "Blog", contact: "Contact", admin: "Admin", start: "Start Your Journey", call: "Call Now" },
+    nav: { home: "Home", about: "About", services: "Services", products: "Health Insurance", tools: "Tools", blog: "Blog", contact: "Contact", admin: "Admin", start: "Start Your Journey", call: "Call Now" },
     hero: {
      eyebrow: "Mutual Fund Distributor • Financial Planning • SIP Investments",
 
