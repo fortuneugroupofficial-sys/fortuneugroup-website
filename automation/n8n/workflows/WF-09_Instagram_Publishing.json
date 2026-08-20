@@ -17,7 +17,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// WF-09: approval gate (same policy as WF-08). AUTO_PUBLISH defaults false.\nconst j = $input.first().json;\nconst auto = String($env.AUTO_PUBLISH || 'false') === 'true';\nconst approved = j.approval_status === 'APPROVED' || j.approved === true;\nif (!approved && !auto) {\n  return [{ json: { ...j, __skip: true, __reason: 'APPROVAL_REQUIRED' } }];\n}\nreturn [{ json: { ...j, __skip: false } }];"
+        "jsCode": "// WF-09: APPROVAL GATE (same policy as WF-08). AUTO_PUBLISH defaults false.\nconst j = $input.first().json;\nconst auto = String($env.AUTO_PUBLISH || 'false') === 'true';\nconst approved = j.approval_status === 'APPROVED' || j.approved === true;\nif (!approved && !auto) {\n  return [{ json: { ...j, __skip: true, __reason: 'APPROVAL_REQUIRED', status: 'BLOCKED' } }];\n}\nreturn [{ json: { ...j, __skip: false, status: 'QUEUED_FOR_PUBLISH' } }];"
       },
       "id": "0a6b8fcd-0002-4a3b-9c1d-000000000a02",
       "name": "Approval Gate",
@@ -28,20 +28,20 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://graph.facebook.com/v19.0/{{ $env.META_IG_ACCOUNT_ID }}/media",
+        "url": "=https://graph.facebook.com/v21.0/{{ $env.META_IG_ACCOUNT_ID }}/media",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "=Bearer {{ $env.META_ACCESS_TOKEN }}" }
+            { "name": "Authorization", "value": "=Bearer {{ $credentials.fortuneMeta }}" }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"image_url\": $json.image_url,\n  \"caption\": ($json.caption || '') + '\\n\\n' + ($json.hashtags || ''),\n  \"media_type\": $json.media_type || 'IMAGE'\n}",
+        "jsonBody": "={\n  \"media_type\": ($json.media_type || 'IMAGE'),\n  \"image_url\": $json.image_url,\n  \"video_url\": $json.video_url,\n  \"caption\": (($json.caption || '') + '\\n\\n' + ($json.hashtags || '')),\n  \"share_to_feed\": true\n}",
         "options": {}
       },
       "id": "0a6b8fcd-0003-4a3b-9c1d-000000000a03",
-      "name": "IG Create Media",
+      "name": "IG Create Media Container",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [440, 0],
@@ -49,25 +49,103 @@
     },
     {
       "parameters": {
-        "jsCode": "// WF-09: capture creation_id; publish step (container publish) is a second\n// call. Scaffold records the container; wire the publish call when ready.\nconst j = $('Approval Gate').first().json;\nconst media = $input.first()?.json || {};\nreturn [{ json: {\n  ...j,\n  platform: 'instagram',\n  creation_id: media.id || null,\n  status: media.id ? 'QUEUED_FOR_PUBLISH' : 'FAILED',\n  note: 'Scaffold: call /media_publish and save to SocialPosts when credentials are live.',\n} }];"
+        "jsCode": "// WF-09: (optional) poll container status for REELS/VIDEO until FINISHED.\n// For IMAGE the container is usually ready immediately. Kept minimal.\nconst gate = $('Approval Gate').first().json;\nconst container = $input.first()?.json || {};\nconst id = container.id || null;\nreturn [{ json: { ...gate, container_id: id, media_type: gate.media_type || 'IMAGE' } }];"
       },
       "id": "0a6b8fcd-0004-4a3b-9c1d-000000000a04",
-      "name": "Capture Result",
+      "name": "Read Container ID",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [660, 0]
     },
     {
       "parameters": {
-        "respondWith": "json",
-        "responseBody": "={\n  \"status\": $json.status,\n  \"creation_id\": $json.creation_id,\n  \"skipped\": $json.__skip || false\n}",
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{ $env.META_IG_ACCOUNT_ID }}/media_publish",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $credentials.fortuneMeta }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"creation_id\": $json.container_id }",
         "options": {}
       },
       "id": "0a6b8fcd-0005-4a3b-9c1d-000000000a05",
+      "name": "IG Publish Container",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-09: capture published media id.\nconst gate = $('Approval Gate').first().json;\nif (gate.__skip) return [{ json: { ...gate, platform_post_id: null, url: null } }];\nconst pub = $input.first()?.json || {};\nconst id = pub.id || null;\nreturn [{ json: {\n  ...gate,\n  platform: 'instagram',\n  platform_post_id: id,\n  url: null,\n  status: id ? 'PUBLISHED' : 'FAILED',\n} }];"
+      },
+      "id": "0a6b8fcd-0006-4a3b-9c1d-000000000a06",
+      "name": "Capture Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1100, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_SOCIALPOSTS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"content_id\": $json.content_id,\n  \"platform\": \"instagram\",\n  \"platform_post_id\": $json.platform_post_id,\n  \"title\": $json.title,\n  \"status\": $json.status,\n  \"published_at\": ($json.status === 'PUBLISHED' ? new Date().toISOString() : null)\n}",
+        "options": {}
+      },
+      "id": "0a6b8fcd-0007-4a3b-9c1d-000000000a07",
+      "name": "Save SocialPost",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1320, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_AUTOMATIONLOGS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"WF-09 Instagram Publishing\",\n  \"event_type\": \"instagram_publish\",\n  \"status\": $json.status,\n  \"result\": { \"platform_post_id\": $json.platform_post_id, \"skip_reason\": $json.__reason }\n}",
+        "options": {}
+      },
+      "id": "0a6b8fcd-0008-4a3b-9c1d-000000000a08",
+      "name": "Log Publish",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1540, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": $json.status,\n  \"platform_post_id\": $json.platform_post_id,\n  \"skipped\": $json.__skip || false,\n  \"reason\": $json.__reason || null\n}",
+        "options": {}
+      },
+      "id": "0a6b8fcd-0009-4a3b-9c1d-000000000a09",
       "name": "Respond",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [880, 0]
+      "position": [1760, 0]
     }
   ],
   "connections": {
@@ -75,12 +153,24 @@
       "main": [[{ "node": "Approval Gate", "type": "main", "index": 0 }]]
     },
     "Approval Gate": {
-      "main": [[{ "node": "IG Create Media", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "IG Create Media Container", "type": "main", "index": 0 }]]
     },
-    "IG Create Media": {
+    "IG Create Media Container": {
+      "main": [[{ "node": "Read Container ID", "type": "main", "index": 0 }]]
+    },
+    "Read Container ID": {
+      "main": [[{ "node": "IG Publish Container", "type": "main", "index": 0 }]]
+    },
+    "IG Publish Container": {
       "main": [[{ "node": "Capture Result", "type": "main", "index": 0 }]]
     },
     "Capture Result": {
+      "main": [[{ "node": "Save SocialPost", "type": "main", "index": 0 }]]
+    },
+    "Save SocialPost": {
+      "main": [[{ "node": "Log Publish", "type": "main", "index": 0 }]]
+    },
+    "Log Publish": {
       "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
     }
   },

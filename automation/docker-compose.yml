@@ -51,6 +51,9 @@ services:
       N8N_BASIC_AUTH_PASSWORD: ${N8N_BASIC_AUTH_PASSWORD:?set N8N_BASIC_AUTH_PASSWORD in .env}
       N8N_EDITOR_BASE_URL: ${N8N_EDITOR_BASE_URL:-https://n8n.fortuneugroup.in}
       WEBHOOK_URL: ${WEBHOOK_URL:-https://n8n.fortuneugroup.in}
+      N8N_WEBHOOK_BASE: ${N8N_WEBHOOK_BASE:-https://n8n.fortuneugroup.in}
+      META_PAGE_ID: ${META_PAGE_ID:-}
+      META_IG_ACCOUNT_ID: ${META_IG_ACCOUNT_ID:-}
       # Secrets consumed by workflows via $env (never in workflow JSON):
       FUG_WEBHOOK_SECRET: ${FUG_WEBHOOK_SECRET:-}
       NOCODB_URL: ${NOCODB_URL:-http://nocodb:8080}

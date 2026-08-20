@@ -17,7 +17,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// WF-10: approval gate (same policy as WF-08/WF-09).\nconst j = $input.first().json;\nconst auto = String($env.AUTO_PUBLISH || 'false') === 'true';\nconst approved = j.approval_status === 'APPROVED' || j.approved === true;\nif (!approved && !auto) {\n  return [{ json: { ...j, __skip: true, __reason: 'APPROVAL_REQUIRED' } }];\n}\nreturn [{ json: { ...j, __skip: false } }];"
+        "jsCode": "// WF-10: APPROVAL GATE (same policy as WF-08/WF-09).\nconst j = $input.first().json;\nconst auto = String($env.AUTO_PUBLISH || 'false') === 'true';\nconst approved = j.approval_status === 'APPROVED' || j.approved === true;\nif (!approved && !auto) {\n  return [{ json: { ...j, __skip: true, __reason: 'APPROVAL_REQUIRED', status: 'BLOCKED' } }];\n}\nreturn [{ json: { ...j, __skip: false, status: 'PUBLISHING' } }];"
       },
       "id": "1b7c9ade-0002-4a3b-9c1d-000000000b02",
       "name": "Approval Gate",
@@ -28,16 +28,16 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://graph.facebook.com/v19.0/{{ $env.META_PAGE_ID }}/feed",
+        "url": "=https://graph.facebook.com/v21.0/{{ $env.META_PAGE_ID }}/feed",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "=Bearer {{ $env.META_ACCESS_TOKEN }}" }
+            { "name": "Authorization", "value": "=Bearer {{ $credentials.fortuneMeta }}" }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"message\": $json.message,\n  \"link\": $json.link\n}",
+        "jsonBody": "={\n  \"message\": ($json.message || $json.caption || ''),\n  \"link\": $json.link\n}",
         "options": {}
       },
       "id": "1b7c9ade-0003-4a3b-9c1d-000000000b03",
@@ -49,7 +49,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// WF-10: capture post id for tracking + reporting.\nconst j = $('Approval Gate').first().json;\nconst post = $input.first()?.json || {};\nreturn [{ json: {\n  ...j,\n  platform: 'facebook',\n  platform_post_id: post.id || null,\n  status: post.id ? 'PUBLISHED' : 'FAILED',\n  note: 'Scaffold: save to SocialPosts table when Meta credentials are live.',\n} }];"
+        "jsCode": "// WF-10: capture post id.\nconst gate = $('Approval Gate').first().json;\nif (gate.__skip) return [{ json: { ...gate, platform_post_id: null, url: null } }];\nconst post = $input.first()?.json || {};\nconst id = post.id || null;\nreturn [{ json: {\n  ...gate,\n  platform: 'facebook',\n  platform_post_id: id,\n  url: id ? ('https://www.facebook.com/' + id) : null,\n  status: id ? 'PUBLISHED' : 'FAILED',\n} }];"
       },
       "id": "1b7c9ade-0004-4a3b-9c1d-000000000b04",
       "name": "Capture Result",
@@ -59,15 +59,61 @@
     },
     {
       "parameters": {
-        "respondWith": "json",
-        "responseBody": "={\n  \"status\": $json.status,\n  \"platform_post_id\": $json.platform_post_id,\n  \"skipped\": $json.__skip || false\n}",
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_SOCIALPOSTS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"content_id\": $json.content_id,\n  \"platform\": \"facebook\",\n  \"platform_post_id\": $json.platform_post_id,\n  \"url\": $json.url,\n  \"title\": $json.title,\n  \"status\": $json.status,\n  \"published_at\": ($json.status === 'PUBLISHED' ? new Date().toISOString() : null)\n}",
         "options": {}
       },
       "id": "1b7c9ade-0005-4a3b-9c1d-000000000b05",
+      "name": "Save SocialPost",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_AUTOMATIONLOGS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"WF-10 Facebook Publishing\",\n  \"event_type\": \"facebook_publish\",\n  \"status\": $json.status,\n  \"result\": { \"platform_post_id\": $json.platform_post_id, \"url\": $json.url, \"skip_reason\": $json.__reason }\n}",
+        "options": {}
+      },
+      "id": "1b7c9ade-0006-4a3b-9c1d-000000000b06",
+      "name": "Log Publish",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": $json.status,\n  \"platform_post_id\": $json.platform_post_id,\n  \"url\": $json.url,\n  \"skipped\": $json.__skip || false,\n  \"reason\": $json.__reason || null\n}",
+        "options": {}
+      },
+      "id": "1b7c9ade-0007-4a3b-9c1d-000000000b07",
       "name": "Respond",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [880, 0]
+      "position": [1320, 0]
     }
   ],
   "connections": {
@@ -81,6 +127,12 @@
       "main": [[{ "node": "Capture Result", "type": "main", "index": 0 }]]
     },
     "Capture Result": {
+      "main": [[{ "node": "Save SocialPost", "type": "main", "index": 0 }]]
+    },
+    "Save SocialPost": {
+      "main": [[{ "node": "Log Publish", "type": "main", "index": 0 }]]
+    },
+    "Log Publish": {
       "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
     }
   },

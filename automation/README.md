@@ -88,6 +88,35 @@ mid-migration: import first, verify end-to-end, then cut over.
 
 ---
 
+## 4b. Social publishing flow (content → approval → publish → log)
+
+```
+ WF-07 Content Generation            WF-15 Approval Queue           WF-08/09/10 Publish
+ ──────────────────────              ────────────────────           ──────────────────
+ POST /content/generate              POST /approval/decide          POST /{platform}/publish
+   → Gemini (fortuneGemini)            → validate decision            → APPROVAL GATE (again)
+   → save Content (DRAFT)              → fetch approval + content     → platform API call
+   → create Approval (HUMAN_REVIEW)    → dispatch to platform         → save SocialPosts
+   → log AutomationLogs                → update Approval status       → log AutomationLogs
+                                        → log AutomationLogs
+```
+
+**Human approval is enabled by default.** `AUTO_PUBLISH=false` means nothing publishes until a human
+calls `POST /approval/decide` with `decision: "APPROVED"`. The publish workflows also re-check the
+approval gate themselves (defense in depth), so calling a publish webhook directly is blocked too.
+
+Credentials (created in the n8n UI, never in JSON — see `docs/04-SOCIAL-PUBLISHING-CREDENTIALS.md`):
+- `fortuneGemini` — Header Auth (`x-goog-api-key`) → WF-07
+- `fortuneMeta`   — Header Auth (`Authorization: Bearer …`) → WF-09 + WF-10
+- `fortuneYouTube`— YouTube/Google OAuth2 → WF-08
+
+Non-secret config env vars: `META_PAGE_ID`, `META_IG_ACCOUNT_ID`, `N8N_WEBHOOK_BASE`.
+
+Logic-only tests (no credentials): `node test/social-flow-test.mjs` — see
+`docs/05-SOCIAL-PUBLISHING-TEST-PLAN.md` for the full 3-layer test runbook.
+
+---
+
 ## 5. Workflow catalogue (all importable)
 
 | Workflow | Trigger | State |
@@ -98,15 +127,15 @@ mid-migration: import first, verify end-to-end, then cut over.
 | WF-04 NocoDB CRM Sync | Webhook `POST /crm/sync` | 🟡 scaffold |
 | WF-05 WhatsApp New Lead Ack | Webhook `POST /wa/ack` | 🟡 scaffold; needs WA creds |
 | WF-06 WhatsApp Follow-up Scheduler | Cron (hourly) | 🟡 scaffold; needs WA creds |
-| WF-07 Content Generation | Webhook `POST /content/generate` | 🟡 scaffold; needs LLM key |
-| WF-08 YouTube Publishing | Webhook `POST /youtube/publish` | 🟡 approval-gated; needs OAuth |
-| WF-09 Instagram Publishing | Webhook `POST /instagram/publish` | 🟡 approval-gated; needs Meta creds |
-| WF-10 Facebook Publishing | Webhook `POST /facebook/publish` | 🟡 approval-gated; needs Meta creds |
+| WF-07 Content Generation | Webhook `POST /content/generate` | ✅ complete (needs `fortuneGemini`) |
+| WF-08 YouTube Publishing | Webhook `POST /youtube/publish` | ✅ complete (needs `fortuneYouTube` OAuth) |
+| WF-09 Instagram Publishing | Webhook `POST /instagram/publish` | ✅ complete (needs `fortuneMeta`) |
+| WF-10 Facebook Publishing | Webhook `POST /facebook/publish` | ✅ complete (needs `fortuneMeta`) |
 | WF-11 SEO Audit | Cron (weekly) | 🟡 scaffold (report-only) |
 | WF-12 Analytics | Cron (daily) | 🟡 scaffold |
 | WF-13 Error Monitoring | Error Trigger | 🟡 scaffold |
 | WF-14 Master AI Orchestrator | Webhook `POST /master` | 🟡 routing skeleton |
-| WF-15 Human Approval Queue | Webhook `POST /approval/submit` | 🟡 scaffold |
+| WF-15 Human Approval Queue | Webhook `POST /approval/decide` | ✅ complete (dispatch hub) |
 
 **Important:** every workflow is `active: false` and credential-free. After import, re-assign
 credentials, fill `$env` vars, test each one, then activate. Nothing auto-publishes

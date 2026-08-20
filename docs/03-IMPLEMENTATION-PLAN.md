@@ -62,17 +62,22 @@ row, sends an ack, and logs an `AutomationLogs` entry.
 
 ---
 
-## Phase 6 — Content Agent 🟡 scaffold authored / ⛔ BLOCKED (LLM key)
+## Phase 6 — Content Agent ✅ complete (needs LLM key to go live)
 
-- ✅ WF-07 written (idea → draft → fact-check → save DRAFT → create HUMAN_REVIEW approval).
-- Fact-check gate flags `[FACT_CHECK]` claims for human review; no auto-publish of claims.
+- ✅ WF-07 fully wired: Gemini call (`fortuneGemini`) → parse → fact-check flag → save Content (DRAFT)
+  → create Approval (HUMAN_REVIEW) → log. No auto-publish of `[FACT_CHECK]` claims.
 
 ---
 
-## Phase 7 — YouTube / Instagram / Facebook publishing 🟡 scaffold authored / ⛔ BLOCKED (credentials)
+## Phase 7 — YouTube / Instagram / Facebook publishing ✅ complete (needs platform creds to go live)
 
-- ✅ WF-08 / WF-09 / WF-10 written (approval gate → platform call → track post ID).
-- ⛔ Live once Meta + YouTube credentials exist. Approval-gated (`AUTO_PUBLISH=false`).
+- ✅ WF-08 / WF-09 / WF-10 fully wired: approval gate → platform API call → track post ID →
+  save `SocialPosts` → log `AutomationLogs`.
+- ✅ WF-15 repurposed as the decision + dispatch hub (`POST /approval/decide` → dispatch to platform).
+- ✅ Approval-gated by default (`AUTO_PUBLISH=false`); publish webhooks re-check the gate themselves.
+- ✅ 15/15 logic tests pass (`automation/test/social-flow-test.mjs`); credential guide in
+  `docs/04`, 3-layer test runbook in `docs/05`.
+- ⛔ Live only once Meta + YouTube + Gemini credentials exist (never faked).
 
 ---
 

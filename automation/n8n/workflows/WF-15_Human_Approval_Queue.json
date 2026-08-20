@@ -4,31 +4,101 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "approval/submit",
+        "path": "approval/decide",
         "responseMode": "onReceived",
         "options": {}
       },
       "id": "8e2f0d4c-0001-4a3b-9c1d-000000000201",
-      "name": "Approval Webhook",
+      "name": "Approval Decide Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [0, 0],
-      "webhookId": "fug-approval-submit"
+      "webhookId": "fug-approval-decide"
     },
     {
       "parameters": {
-        "jsCode": "// ---------------------------------------------------------------------\n// WF-15: normalize an approval request.\n// All irreversible actions (publish, bulk send, delete, settings change,\n// spend, infra change) MUST land here before execution.\n// ---------------------------------------------------------------------\nconst j = $input.first().json;\n\nconst allowedActions = ['publish', 'send', 'bulk_send', 'delete', 'change_settings', 'other'];\nconst action = String(j.action || 'other').toLowerCase();\nif (!allowedActions.includes(action)) {\n  throw new Error('APPROVAL_DENIED: unknown action ' + action);\n}\n\nreturn [{\n  json: {\n    entity_type: j.entity_type || 'unknown',\n    entity_id: j.entity_id || null,\n    action,\n    payload_json: j.payload || {},\n    status: 'HUMAN_REVIEW',\n    requested_by: j.requested_by || 'master_agent',\n    created_at: new Date().toISOString(),\n  },\n}];"
+        "jsCode": "// ---------------------------------------------------------------------\n// WF-15 step 1: validate the human decision.\n// Only APPROVED triggers publishing. REJECTED just closes the approval.\n// ---------------------------------------------------------------------\nconst j = $input.first().json;\nconst decision = String(j.decision || '').toUpperCase();\nif (!['APPROVED', 'REJECTED'].includes(decision)) {\n  throw new Error('APPROVAL_INVALID_DECISION: must be APPROVED or REJECTED');\n}\nreturn [{ json: {\n  approval_id: j.approval_id,\n  decision,\n  reviewed_by: j.reviewed_by || 'human',\n  dispatch: decision === 'APPROVED',\n} }];"
       },
       "id": "8e2f0d4c-0002-4a3b-9c1d-000000000202",
-      "name": "Validate Approval Request",
+      "name": "Validate Decision",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [220, 0]
     },
     {
       "parameters": {
+        "method": "GET",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_APPROVALS_TABLE_ID }}/records/{{ $json.approval_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8e2f0d4c-0003-4a3b-9c1d-000000000203",
+      "name": "Fetch Approval",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_CONTENT_TABLE_ID }}/records/{{ $('Fetch Approval').first().json.entity_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8e2f0d4c-0004-4a3b-9c1d-000000000204",
+      "name": "Fetch Content",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-15 step 2: build the dispatch payload to the platform publish webhook.\nconst d = $('Validate Decision').first().json;\nconst approval = $('Fetch Approval').first()?.json || {};\nconst content = $('Fetch Content').first()?.json || {};\nconst platform = String(approval.payload_json?.platform || content.platform || '').toLowerCase();\n\nconst webhookPath = {\n  youtube: 'youtube/publish',\n  instagram: 'instagram/publish',\n  facebook: 'facebook/publish',\n}[platform] || null;\n\nreturn [{ json: {\n  ...d,\n  platform,\n  webhookPath,\n  content_id: content.Id || approval.entity_id || null,\n  payload: {\n    content_id: content.Id || approval.entity_id || null,\n    approval_status: 'APPROVED',\n    approved: true,\n    platform,\n    title: content.draft ? (approval.payload_json?.title || '') : (approval.payload_json?.title || ''),\n    caption: content.draft || '',\n    message: content.draft || '',\n    hashtags: approval.payload_json?.hashtags || '',\n  },\n  can_dispatch: d.dispatch && !!webhookPath,\n} }];"
+      },
+      "id": "8e2f0d4c-0005-4a3b-9c1d-000000000205",
+      "name": "Build Dispatch Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0]
+    },
+    {
+      "parameters": {
         "method": "POST",
-        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_APPROVALS_TABLE_ID }}/records",
+        "url": "={{ $env.N8N_WEBHOOK_BASE }}/webhook/{{ $json.webhookPath }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.payload) }}",
+        "options": {}
+      },
+      "id": "8e2f0d4c-0006-4a3b-9c1d-000000000206",
+      "name": "Dispatch to Platform Publish",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_APPROVALS_TABLE_ID }}/records/{{ $json.approval_id }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -38,44 +108,80 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"entity_type\": $json.entity_type,\n  \"entity_id\": $json.entity_id,\n  \"action\": $json.action,\n  \"payload_json\": $json.payload_json,\n  \"status\": \"HUMAN_REVIEW\",\n  \"requested_by\": $json.requested_by\n}",
+        "jsonBody": "={\n  \"status\": $json.decision,\n  \"reviewed_by\": $json.reviewed_by,\n  \"reviewed_at\": new Date().toISOString()\n}",
         "options": {}
       },
-      "id": "8e2f0d4c-0003-4a3b-9c1d-000000000203",
-      "name": "NocoDB Create Approval",
+      "id": "8e2f0d4c-0007-4a3b-9c1d-000000000207",
+      "name": "Update Approval Status",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [440, 0],
+      "position": [1320, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_AUTOMATIONLOGS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"WF-15 Human Approval Queue\",\n  \"event_type\": \"approval_decision\",\n  \"status\": \"SUCCESS\",\n  \"result\": { \"approval_id\": $json.approval_id, \"decision\": $json.decision, \"platform\": $json.platform, \"dispatched\": $json.can_dispatch }\n}",
+        "options": {}
+      },
+      "id": "8e2f0d4c-0008-4a3b-9c1d-000000000208",
+      "name": "Log Decision",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1540, 0],
       "onError": "continueRegularOutput"
     },
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={\n  \"queued\": true,\n  \"status\": \"HUMAN_REVIEW\",\n  \"action\": $json.action,\n  \"note\": \"Approval is pending human review. Publishing/sending stays blocked until APPROVED.\"\n}",
+        "responseBody": "={\n  \"approval_id\": $json.approval_id,\n  \"decision\": $json.decision,\n  \"platform\": $json.platform,\n  \"dispatched\": $json.can_dispatch,\n  \"note\": ($json.can_dispatch ? 'Approved — publish workflow dispatched.' : 'No publish dispatched (rejected, or unknown platform).')\n}",
         "options": {}
       },
-      "id": "8e2f0d4c-0004-4a3b-9c1d-000000000204",
+      "id": "8e2f0d4c-0009-4a3b-9c1d-000000000209",
       "name": "Respond",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [660, 0]
+      "position": [1760, 0]
     }
   ],
   "connections": {
-    "Approval Webhook": {
-      "main": [[{ "node": "Validate Approval Request", "type": "main", "index": 0 }]]
+    "Approval Decide Webhook": {
+      "main": [[{ "node": "Validate Decision", "type": "main", "index": 0 }]]
     },
-    "Validate Approval Request": {
-      "main": [[{ "node": "NocoDB Create Approval", "type": "main", "index": 0 }]]
+    "Validate Decision": {
+      "main": [[{ "node": "Fetch Approval", "type": "main", "index": 0 }]]
     },
-    "NocoDB Create Approval": {
+    "Fetch Approval": {
+      "main": [[{ "node": "Fetch Content", "type": "main", "index": 0 }]]
+    },
+    "Fetch Content": {
+      "main": [[{ "node": "Build Dispatch Payload", "type": "main", "index": 0 }]]
+    },
+    "Build Dispatch Payload": {
+      "main": [[{ "node": "Dispatch to Platform Publish", "type": "main", "index": 0 }]]
+    },
+    "Dispatch to Platform Publish": {
+      "main": [[{ "node": "Update Approval Status", "type": "main", "index": 0 }]]
+    },
+    "Update Approval Status": {
+      "main": [[{ "node": "Log Decision", "type": "main", "index": 0 }]]
+    },
+    "Log Decision": {
       "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
     }
   },
   "settings": { "executionOrder": "v1" },
   "pinData": {},
-  "meta": {
-    "templateCredsSetupCompleted": false
-  },
+  "meta": { "templateCredsSetupCompleted": false },
   "active": false
 }

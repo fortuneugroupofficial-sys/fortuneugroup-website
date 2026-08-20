@@ -17,7 +17,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// WF-08: approval gate. Publishing is OFF unless the item is APPROVED and\n// (AUTO_PUBLISH=true OR explicit approval flag). Default AUTO_PUBLISH=false.\nconst j = $input.first().json;\nconst auto = String($env.AUTO_PUBLISH || 'false') === 'true';\nconst approved = j.approval_status === 'APPROVED' || j.approved === true;\n\nif (!approved && !auto) {\n  return [{ json: { ...j, __skip: true, __reason: 'APPROVAL_REQUIRED', note: 'Route to WF-15 first.' } }];\n}\nreturn [{ json: { ...j, __skip: false } }];"
+        "jsCode": "// ---------------------------------------------------------------------\n// WF-08: APPROVAL GATE — publish is blocked unless explicitly approved.\n// Allowed: approval_status === 'APPROVED' (from WF-15) OR approved === true\n// OR global AUTO_PUBLISH === 'true' (default false). Otherwise BLOCKED.\n// ---------------------------------------------------------------------\nconst j = $input.first().json;\nconst auto = String($env.AUTO_PUBLISH || 'false') === 'true';\nconst approved = j.approval_status === 'APPROVED' || j.approved === true;\n\nif (!approved && !auto) {\n  return [{ json: { ...j, __skip: true, __reason: 'APPROVAL_REQUIRED', status: 'BLOCKED' } }];\n}\nif (!j.video_url) {\n  return [{ json: { ...j, __skip: true, __reason: 'MISSING_VIDEO_URL', status: 'BLOCKED' } }];\n}\nreturn [{ json: { ...j, __skip: false, status: 'UPLOADING' } }];"
       },
       "id": "f59a7ebc-0002-4a3b-9c1d-000000000902",
       "name": "Approval Gate",
@@ -27,12 +27,27 @@
     },
     {
       "parameters": {
+        "url": "={{ $json.video_url }}",
+        "sendHeaders": false,
+        "options": {
+          "response": { "response": { "responseFormat": "file" } }
+        }
+      },
+      "id": "f59a7ebc-0003-4a3b-9c1d-000000000903",
+      "name": "Download Video (binary)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
         "method": "POST",
-        "url": "=https://www.googleapis.com/upload/youtube/v3/videos?part=snippet,status",
+        "url": "=https://www.googleapis.com/upload/youtube/v3/videos?uploadType=multipart&part=snippet,status",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "=Bearer {{ $credentials.youtubeOAuth2.oauthTokenData.access_token }}" }
+            { "name": "Authorization", "value": "=Bearer {{ $credentials.fortuneYouTube.oauthTokenData.access_token }}" }
           ]
         },
         "sendBody": true,
@@ -42,40 +57,91 @@
             {
               "name": "metadata",
               "type": "string",
-              "value": "={ \"snippet\": { \"title\": $json.title, \"description\": $json.description, \"tags\": $json.tags }, \"status\": { \"privacyStatus\": $json.privacyStatus || \"private\" } }"
+              "value": "={ \"snippet\": { \"title\": $('Approval Gate').first().json.title, \"description\": ($('Approval Gate').first().json.description || '') + '\\n\\n' + ($('Approval Gate').first().json.hashtags || ''), \"tags\": ($('Approval Gate').first().json.tags || []), \"categoryId\": \"27\" }, \"status\": { \"privacyStatus\": $('Approval Gate').first().json.privacyStatus || 'private', \"selfDeclaredMadeForKids\": false } }"
+            },
+            {
+              "name": "media",
+              "type": "file",
+              "value": "={{ $json.fileName }}"
             }
           ]
         },
-        "options": {}
+        "options": { "timeout": 300000 }
       },
-      "id": "f59a7ebc-0003-4a3b-9c1d-000000000903",
-      "name": "YouTube Upload (OAuth)",
+      "id": "f59a7ebc-0004-4a3b-9c1d-000000000904",
+      "name": "YouTube Upload (OAuth2)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [440, 0],
+      "position": [660, 0],
       "onError": "continueRegularOutput"
     },
     {
       "parameters": {
-        "jsCode": "// WF-08: capture video id/url for tracking (BLOCKED until OAuth is wired).\nconst j = $('Approval Gate').first().json;\nconst up = $input.first()?.json || {};\nreturn [{ json: {\n  ...j,\n  platform: 'youtube',\n  platform_post_id: up.id || null,\n  url: up.id ? ('https://youtu.be/' + up.id) : null,\n  status: up.id ? 'PUBLISHED' : 'FAILED',\n  note: 'Scaffold: save to SocialPosts table once OAuth credential is provided.',\n} }];"
+        "jsCode": "// WF-08: parse upload result. Note: non-resumable multipart returns the video\n// resource directly; if n8n wraps it, this still extracts id/snippet.\nconst gate = $('Approval Gate').first().json;\nif (gate.__skip) return [{ json: { ...gate, platform_post_id: null, url: null } }];\n\nconst up = $input.first()?.json || {};\nconst vid = up.id || up.snippet?.resourceId?.videoId || null;\nreturn [{ json: {\n  ...gate,\n  platform: 'youtube',\n  platform_post_id: vid,\n  url: vid ? ('https://youtu.be/' + vid) : null,\n  status: vid ? 'PUBLISHED' : 'FAILED',\n} }];"
       },
-      "id": "f59a7ebc-0004-4a3b-9c1d-000000000904",
+      "id": "f59a7ebc-0005-4a3b-9c1d-000000000905",
       "name": "Capture Result",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [660, 0]
+      "position": [880, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_SOCIALPOSTS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"content_id\": $json.content_id,\n  \"platform\": \"youtube\",\n  \"platform_post_id\": $json.platform_post_id,\n  \"url\": $json.url,\n  \"title\": $json.title,\n  \"status\": $json.status,\n  \"published_at\": ($json.status === 'PUBLISHED' ? new Date().toISOString() : null)\n}",
+        "options": {}
+      },
+      "id": "f59a7ebc-0006-4a3b-9c1d-000000000906",
+      "name": "Save SocialPost",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_AUTOMATIONLOGS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"WF-08 YouTube Publishing\",\n  \"event_type\": \"youtube_publish\",\n  \"status\": $json.status,\n  \"result\": { \"platform_post_id\": $json.platform_post_id, \"url\": $json.url, \"skip_reason\": $json.__reason }\n}",
+        "options": {}
+      },
+      "id": "f59a7ebc-0007-4a3b-9c1d-000000000907",
+      "name": "Log Publish",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1320, 0],
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={\n  \"status\": $json.status,\n  \"platform_post_id\": $json.platform_post_id,\n  \"url\": $json.url,\n  \"skipped\": $json.__skip || false\n}",
+        "responseBody": "={\n  \"status\": $json.status,\n  \"platform_post_id\": $json.platform_post_id,\n  \"url\": $json.url,\n  \"skipped\": $json.__skip || false,\n  \"reason\": $json.__reason || null\n}",
         "options": {}
       },
-      "id": "f59a7ebc-0005-4a3b-9c1d-000000000905",
+      "id": "f59a7ebc-0008-4a3b-9c1d-000000000908",
       "name": "Respond",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [880, 0]
+      "position": [1540, 0]
     }
   ],
   "connections": {
@@ -83,12 +149,21 @@
       "main": [[{ "node": "Approval Gate", "type": "main", "index": 0 }]]
     },
     "Approval Gate": {
-      "main": [[{ "node": "YouTube Upload (OAuth)", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "Download Video (binary)", "type": "main", "index": 0 }]]
     },
-    "YouTube Upload (OAuth)": {
+    "Download Video (binary)": {
+      "main": [[{ "node": "YouTube Upload (OAuth2)", "type": "main", "index": 0 }]]
+    },
+    "YouTube Upload (OAuth2)": {
       "main": [[{ "node": "Capture Result", "type": "main", "index": 0 }]]
     },
     "Capture Result": {
+      "main": [[{ "node": "Save SocialPost", "type": "main", "index": 0 }]]
+    },
+    "Save SocialPost": {
+      "main": [[{ "node": "Log Publish", "type": "main", "index": 0 }]]
+    },
+    "Log Publish": {
       "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
     }
   },
