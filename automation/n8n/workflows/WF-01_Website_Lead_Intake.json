@@ -1,0 +1,113 @@
+{
+  "name": "WF-01 Website Lead Intake",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-intake",
+        "responseMode": "onReceived",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          }
+        }
+      },
+      "id": "6c4c8f2a-0001-4a3b-9c1d-000000000001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "fug-lead-intake"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ---------------------------------------------------------------------\n// WF-01: Validate + normalize a website lead before CRM write.\n// Inputs: name, mobile|phone, email, city, goal|service, message, source\n// Outputs: adds $json.normalized (phone in E.164-ish form, validity flag)\n// ---------------------------------------------------------------------\nconst items = $input.all();\nconst DIGITS = (s) => String(s || '').replace(/[^0-9]/g, '');\n\nfor (const item of items) {\n  const j = item.json;\n  const raw = String(j.mobile || j.phone || '').replace(/[^\\d+]/g, '');\n  const d = DIGITS(raw);\n\n  // Normalize Indian mobile numbers to +91XXXXXXXXXX\n  let phone = raw;\n  if (/^91[6-9]\\d{9}$/.test(d)) phone = '+91' + d.slice(2);\n  else if (/^0[6-9]\\d{9}$/.test(d)) phone = '+91' + d.slice(1);\n  else if (/^[6-9]\\d{9}$/.test(d)) phone = '+91' + d;\n\n  const email = String(j.email || '').trim().toLowerCase();\n  const emailOk = email === '' || /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n  const phoneOk = /^[6-9]\\d{9}$/.test(DIGITS(phone));\n  const nameOk = String(j.name || '').trim().length > 0;\n\n  j.normalized = {\n    phone,\n    phone_raw: raw,\n    email,\n    valid: phoneOk && emailOk && nameOk,\n    source: j.source || 'fortuneugroup-website',\n    service: j.goal || j.service || 'other',\n    status: 'NEW',\n    priority: 'MEDIUM',\n    received_at: new Date().toISOString(),\n  };\n\n  if (!j.normalized.valid) {\n    // Fail loudly so WF-13 (Error Monitoring) records it. Never write bad data.\n    throw new Error('INVALID_LEAD: valid name + 10-digit Indian mobile required. phone=' + raw + ', email=' + email);\n  }\n}\n\nreturn items;"
+      },
+      "id": "6c4c8f2a-0002-4a3b-9c1d-000000000002",
+      "name": "Validate & Normalize",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_LEADS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"name\": $json.name,\n  \"phone\": $json.normalized.phone,\n  \"email\": $json.normalized.email,\n  \"city\": $json.city,\n  \"source\": $json.normalized.source,\n  \"service\": $json.normalized.service,\n  \"message\": $json.message,\n  \"status\": \"NEW\",\n  \"priority\": \"MEDIUM\"\n}",
+        "options": {}
+      },
+      "id": "6c4c8f2a-0003-4a3b-9c1d-000000000003",
+      "name": "NocoDB Create Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v19.0/{{ $env.WA_PHONE_NUMBER_ID }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WA_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": $json.normalized.phone,\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": \"new_lead_ack\",\n    \"language\": { \"code\": \"en\" },\n    \"components\": [\n      { \"type\": \"body\", \"parameters\": [ { \"type\": \"text\", \"text\": $json.name } ] }\n    ]\n  }\n}",
+        "options": {}
+      },
+      "id": "6c4c8f2a-0004-4a3b-9c1d-000000000004",
+      "name": "WhatsApp Ack (template)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"received\": true,\n  \"lead\": {\n    \"name\": $json.name,\n    \"phone\": $json.normalized.phone,\n    \"service\": $json.normalized.service\n  }\n}",
+        "options": {}
+      },
+      "id": "6c4c8f2a-0005-4a3b-9c1d-000000000005",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [880, 0]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Validate & Normalize", "type": "main", "index": 0 }]]
+    },
+    "Validate & Normalize": {
+      "main": [[{ "node": "NocoDB Create Lead", "type": "main", "index": 0 }]]
+    },
+    "NocoDB Create Lead": {
+      "main": [[{ "node": "WhatsApp Ack (template)", "type": "main", "index": 0 }]]
+    },
+    "WhatsApp Ack (template)": {
+      "main": [[{ "node": "Respond to Webhook", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "active": false
+}

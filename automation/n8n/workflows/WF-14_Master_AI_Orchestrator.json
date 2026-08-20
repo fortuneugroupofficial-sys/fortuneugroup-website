@@ -1,0 +1,68 @@
+{
+  "name": "WF-14 Master AI Orchestrator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "master",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "7d1e9c3b-0001-4a3b-9c1d-000000000101",
+      "name": "Master Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "fug-master"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ---------------------------------------------------------------------\n// WF-14: Master Agent — intent classification + specialist routing.\n// 1. identify event  2. identify user/lead  3. determine intent\n// 4. select specialist agent  5. flag approval-gated actions\n// 6. human-handoff triggers\n// ---------------------------------------------------------------------\n// Deterministic routing (no LLM required). Add LLM classification when\n// GEMINI_API_KEY is set for genuinely ambiguous inputs.\n\nconst item = $input.first().json;\nconst event = item.event || {};\nconst type = String(item.type || event.type || '').toLowerCase();\nconst src = String(item.source || event.source || '').toLowerCase();\nconst text = String(item.message || event.message || item.question || '').toLowerCase();\n\nlet agent = 'default';\n\nif (type.includes('lead') || src === 'website' || src === 'book-consultation' || type.includes('enquiry')) {\n  agent = 'lead';\n} else if (type.includes('whatsapp') || src === 'whatsapp') {\n  agent = 'whatsapp';\n} else if (type.includes('content') || type.includes('idea') || type.includes('script')) {\n  agent = 'content';\n} else if (type.includes('publish') || type.includes('youtube') || type.includes('instagram') || type.includes('facebook') || type.includes('reel')) {\n  agent = 'social_publish';\n} else if (type.includes('report') || type.includes('analytics')) {\n  agent = 'analytics';\n} else if (type.includes('seo') || type.includes('audit')) {\n  agent = 'seo';\n} else if (type.includes('error') || type.includes('retry')) {\n  agent = 'error';\n}\n\n// Human hand-off triggers (always override)\nconst handoff = ['complaint', 'refund', 'legal', 'lawyer', 'regulatory', 'angry', 'payment issue',\n  'human', 'agent', 'speak to a person', 'talk to someone'];\nif (handoff.some((k) => text.includes(k))) agent = 'human_handoff';\n\n// Irreversible / high-impact actions => require human approval (route to WF-15)\nconst destructiveKeywords = ['bulk', 'delete', 'publish', 'send_mass', 'change_settings', 'spend'];\nconst isDestructive = destructiveKeywords.some((k) => type.includes(k) || text.includes(k));\nconst needsApproval = isDestructive || agent === 'social_publish';\n\nreturn [{\n  json: {\n    ...item,\n    __routing: {\n      agent,\n      needs_approval: needsApproval,\n      requires_human: agent === 'human_handoff',\n      decision_reason: 'deterministic route',\n      ts: new Date().toISOString(),\n    },\n  },\n}];"
+      },
+      "id": "7d1e9c3b-0002-4a3b-9c1d-000000000102",
+      "name": "Classify & Route",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ---------------------------------------------------------------------\n// Dispatch stub. TODO (BLOCKED on n8n workflow IDs):\n//  - Replace with an n8n 'Execute Workflow' node per specialist agent.\n//  - Route on $json.__routing.agent: lead->WF-01, whatsapp->WF-05/06,\n//    content->WF-07, social_publish->WF-15 (approval gate), analytics->WF-12,\n//    seo->WF-11, error->WF-13, human_handoff->notify human.\n//  - Persist an AutomationLogs row (workflow_name, execution_id, event_type,\n//    status, result) before returning.\n// ---------------------------------------------------------------------\nconst item = $input.first().json;\n\nconst r = item.__routing;\nconst actionMap = {\n  lead: 'WF-01 Website Lead Intake',\n  whatsapp: 'WF-05/06 WhatsApp',\n  content: 'WF-07 Content Generation',\n  social_publish: 'WF-15 Human Approval Queue (gated)',\n  analytics: 'WF-12 Analytics',\n  seo: 'WF-11 SEO Audit',\n  error: 'WF-13 Error Monitoring',\n  human_handoff: 'HUMAN_HANDOFF — notify staff',\n  default: 'UNROUTED — queue for review',\n};\n\nreturn [{\n  json: {\n    ...item,\n    __dispatch: {\n      target_workflow: actionMap[r.agent] || actionMap.default,\n      needs_approval: r.needs_approval,\n      requires_human: r.requires_human,\n      note: 'Scaffold: wire Execute Workflow nodes + AutomationLogs write to complete.',\n    },\n  },\n}];"
+      },
+      "id": "7d1e9c3b-0003-4a3b-9c1d-000000000103",
+      "name": "Dispatch (stub)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"routing\": $json.__routing,\n  \"dispatch\": $json.__dispatch\n}",
+        "options": {}
+      },
+      "id": "7d1e9c3b-0004-4a3b-9c1d-000000000104",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [660, 0]
+    }
+  ],
+  "connections": {
+    "Master Webhook": {
+      "main": [[{ "node": "Classify & Route", "type": "main", "index": 0 }]]
+    },
+    "Classify & Route": {
+      "main": [[{ "node": "Dispatch (stub)", "type": "main", "index": 0 }]]
+    },
+    "Dispatch (stub)": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "active": false
+}

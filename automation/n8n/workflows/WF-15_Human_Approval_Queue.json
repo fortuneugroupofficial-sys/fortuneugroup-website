@@ -1,0 +1,81 @@
+{
+  "name": "WF-15 Human Approval Queue",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "approval/submit",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "8e2f0d4c-0001-4a3b-9c1d-000000000201",
+      "name": "Approval Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "fug-approval-submit"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ---------------------------------------------------------------------\n// WF-15: normalize an approval request.\n// All irreversible actions (publish, bulk send, delete, settings change,\n// spend, infra change) MUST land here before execution.\n// ---------------------------------------------------------------------\nconst j = $input.first().json;\n\nconst allowedActions = ['publish', 'send', 'bulk_send', 'delete', 'change_settings', 'other'];\nconst action = String(j.action || 'other').toLowerCase();\nif (!allowedActions.includes(action)) {\n  throw new Error('APPROVAL_DENIED: unknown action ' + action);\n}\n\nreturn [{\n  json: {\n    entity_type: j.entity_type || 'unknown',\n    entity_id: j.entity_id || null,\n    action,\n    payload_json: j.payload || {},\n    status: 'HUMAN_REVIEW',\n    requested_by: j.requested_by || 'master_agent',\n    created_at: new Date().toISOString(),\n  },\n}];"
+      },
+      "id": "8e2f0d4c-0002-4a3b-9c1d-000000000202",
+      "name": "Validate Approval Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_APPROVALS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"entity_type\": $json.entity_type,\n  \"entity_id\": $json.entity_id,\n  \"action\": $json.action,\n  \"payload_json\": $json.payload_json,\n  \"status\": \"HUMAN_REVIEW\",\n  \"requested_by\": $json.requested_by\n}",
+        "options": {}
+      },
+      "id": "8e2f0d4c-0003-4a3b-9c1d-000000000203",
+      "name": "NocoDB Create Approval",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"queued\": true,\n  \"status\": \"HUMAN_REVIEW\",\n  \"action\": $json.action,\n  \"note\": \"Approval is pending human review. Publishing/sending stays blocked until APPROVED.\"\n}",
+        "options": {}
+      },
+      "id": "8e2f0d4c-0004-4a3b-9c1d-000000000204",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [660, 0]
+    }
+  ],
+  "connections": {
+    "Approval Webhook": {
+      "main": [[{ "node": "Validate Approval Request", "type": "main", "index": 0 }]]
+    },
+    "Validate Approval Request": {
+      "main": [[{ "node": "NocoDB Create Approval", "type": "main", "index": 0 }]]
+    },
+    "NocoDB Create Approval": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "active": false
+}
