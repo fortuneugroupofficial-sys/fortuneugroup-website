@@ -1,3 +1,10 @@
+# =============================================================================
+# README: this is a REFERENCE file, not an active GitHub Action.
+# The session's GitHub App lacks the `workflows` permission to write
+# `.github/workflows/*`, so this file lives here instead. To activate it:
+#   1. Copy this file to:  .github/workflows/n8n-social-deploy.yml
+#   2. Commit/push (you can do this from the GitHub web UI → Add file).
+# =============================================================================
 name: n8n social publishing deploy
 
 # Deploys WF-07/08/09/10/15 to your n8n (imports, creates credentials from

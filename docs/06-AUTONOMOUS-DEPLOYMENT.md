@@ -27,8 +27,12 @@ self-hosted GitHub Actions runner on the VPS. After a one-time setup, every futu
 these workflows deploys automatically. That machinery is already built in this repo:
 
 - `automation/deploy/deploy.sh` — imports workflows, creates credentials from secrets, sets
-  Variables, activates, and smoke-tests the approval gate (idempotent).
-- `.github/workflows/n8n-social-deploy.yml` — runs that script on your VPS runner.
+  Variables, activates, and smoke-tests the approval gate (idempotent). It can also be run directly
+  on the VPS without GitHub Actions at all.
+- `automation/deploy/github-actions.yml` — a ready-to-copy CI workflow that runs `deploy.sh` on your
+  VPS runner. **To activate it:** copy it to `.github/workflows/n8n-social-deploy.yml` and push
+  (the session's GitHub App currently lacks the `workflows` permission, so I placed it as a
+  reference; you can create the file in the GitHub web UI → **Add file → Create new file**).
 
 ---
 
@@ -51,7 +55,7 @@ these workflows deploys automatically. That machinery is already built in this r
 - `N8N_WEBHOOK_BASE` = `https://n8n.fortuneugroup.in`
 - `META_PAGE_ID`, `META_IG_ACCOUNT_ID`
 
-### 1d. Install a self-hosted runner on the VPS
+### 1d. Install a self-hosted runner on the VPS (only needed for auto-deploy)
 On the Contabo VPS (as a normal user):
 ```bash
 # from this repo's GitHub page: Settings -> Actions -> Runners -> New self-hosted runner
@@ -60,6 +64,9 @@ sudo ./svc.sh install && sudo ./svc.sh start
 # add the label "fortuneugroup" so the workflow's runs-on matches
 ```
 The runner lets the workflow reach n8n at `http://localhost:5678` with no public exposure.
+
+> **Skip the runner if you prefer:** `deploy.sh` works standalone. Just run it on the VPS with the
+> env vars set (or sourced from a root-owned file that is git-ignored).
 
 ---
 
