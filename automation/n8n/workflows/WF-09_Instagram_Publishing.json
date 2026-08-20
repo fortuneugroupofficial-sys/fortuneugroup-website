@@ -17,7 +17,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// WF-09: APPROVAL GATE (same policy as WF-08). AUTO_PUBLISH defaults false.\nconst j = $input.first().json;\nconst auto = String($env.AUTO_PUBLISH || 'false') === 'true';\nconst approved = j.approval_status === 'APPROVED' || j.approved === true;\nif (!approved && !auto) {\n  return [{ json: { ...j, __skip: true, __reason: 'APPROVAL_REQUIRED', status: 'BLOCKED' } }];\n}\nreturn [{ json: { ...j, __skip: false, status: 'QUEUED_FOR_PUBLISH' } }];"
+        "jsCode": "// WF-09: APPROVAL GATE (same policy as WF-08). AUTO_PUBLISH defaults false.\nconst j = $input.first().json;\nconst auto = String($vars.AUTO_PUBLISH || 'false') === 'true';\nconst approved = j.approval_status === 'APPROVED' || j.approved === true;\nif (!approved && !auto) {\n  return [{ json: { ...j, __skip: true, __reason: 'APPROVAL_REQUIRED', status: 'BLOCKED' } }];\n}\nreturn [{ json: { ...j, __skip: false, status: 'QUEUED_FOR_PUBLISH' } }];"
       },
       "id": "0a6b8fcd-0002-4a3b-9c1d-000000000a02",
       "name": "Approval Gate",
@@ -28,7 +28,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://graph.facebook.com/v21.0/{{ $env.META_IG_ACCOUNT_ID }}/media",
+        "url": "=https://graph.facebook.com/v21.0/{{ $vars.META_IG_ACCOUNT_ID }}/media",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -60,7 +60,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://graph.facebook.com/v21.0/{{ $env.META_IG_ACCOUNT_ID }}/media_publish",
+        "url": "=https://graph.facebook.com/v21.0/{{ $vars.META_IG_ACCOUNT_ID }}/media_publish",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [

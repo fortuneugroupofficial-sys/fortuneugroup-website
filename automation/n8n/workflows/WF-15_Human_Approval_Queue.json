@@ -76,7 +76,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $env.N8N_WEBHOOK_BASE }}/webhook/{{ $json.webhookPath }}",
+        "url": "={{ $vars.N8N_WEBHOOK_BASE }}/webhook/{{ $json.webhookPath }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [

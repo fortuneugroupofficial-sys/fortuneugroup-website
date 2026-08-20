@@ -112,8 +112,16 @@ Credentials (created in the n8n UI, never in JSON — see `docs/04-SOCIAL-PUBLIS
 
 Non-secret config env vars: `META_PAGE_ID`, `META_IG_ACCOUNT_ID`, `N8N_WEBHOOK_BASE`.
 
+Non-secret config is read from n8n **Variables** (`$vars.*`) so it can be set remotely via the REST
+API — no shell access needed: `N8N_WEBHOOK_BASE`, `AUTO_PUBLISH` (default `false`), `META_PAGE_ID`,
+`META_IG_ACCOUNT_ID`.
+
 Logic-only tests (no credentials): `node test/social-flow-test.mjs` — see
 `docs/05-SOCIAL-PUBLISHING-TEST-PLAN.md` for the full 3-layer test runbook.
+
+**Autonomous deployment:** `deploy/deploy.sh` + `.github/workflows/n8n-social-deploy.yml` import,
+configure, activate and smoke-test these workflows on your VPS (via a self-hosted runner). One-time
+setup + the OAuth consent steps are in `docs/06-AUTONOMOUS-DEPLOYMENT.md`.
 
 ---
 
