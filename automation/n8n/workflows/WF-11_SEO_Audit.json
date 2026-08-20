@@ -1,0 +1,73 @@
+{
+  "name": "WF-11 SEO Audit",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "weeks", "weeksInterval": 1 }]
+        }
+      },
+      "id": "2c8dabef-0001-4a3b-9c1d-000000000c01",
+      "name": "Weekly",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-11: SEO audit. Scaffold checks the known static-site pages against a\n// checklist. Production: fetch each page and parse <title>, meta description,\n// H1/H2, internal links, sitemap, robots, JSON-LD. High-impact fixes are\n// REPORT-ONLY here — never auto-applied (approval-gated).\nconst pages = [\n  { path: '/', title: 'Fortune U Group · Mutual Fund Distribution & Insurance · Tirupati' },\n  { path: '/health.html', title: 'Health Insurance Calculator' },\n  { path: '/services.html', title: 'Services' },\n  { path: '/tools.html', title: 'SIP illustration' },\n  { path: '/about.html', title: 'About Fortune U Group' },\n  { path: '/contact.html', title: 'Contact Fortune U Group · Tirupati' },\n  { path: '/disclosure.html', title: 'Regulatory disclosures · Fortune U Group' },\n];\n\nconst checks = [];\nfor (const p of pages) {\n  const t = p.title || '';\n  checks.push({\n    page: p.path,\n    check: 'title_length',\n    status: t.length >= 30 && t.length <= 60 ? 'PASS' : 'WARN',\n    detail: 'title ' + t.length + ' chars',\n  });\n}\nchecks.push({\n  page: '/', check: 'robots_txt', status: 'TODO',\n  detail: 'Add robots.txt + sitemap.xml at repo root (currently only in legacy frontend/).',\n});\nchecks.push({\n  page: '/', check: 'json_ld', status: 'TODO',\n  detail: 'Add FinancialService/InsuranceAgency JSON-LD to static pages.',\n});\n\nreturn checks.map((c) => ({ json: { ...c, audited_at: new Date().toISOString() } }));"
+      },
+      "id": "2c8dabef-0002-4a3b-9c1d-000000000c02",
+      "name": "Run Checks",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_TASKS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"title\": ('SEO: ' + $json.page + ' — ' + $json.check),\n  \"description\": $json.detail,\n  \"status\": ($json.status === 'PASS' ? 'DONE' : 'OPEN')\n}",
+        "options": {}
+      },
+      "id": "2c8dabef-0003-4a3b-9c1d-000000000c03",
+      "name": "Save Findings",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "id": "2c8dabef-0004-4a3b-9c1d-000000000c04",
+      "name": "End",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [660, 0]
+    }
+  ],
+  "connections": {
+    "Weekly": {
+      "main": [[{ "node": "Run Checks", "type": "main", "index": 0 }]]
+    },
+    "Run Checks": {
+      "main": [[{ "node": "Save Findings", "type": "main", "index": 0 }]]
+    },
+    "Save Findings": {
+      "main": [[{ "node": "End", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false },
+  "active": false
+}

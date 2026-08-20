@@ -1,0 +1,105 @@
+{
+  "name": "WF-04 NocoDB CRM Sync",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "crm/sync",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "b15c3a7f-0001-4a3b-9c1d-000000000501",
+      "name": "CRM Sync Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "fug-crm-sync"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-04: map an inbound event into canonical Lead + Interaction records.\nconst j = $input.first().json;\nconst n = j.normalized || {};\n\nreturn [{ json: {\n  lead: {\n    name: j.name,\n    phone: n.phone || j.phone,\n    email: n.email || j.email,\n    city: j.city,\n    source: j.source || 'unknown',\n    service: j.service || j.goal || 'other',\n    message: j.message,\n    status: j.status || 'NEW',\n    priority: j.priority || 'MEDIUM',\n  },\n  interaction: {\n    channel: j.channel || 'website',\n    direction: 'INBOUND',\n    message: j.message || j.event,\n    status: 'received',\n  },\n  __mode: j.mode || 'CREATE',   // CREATE | UPDATE\n  __lead_row_id: j.lead_row_id || null,\n} }];"
+      },
+      "id": "b15c3a7f-0002-4a3b-9c1d-000000000502",
+      "name": "Map Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_LEADS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.lead }}",
+        "options": {}
+      },
+      "id": "b15c3a7f-0003-4a3b-9c1d-000000000503",
+      "name": "NocoDB Upsert Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_INTERACTIONS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.interaction }}",
+        "options": {}
+      },
+      "id": "b15c3a7f-0004-4a3b-9c1d-000000000504",
+      "name": "NocoDB Add Interaction",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"synced\": true,\n  \"lead\": $('Map Fields').first().json.lead,\n  \"mode\": $('Map Fields').first().json.__mode\n}",
+        "options": {}
+      },
+      "id": "b15c3a7f-0005-4a3b-9c1d-000000000505",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [880, 0]
+    }
+  ],
+  "connections": {
+    "CRM Sync Webhook": {
+      "main": [[{ "node": "Map Fields", "type": "main", "index": 0 }]]
+    },
+    "Map Fields": {
+      "main": [[{ "node": "NocoDB Upsert Lead", "type": "main", "index": 0 }]]
+    },
+    "NocoDB Upsert Lead": {
+      "main": [[{ "node": "NocoDB Add Interaction", "type": "main", "index": 0 }]]
+    },
+    "NocoDB Add Interaction": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false },
+  "active": false
+}

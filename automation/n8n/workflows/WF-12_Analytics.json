@@ -1,0 +1,73 @@
+{
+  "name": "WF-12 Analytics",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 24 }]
+        }
+      },
+      "id": "3d9ebcf0-0001-4a3b-9c1d-000000000d01",
+      "name": "Daily",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_LEADS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3d9ebcf0-0002-4a3b-9c1d-000000000d02",
+      "name": "Fetch Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-12: build a concise daily management report from raw lead rows.\n// Production: use NocoDB views/aggregation for scale; fetch error logs too.\nconst rows = $input.first()?.json?.list || [];\nconst count = (f) => rows.filter(f).length;\nconst today = new Date().toISOString().slice(0, 10);\n\nconst report = {\n  report_date: today,\n  total_leads: rows.length,\n  new_leads: count((r) => r.status === 'NEW'),\n  qualified: count((r) => r.status === 'QUALIFIED'),\n  followups_due: count((r) => r.status === 'FOLLOW-UP'),\n  converted: count((r) => r.conversion_status === 'WON'),\n  by_source: {\n    website: count((r) => r.source === 'fortuneugroup-website' || r.source === 'website'),\n    whatsapp: count((r) => r.source === 'whatsapp'),\n    social: count((r) => ['instagram', 'facebook', 'youtube'].includes(r.source)),\n  },\n  priority_actions: [],\n};\n\nif (report.followups_due > 0) report.priority_actions.push('Follow up ' + report.followups_due + ' leads.');\nif (report.new_leads === 0) report.priority_actions.push('No new leads in the last window — check lead intake webhook.');\n\nreturn [{ json: report }];"
+      },
+      "id": "3d9ebcf0-0003-4a3b-9c1d-000000000d03",
+      "name": "Build Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "3d9ebcf0-0004-4a3b-9c1d-000000000d04",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [660, 0]
+    }
+  ],
+  "connections": {
+    "Daily": {
+      "main": [[{ "node": "Fetch Leads", "type": "main", "index": 0 }]]
+    },
+    "Fetch Leads": {
+      "main": [[{ "node": "Build Report", "type": "main", "index": 0 }]]
+    },
+    "Build Report": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false },
+  "active": false
+}

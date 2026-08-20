@@ -1,0 +1,143 @@
+{
+  "name": "WF-07 Content Generation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "content/generate",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "e48f6dab-0001-4a3b-9c1d-000000000801",
+      "name": "Content Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "fug-content-generate"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-07: build a compliance-safe content prompt.\n// RULE: never invent financial/insurance/legal/regulatory claims. Flag for review.\nconst j = $input.first().json;\nconst platform = j.platform || 'website';\nconst topic = j.topic || '';\nconst brief = j.brief || '';\n\nconst prompt = [\n  'You are the Fortune U Group content assistant (Tirupati, India).',\n  'Brand: honest, plain-language, compliant financial/insurance education.',\n  'Platform: ' + platform + '.',\n  'Topic: ' + topic,\n  brief ? 'Brief: ' + brief : '',\n  'Generate ONLY educational content. Do NOT invent returns, guarantees, premiums,',\n  'IRDAI/SEBI/AMFI claims, or testimonials. Where a claim needs verification,',\n  'mark it [FACT_CHECK]. Return JSON: {title, hook, body, hashtags, cta, flags:[...]}.',\n].filter(Boolean).join('\\n');\n\nif (!$env.GEMINI_API_KEY) {\n  return [{ json: { ...j, __skip: true, __reason: 'LLM_NOT_CONFIGURED' } }];\n}\nreturn [{ json: { ...j, __prompt: prompt, __skip: false } }];"
+      },
+      "id": "e48f6dab-0002-4a3b-9c1d-000000000802",
+      "name": "Build Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={{ $env.GEMINI_API_KEY }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"contents\": [ { \"parts\": [ { \"text\": $json.__prompt } ] } ] }",
+        "options": {}
+      },
+      "id": "e48f6dab-0003-4a3b-9c1d-000000000803",
+      "name": "LLM Generate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-07: extract generated text; route fact-check flags to human review.\nconst j = $('Build Prompt').first().json;\nif (j.__skip) return [{ json: { ...j, status: 'BLOCKED' } }];\n\nconst raw = $input.first()?.json?.candidates?.[0]?.content?.parts?.[0]?.text || '';\nconst needsFactCheck = /\\[FACT_CHECK\\]/i.test(raw);\n\nreturn [{ json: {\n  ...j,\n  platform: j.platform,\n  topic: j.topic,\n  draft: raw,\n  status: 'DRAFT',\n  fact_check: needsFactCheck ? 'FLAGGED' : 'PASSED',\n} }];"
+      },
+      "id": "e48f6dab-0004-4a3b-9c1d-000000000804",
+      "name": "Extract & Flag",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_CONTENT_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"platform\": $json.platform,\n  \"content_type\": $json.content_type,\n  \"topic\": $json.topic,\n  \"idea\": $json.topic,\n  \"draft\": $json.draft,\n  \"fact_check\": $json.fact_check,\n  \"status\": \"DRAFT\"\n}",
+        "options": {}
+      },
+      "id": "e48f6dab-0005-4a3b-9c1d-000000000805",
+      "name": "Save Content (DRAFT)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_APPROVALS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"entity_type\": \"content\",\n  \"action\": \"publish\",\n  \"payload_json\": { \"platform\": $json.platform, \"topic\": $json.topic },\n  \"status\": \"HUMAN_REVIEW\",\n  \"requested_by\": \"content_agent\"\n}",
+        "options": {}
+      },
+      "id": "e48f6dab-0006-4a3b-9c1d-000000000806",
+      "name": "Create Approval",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": $json.status,\n  \"fact_check\": $json.fact_check,\n  \"note\": \"Draft saved. Publishing is approval-gated (HUMAN_REVIEW).\"\n}",
+        "options": {}
+      },
+      "id": "e48f6dab-0007-4a3b-9c1d-000000000807",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1320, 0]
+    }
+  ],
+  "connections": {
+    "Content Webhook": {
+      "main": [[{ "node": "Build Prompt", "type": "main", "index": 0 }]]
+    },
+    "Build Prompt": {
+      "main": [[{ "node": "LLM Generate", "type": "main", "index": 0 }]]
+    },
+    "LLM Generate": {
+      "main": [[{ "node": "Extract & Flag", "type": "main", "index": 0 }]]
+    },
+    "Extract & Flag": {
+      "main": [[{ "node": "Save Content (DRAFT)", "type": "main", "index": 0 }]]
+    },
+    "Save Content (DRAFT)": {
+      "main": [[{ "node": "Create Approval", "type": "main", "index": 0 }]]
+    },
+    "Create Approval": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false },
+  "active": false
+}

@@ -22,11 +22,11 @@ Status legend: ✅ COMPLETED · 🟡 IN PROGRESS · ⛔ BLOCKED · ⏳ QUEUED
 - ✅ `automation/docker-compose.yml` — n8n + NocoDB + Postgres + reverse proxy stack.
 - ✅ `automation/.env.example` — all environment variables, no secrets.
 - ✅ `automation/nocodb/schema.sql` — full CRM/data schema (DDL).
-- ✅ `automation/n8n/workflows/WF-01_Website_Lead_Intake.json` — canonical end-to-end workflow
-  (webhook → validate/normalize → NocoDB upsert → WhatsApp ack → response).
-- ✅ `automation/n8n/workflows/WF-14_Master_AI_Orchestrator.json` — routing skeleton.
-- ✅ `automation/n8n/workflows/WF-15_Human_Approval_Queue.json` — approval-gated queue skeleton.
-- ✅ `automation/README.md` — how to deploy + import + wire credentials.
+- ✅ `automation/n8n/workflows/WF-01 … WF-15` — the **full** workflow catalogue, all importable and
+  credential-ready (lead intake, validation, dedup, CRM sync, WhatsApp ack + follow-up, content
+  generation, YouTube/IG/FB publishing, SEO audit, analytics, error monitoring, master orchestrator,
+  approval queue).
+- ✅ `automation/README.md` — deploy + import + existing-n8n migration map.
 
 **Remaining (need credentials to complete):**
 - ⛔ Point WF-01 at a real NocoDB instance (token).
@@ -38,17 +38,19 @@ row, sends an ack, and logs an `AutomationLogs` entry.
 
 ---
 
-## Phase 3 — Lead validation + dedup + follow-up ⏳ QUEUED
+## Phase 3 — Lead validation + dedup + follow-up 🟡 scaffold authored
 
-- Implement WF-02 (validation), WF-03 (dedup), WF-06 (follow-up scheduler).
-- Phone normalization (E.164/IN), email validation, dedup on normalized phone/email.
-- Follow-up intervals with opt-out + `next_followup_at` + attempt caps.
+- ✅ WF-02 (validation), WF-03 (dedup), WF-06 (follow-up scheduler) written as importable JSON.
+- ⛔ Live testing blocked on NocoDB (dedup query) + WhatsApp (send) credentials.
+- Remaining: phone normalization (E.164/IN) verified against real data; opt-out + `next_followup_at`
+  + attempt caps wired to real tables.
 
 ---
 
-## Phase 4 — WhatsApp automation ⛔ BLOCKED (credentials)
+## Phase 4 — WhatsApp automation 🟡 scaffold authored / ⛔ BLOCKED (credentials)
 
-- WF-05 + WF-06 live once WhatsApp Cloud API + templates are available.
+- ✅ WF-05 + WF-06 written (ack + follow-up scheduler, opt-out + rate-limit guard stubs).
+- ⛔ Live once WhatsApp Cloud API + templates are available.
 - Reusable templates: New Lead Ack, Follow-up 1/2, Appointment Reminder, Document Reminder,
   Thank You, Human Handover. Rate limits + opt-out handling.
 
@@ -60,34 +62,37 @@ row, sends an ack, and logs an `AutomationLogs` entry.
 
 ---
 
-## Phase 6 — Content Agent ⛔ BLOCKED (LLM key)
+## Phase 6 — Content Agent 🟡 scaffold authored / ⛔ BLOCKED (LLM key)
 
-- WF-07 (idea → research → draft → fact-check → approval). Fact-check gate on financial/insurance claims.
-
----
-
-## Phase 7 — YouTube / Instagram / Facebook publishing ⛔ BLOCKED (credentials)
-
-- WF-08 / WF-09 / WF-10. Approval-gated publishing (`AUTO_PUBLISH=false`).
+- ✅ WF-07 written (idea → draft → fact-check → save DRAFT → create HUMAN_REVIEW approval).
+- Fact-check gate flags `[FACT_CHECK]` claims for human review; no auto-publish of claims.
 
 ---
 
-## Phase 8 — SEO Agent ⏳ QUEUED
+## Phase 7 — YouTube / Instagram / Facebook publishing 🟡 scaffold authored / ⛔ BLOCKED (credentials)
 
-- WF-11 audit (titles, meta, H1/H2, links, sitemap, robots, schema, keywords, speed).
+- ✅ WF-08 / WF-09 / WF-10 written (approval gate → platform call → track post ID).
+- ⛔ Live once Meta + YouTube credentials exist. Approval-gated (`AUTO_PUBLISH=false`).
+
+---
+
+## Phase 8 — SEO Agent 🟡 scaffold authored
+
+- ✅ WF-11 written (weekly audit → save findings to Tasks; report-only, high-impact fixes gated).
 - Quick wins already identified: add `robots.txt`, `sitemap.xml`, JSON-LD to the canonical static site.
 
 ---
 
-## Phase 9 — Analytics ⏳ QUEUED
+## Phase 9 — Analytics 🟡 scaffold authored
 
-- WF-12 daily/weekly/monthly rollups from `AutomationLogs`, `Leads`, `SocialPosts`.
+- ✅ WF-12 written (daily rollup from `Leads` → concise report).
 
 ---
 
-## Phase 10 — Error monitoring + optimization ⏳ QUEUED
+## Phase 10 — Error monitoring + optimization 🟡 scaffold authored
 
-- WF-13 (error trigger → classify → safe retry → alert), cost control (caching/dedup/concise prompts).
+- ✅ WF-13 written (error trigger → classify TRANSIENT/CREDENTIAL/DATA/PERMANENT → record → notify/retry).
+- Remaining: cost control (caching/dedup/concise prompts) once LLM key is live.
 
 ---
 

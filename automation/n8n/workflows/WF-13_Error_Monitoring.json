@@ -1,0 +1,71 @@
+{
+  "name": "WF-13 Error Monitoring",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "4eafcdf1-0001-4a3b-9c1d-000000000e01",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-13: classify an execution error and decide if a safe retry is allowed.\nconst e = $input.first().json;\nconst message = String(e.error?.message || e.message || 'Unknown error');\nconst workflow = String(e.workflow?.name || e.execution?.workflowData?.name || 'unknown');\n\nconst transient = /(timeout|ECONN|ETIMEDOUT|429|rate limit|temporar)/i.test(message);\nconst credential = /(401|403|credential|token|auth|permission)/i.test(message);\n\nlet classification = 'UNKNOWN';\nif (transient) classification = 'TRANSIENT';\nelse if (credential) classification = 'CREDENTIAL';\nelse if (/INVALID_LEAD|validation|required/i.test(message)) classification = 'DATA';\nelse classification = 'PERMANENT';\n\nreturn [{ json: {\n  workflow_name: workflow,\n  execution_id: e.execution?.id || null,\n  error_code: e.error?.name || null,\n  message,\n  classification,\n  retry_safe: classification === 'TRANSIENT',\n  retry_count: 0,\n  occurred_at: new Date().toISOString(),\n} }];"
+      },
+      "id": "4eafcdf1-0002-4a3b-9c1d-000000000e02",
+      "name": "Classify Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_ERRORS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": $json.workflow_name,\n  \"execution_id\": $json.execution_id,\n  \"error_code\": $json.error_code,\n  \"message\": $json.message,\n  \"classification\": $json.classification,\n  \"retry_safe\": $json.retry_safe,\n  \"retry_count\": $json.retry_count\n}",
+        "options": {}
+      },
+      "id": "4eafcdf1-0003-4a3b-9c1d-000000000e03",
+      "name": "Record Error",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-13: notify admin when the error is NOT safely self-retryable.\n// Scaffold: no send. Wire SMTP (n8n credential) or WhatsApp-to-owner here.\nconst j = $('Classify Error').first().json;\nconst shouldNotify = j.classification !== 'TRANSIENT';\nreturn [{ json: {\n  ...j,\n  notified: false,\n  action: shouldNotify ? 'NOTIFY_ADMIN' : 'RETRY_SCHEDULED',\n  note: 'Never create infinite retry loops; cap retries and escalate when unresolved.',\n} }];"
+      },
+      "id": "4eafcdf1-0004-4a3b-9c1d-000000000e04",
+      "name": "Decide Notify / Retry",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 0]
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [[{ "node": "Classify Error", "type": "main", "index": 0 }]]
+    },
+    "Classify Error": {
+      "main": [[{ "node": "Record Error", "type": "main", "index": 0 }]]
+    },
+    "Record Error": {
+      "main": [[{ "node": "Decide Notify / Retry", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false },
+  "active": false
+}

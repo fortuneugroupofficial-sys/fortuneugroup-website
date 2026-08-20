@@ -1,0 +1,97 @@
+{
+  "name": "WF-06 WhatsApp Follow-up Scheduler",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 1 }]
+        }
+      },
+      "id": "d37e5c9b-0001-4a3b-9c1d-000000000701",
+      "name": "Every 1 hour",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_FOLLOWUPS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d37e5c9b-0002-4a3b-9c1d-000000000702",
+      "name": "Fetch Due FollowUps",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-06: select follow-ups that are due, not opted-out, and under attempt cap.\nconst now = Date.now();\nconst maxAttempts = Number($env.FOLLOWUP_MAX_ATTEMPTS || 3);\nconst rows = $input.first()?.json?.list || [];\n\nconst eligible = rows.filter((r) => {\n  const due = new Date(r.due_at).getTime();\n  const attempts = Number(r.attempts || 0);\n  const optedOut = String(r.opted_out || 'false') === 'true';\n  return r.status === 'PENDING' && due <= now && attempts < maxAttempts && !optedOut;\n});\n\nreturn eligible.map((r) => ({ json: {\n  followup_row_id: r.Id,\n  lead_row_id: r.lead_id,\n  phone: r.phone,\n  template_key: r.template_key || 'followup_1',\n  attempts: Number(r.attempts || 0),\n  name: r.name || 'there',\n} }));"
+      },
+      "id": "d37e5c9b-0003-4a3b-9c1d-000000000703",
+      "name": "Select Eligible",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v19.0/{{ $env.WA_PHONE_NUMBER_ID }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WA_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": $json.phone,\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": $json.template_key,\n    \"language\": { \"code\": \"en\" },\n    \"components\": [\n      { \"type\": \"body\", \"parameters\": [ { \"type\": \"text\", \"text\": $json.name } ] }\n    ]\n  }\n}",
+        "options": {}
+      },
+      "id": "d37e5c9b-0004-4a3b-9c1d-000000000704",
+      "name": "Send Follow-up",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-06: record the result. Update the FollowUp (attempts/status) and the\n// Lead (next_followup_at). Writes omitted in scaffold; wire via HTTP PATCH.\nconst sent = $input.first()?.json;\nconst msgId = sent?.messages?.[0]?.id || null;\nconst meta = $('Select Eligible').first().json;\n\nreturn [{ json: {\n  followup_row_id: meta.followup_row_id,\n  lead_row_id: meta.lead_row_id,\n  sent: !!msgId,\n  message_id: msgId,\n  next_attempts: meta.attempts + 1,\n  note: 'Scaffold: PATCH FollowUp status=SENT/attempts and Lead.next_followup_at here.',\n} }];"
+      },
+      "id": "d37e5c9b-0005-4a3b-9c1d-000000000705",
+      "name": "Record Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0]
+    }
+  ],
+  "connections": {
+    "Every 1 hour": {
+      "main": [[{ "node": "Fetch Due FollowUps", "type": "main", "index": 0 }]]
+    },
+    "Fetch Due FollowUps": {
+      "main": [[{ "node": "Select Eligible", "type": "main", "index": 0 }]]
+    },
+    "Select Eligible": {
+      "main": [[{ "node": "Send Follow-up", "type": "main", "index": 0 }]]
+    },
+    "Send Follow-up": {
+      "main": [[{ "node": "Record Result", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false },
+  "active": false
+}

@@ -1,0 +1,53 @@
+{
+  "name": "WF-02 Lead Validation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead/validate",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "9f3a1e5d-0001-4a3b-9c1d-000000000301",
+      "name": "Validate Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "fug-lead-validate"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-02: validate + normalize lead info. Returns a structured result\n// (does NOT throw) so callers can branch instead of failing.\nconst items = $input.all();\nconst DIGITS = (s) => String(s || '').replace(/[^0-9]/g, '');\n\nreturn items.map((item) => {\n  const j = item.json;\n  const raw = String(j.mobile || j.phone || '').replace(/[^\\d+]/g, '');\n  const d = DIGITS(raw);\n\n  let phone = raw;\n  if (/^91[6-9]\\d{9}$/.test(d)) phone = '+91' + d.slice(2);\n  else if (/^0[6-9]\\d{9}$/.test(d)) phone = '+91' + d.slice(1);\n  else if (/^[6-9]\\d{9}$/.test(d)) phone = '+91' + d;\n\n  const email = String(j.email || '').trim().toLowerCase();\n  const errors = [];\n  if (!String(j.name || '').trim()) errors.push('name_required');\n  if (!/^[6-9]\\d{9}$/.test(DIGITS(phone))) errors.push('invalid_phone');\n  if (email && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) errors.push('invalid_email');\n\n  return {\n    json: {\n      ...j,\n      normalized: { phone, phone_raw: raw, email },\n      valid: errors.length === 0,\n      errors,\n    },\n  };\n});"
+      },
+      "id": "9f3a1e5d-0002-4a3b-9c1d-000000000302",
+      "name": "Validate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"valid\": $json.valid, \"normalized\": $json.normalized, \"errors\": $json.errors }",
+        "options": {}
+      },
+      "id": "9f3a1e5d-0003-4a3b-9c1d-000000000303",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [440, 0]
+    }
+  ],
+  "connections": {
+    "Validate Webhook": {
+      "main": [[{ "node": "Validate", "type": "main", "index": 0 }]]
+    },
+    "Validate": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false },
+  "active": false
+}

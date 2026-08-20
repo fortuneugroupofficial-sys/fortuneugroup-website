@@ -1,0 +1,92 @@
+{
+  "name": "WF-05 WhatsApp New Lead Ack",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wa/ack",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "c26d4b8a-0001-4a3b-9c1d-000000000601",
+      "name": "Ack Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "fug-wa-ack"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-05: guard before sending (opt-out + rate-limit).\n// Production: read opt_out from Contacts/Leads and a per-hour counter from\n// Settings/AutomationLogs. Scaffold: reject opt-outs; warn on missing config.\nconst j = $input.first().json;\nconst phone = String(j.phone || j.normalized?.phone || '');\n\nif (j.opted_out === true) {\n  throw new Error('OPT_OUT: skip messaging for ' + phone);\n}\nif (!$env.WA_TOKEN || !$env.WA_PHONE_NUMBER_ID) {\n  // Degrade gracefully instead of pretending the message was sent.\n  return [{ json: { ...j, __skip: true, __reason: 'WHATSAPP_NOT_CONFIGURED' } }];\n}\n\nreturn [{ json: {\n  ...j,\n  __skip: false,\n  __template: j.template_name || 'new_lead_ack',\n  __to: phone,\n} }];"
+      },
+      "id": "c26d4b8a-0002-4a3b-9c1d-000000000602",
+      "name": "Guard (opt-out + rate limit)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v19.0/{{ $env.WA_PHONE_NUMBER_ID }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WA_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": $json.__to,\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": $json.__template,\n    \"language\": { \"code\": \"en\" },\n    \"components\": [\n      { \"type\": \"body\", \"parameters\": [ { \"type\": \"text\", \"text\": $json.name || \"there\" } ] }\n    ]\n  }\n}",
+        "options": {}
+      },
+      "id": "c26d4b8a-0003-4a3b-9c1d-000000000603",
+      "name": "Send WhatsApp Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-05: record send result on the lead (whatsapp_status).\nconst sent = $('Send WhatsApp Message').first()?.json;\nconst skip = $('Guard (opt-out + rate limit)').first().json.__skip;\nconst msgId = sent?.messages?.[0]?.id || null;\n\nreturn [{ json: {\n  ...$('Guard (opt-out + rate limit)').first().json,\n  whatsapp_status: skip ? 'NOT_SENT' : (msgId ? 'SENT' : 'FAILED'),\n  message_id: msgId,\n} }];"
+      },
+      "id": "c26d4b8a-0004-4a3b-9c1d-000000000604",
+      "name": "Compute Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"whatsapp_status\": $json.whatsapp_status,\n  \"message_id\": $json.message_id,\n  \"skipped\": $json.__skip || false\n}",
+        "options": {}
+      },
+      "id": "c26d4b8a-0005-4a3b-9c1d-000000000605",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [880, 0]
+    }
+  ],
+  "connections": {
+    "Ack Webhook": {
+      "main": [[{ "node": "Guard (opt-out + rate limit)", "type": "main", "index": 0 }]]
+    },
+    "Guard (opt-out + rate limit)": {
+      "main": [[{ "node": "Send WhatsApp Message", "type": "main", "index": 0 }]]
+    },
+    "Send WhatsApp Message": {
+      "main": [[{ "node": "Compute Status", "type": "main", "index": 0 }]]
+    },
+    "Compute Status": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false },
+  "active": false
+}

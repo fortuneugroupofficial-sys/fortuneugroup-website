@@ -1,0 +1,99 @@
+{
+  "name": "WF-08 YouTube Publishing",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "youtube/publish",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "f59a7ebc-0001-4a3b-9c1d-000000000901",
+      "name": "YouTube Publish Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "fug-youtube-publish"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-08: approval gate. Publishing is OFF unless the item is APPROVED and\n// (AUTO_PUBLISH=true OR explicit approval flag). Default AUTO_PUBLISH=false.\nconst j = $input.first().json;\nconst auto = String($env.AUTO_PUBLISH || 'false') === 'true';\nconst approved = j.approval_status === 'APPROVED' || j.approved === true;\n\nif (!approved && !auto) {\n  return [{ json: { ...j, __skip: true, __reason: 'APPROVAL_REQUIRED', note: 'Route to WF-15 first.' } }];\n}\nreturn [{ json: { ...j, __skip: false } }];"
+      },
+      "id": "f59a7ebc-0002-4a3b-9c1d-000000000902",
+      "name": "Approval Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://www.googleapis.com/upload/youtube/v3/videos?part=snippet,status",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $credentials.youtubeOAuth2.oauthTokenData.access_token }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "metadata",
+              "type": "string",
+              "value": "={ \"snippet\": { \"title\": $json.title, \"description\": $json.description, \"tags\": $json.tags }, \"status\": { \"privacyStatus\": $json.privacyStatus || \"private\" } }"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f59a7ebc-0003-4a3b-9c1d-000000000903",
+      "name": "YouTube Upload (OAuth)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-08: capture video id/url for tracking (BLOCKED until OAuth is wired).\nconst j = $('Approval Gate').first().json;\nconst up = $input.first()?.json || {};\nreturn [{ json: {\n  ...j,\n  platform: 'youtube',\n  platform_post_id: up.id || null,\n  url: up.id ? ('https://youtu.be/' + up.id) : null,\n  status: up.id ? 'PUBLISHED' : 'FAILED',\n  note: 'Scaffold: save to SocialPosts table once OAuth credential is provided.',\n} }];"
+      },
+      "id": "f59a7ebc-0004-4a3b-9c1d-000000000904",
+      "name": "Capture Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": $json.status,\n  \"platform_post_id\": $json.platform_post_id,\n  \"url\": $json.url,\n  \"skipped\": $json.__skip || false\n}",
+        "options": {}
+      },
+      "id": "f59a7ebc-0005-4a3b-9c1d-000000000905",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [880, 0]
+    }
+  ],
+  "connections": {
+    "YouTube Publish Webhook": {
+      "main": [[{ "node": "Approval Gate", "type": "main", "index": 0 }]]
+    },
+    "Approval Gate": {
+      "main": [[{ "node": "YouTube Upload (OAuth)", "type": "main", "index": 0 }]]
+    },
+    "YouTube Upload (OAuth)": {
+      "main": [[{ "node": "Capture Result", "type": "main", "index": 0 }]]
+    },
+    "Capture Result": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false },
+  "active": false
+}

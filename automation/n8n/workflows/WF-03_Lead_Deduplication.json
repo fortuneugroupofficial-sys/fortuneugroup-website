@@ -1,0 +1,90 @@
+{
+  "name": "WF-03 Lead Deduplication",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead/dedupe",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "a04b2f6e-0001-4a3b-9c1d-000000000401",
+      "name": "Dedupe Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "fug-lead-dedupe"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-03: compute a deterministic dedup key from a normalized phone.\nconst j = $input.first().json;\nconst phone = String(j.phone || j.normalized?.phone || '');\nconst email = String(j.email || j.normalized?.email || '').toLowerCase();\n\nreturn [{ json: {\n  ...j,\n  __dedup: {\n    phone,\n    email,\n    // production: use a NocoDB 'where' filter instead of fetching all rows:\n    // GET /api/v2/tables/{id}/records?where=(phone,eq,{phone})\n    lookup_key: phone || email,\n  },\n} }];"
+      },
+      "id": "a04b2f6e-0002-4a3b-9c1d-000000000402",
+      "name": "Compute Lookup Key",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.NOCODB_URL }}/api/v2/tables/{{ $env.NOCODB_LEADS_TABLE_ID }}/records",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "xc-token", "value": "={{ $env.NOCODB_API_TOKEN }}" }
+          ]
+        },
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "id": "a04b2f6e-0003-4a3b-9c1d-000000000403",
+      "name": "NocoDB Find Existing",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WF-03: compare inbound lead against existing records and decide.\nconst inbound = $('Compute Lookup Key').first().json;\nconst key = inbound.__dedup.lookup_key;\n\nlet existing = null;\nconst rows = $input.first()?.json?.list || [];\nfor (const r of rows) {\n  const p = String(r.phone || '');\n  const e = String(r.email || '').toLowerCase();\n  if ((key && p && p === key) || (key && e && e === key)) { existing = r; break; }\n}\n\nreturn [{ json: {\n  inbound_phone: inbound.__dedup.phone,\n  inbound_email: inbound.__dedup.email,\n  is_duplicate: !!existing,\n  existing_lead_id: existing ? existing.Id : null,\n  existing_status: existing ? existing.status : null,\n  action: existing ? 'UPDATE_EXISTING' : 'CREATE_NEW',\n  note: 'Never overwrite lead history; append an Interaction to the existing lead on duplicate.',\n} }];"
+      },
+      "id": "a04b2f6e-0004-4a3b-9c1d-000000000404",
+      "name": "Dedupe Decision",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"is_duplicate\": $json.is_duplicate,\n  \"existing_lead_id\": $json.existing_lead_id,\n  \"action\": $json.action\n}",
+        "options": {}
+      },
+      "id": "a04b2f6e-0005-4a3b-9c1d-000000000405",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [880, 0]
+    }
+  ],
+  "connections": {
+    "Dedupe Webhook": {
+      "main": [[{ "node": "Compute Lookup Key", "type": "main", "index": 0 }]]
+    },
+    "Compute Lookup Key": {
+      "main": [[{ "node": "NocoDB Find Existing", "type": "main", "index": 0 }]]
+    },
+    "NocoDB Find Existing": {
+      "main": [[{ "node": "Dedupe Decision", "type": "main", "index": 0 }]]
+    },
+    "Dedupe Decision": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false },
+  "active": false
+}
