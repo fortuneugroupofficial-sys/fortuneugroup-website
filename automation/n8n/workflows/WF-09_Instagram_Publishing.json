@@ -5,7 +5,7 @@
       "parameters": {
         "httpMethod": "POST",
         "path": "instagram/publish",
-        "responseMode": "onReceived",
+        "responseMode": "lastNode",
         "options": {}
       },
       "id": "0a6b8fcd-0001-4a3b-9c1d-000000000a01",

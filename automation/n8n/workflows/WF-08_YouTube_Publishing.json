@@ -5,7 +5,7 @@
       "parameters": {
         "httpMethod": "POST",
         "path": "youtube/publish",
-        "responseMode": "onReceived",
+        "responseMode": "lastNode",
         "options": {}
       },
       "id": "f59a7ebc-0001-4a3b-9c1d-000000000901",

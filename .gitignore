@@ -97,3 +97,7 @@ frontend/node_modules/.cache/default-development/2.pack
 frontend/node_modules/.cache/default-development/12.pack
 frontend/node_modules/.cache/default-development/6.pack
 frontend/node_modules/.cache/default-development/9.pack
+
+# Deploy secrets (never commit)
+secrets.env
+.secrets.env

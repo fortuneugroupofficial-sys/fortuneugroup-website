@@ -119,9 +119,12 @@ API — no shell access needed: `N8N_WEBHOOK_BASE`, `AUTO_PUBLISH` (default `fal
 Logic-only tests (no credentials): `node test/social-flow-test.mjs` — see
 `docs/05-SOCIAL-PUBLISHING-TEST-PLAN.md` for the full 3-layer test runbook.
 
-**Autonomous deployment:** `deploy/deploy.sh` + `.github/workflows/n8n-social-deploy.yml` import,
-configure, activate and smoke-test these workflows on your VPS (via a self-hosted runner). One-time
-setup + the OAuth consent steps are in `docs/06-AUTONOMOUS-DEPLOYMENT.md`.
+**Direct deployment (recommended — no GitHub Actions):** run on the Contabo VPS:
+1. `bash deploy/bootstrap-secrets.sh` — stores secrets in a root-owned, chmod-600 file (never in chat/Git).
+2. `N8N_BASE_URL=http://localhost:5678 bash deploy/deploy.sh` — imports, credentials, variables, activate, smoke-tests the gate.
+3. `TEST_IMAGE_URL=… TEST_VIDEO_URL=… bash deploy/test-e2e.sh` — end-to-end approval-gated verification.
+
+Step-by-step guide: `docs/07-DIRECT-DEPLOY-RUNBOOK.md`.
 
 ---
 
