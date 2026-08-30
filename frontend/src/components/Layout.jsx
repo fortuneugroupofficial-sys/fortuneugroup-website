@@ -258,10 +258,43 @@ export const Footer = () => {
   );
 };
 
+const IgIcon = () => (
+  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <defs>
+      <linearGradient id="igGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#FEDA75" />
+        <stop offset="25%" stopColor="#FA7E1E" />
+        <stop offset="50%" stopColor="#D62976" />
+        <stop offset="75%" stopColor="#962FBF" />
+        <stop offset="100%" stopColor="#4F5BD5" />
+      </linearGradient>
+    </defs>
+    <path fill="url(#igGrad)" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.7 6.3a1.1 1.1 0 1 1-1.1 1.1 1.1 1.1 0 0 1 1.1-1.1z" />
+  </svg>
+);
+
+const YtIcon = () => (
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+    <path fill="#FF0000" d="M23 12.2s0-3.2-.4-4.6c-.2-.9-.9-1.6-1.8-1.8C19.2 5.4 12 5.4 12 5.4s-7.2 0-8.8.4c-.9.2-1.6.9-1.8 1.8C1 9 1 12.2 1 12.2s0 3.2.4 4.6c.2.9.9 1.6 1.8 1.8 1.6.4 8.8.4 8.8.4s7.2 0 8.8-.4c.9-.2 1.6-.9 1.8-1.8.4-1.4.4-4.6.4-4.6zM9.8 15.5v-6.6l6.3 3.3-6.3 3.3z" />
+  </svg>
+);
+
+const FbIcon = () => (
+  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <path fill="#1877F2" d="M14.5 8.5V6.8c0-.7.5-1 1.1-1H17V3h-2.3C12.2 3 11 4.4 11 6.6v1.9H9v2.8h2V21h3.5v-9.7h2.4l.4-2.8h-2.8z" />
+  </svg>
+);
+
+const WaIcon = () => (
+  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <path fill="#25D366" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-2-1.2 7.4 7.4 0 0 1-1.4-1.7c-.1-.2 0-.4.1-.5l.4-.4.1-.3c0-.1 0-.3-.1-.4s-.5-1.3-.7-1.8-.4-.4-.5-.4h-.4c-.2 0-.4.1-.6.3a2.1 2.1 0 0 0-.7 1.6 3.7 3.7 0 0 0 .8 2c.1.1 1.4 2.2 3.5 3 2 .9 2 .6 2.4.6a2 2 0 0 0 1.3-.6 1.7 1.7 0 0 0 .4-1.2c0-.1 0-.2-.2-.3z" />
+  </svg>
+);
+
 const socialLinks = [
-  { href: "https://www.instagram.com/fortuneugroup/?hl=en", icon: <Instagram className="w-5 h-5" style={{ color: "#E4405F" }} />, label: "Instagram", testid: "floating-instagram" },
-  { href: "https://www.youtube.com/@FortuneUGroupOfficial", icon: <Youtube className="w-5 h-5" style={{ color: "#FF0000" }} />, label: "YouTube", testid: "floating-youtube" },
-  { href: "https://www.facebook.com/profile.php?id=61589015788132", icon: <Facebook className="w-5 h-5" style={{ color: "#1877F2" }} />, label: "Facebook", testid: "floating-facebook" },
+  { href: "https://www.instagram.com/fortuneugroup/?hl=en", icon: <IgIcon />, label: "Instagram", testid: "floating-instagram" },
+  { href: "https://www.youtube.com/@FortuneUGroupOfficial", icon: <YtIcon />, label: "YouTube", testid: "floating-youtube" },
+  { href: "https://www.facebook.com/profile.php?id=61589015788132", icon: <FbIcon />, label: "Facebook", testid: "floating-facebook" },
 ];
 
 export const WhatsAppFab = () => (
@@ -294,7 +327,7 @@ export const WhatsAppFab = () => (
       onClick={() => trackEvent("whatsapp_click", { source: "fab" })}
       className="w-11 h-11 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center hover:scale-110 hover:shadow-lg transition-all duration-300"
     >
-      <MessageCircle className="w-5 h-5" style={{ color: "#25D366" }} />
+      <WaIcon />
     </a>
   </div>
 );
