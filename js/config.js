@@ -6,7 +6,7 @@ window.FUG = {
   personName: "",
   phone: "9490237465",
   phoneDisplay: "+91 94902 37465",
-  email: "fortuneugroupofficial@gmail.com",
+  email: "support@fortuneugroup.in",
   city: "Tirupati, Andhra Pradesh, India",
   mapsQuery: "Tirupati, Andhra Pradesh, India",
 

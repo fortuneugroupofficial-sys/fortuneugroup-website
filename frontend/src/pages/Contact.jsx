@@ -241,7 +241,7 @@ const Contact = () => {
           </a>
 
           <a
-            href="mailto:fortuneugroupofficial@gmail.com"
+            href="mailto:support@fortuneugroup.in"
             className="bg-[#D4AF37] text-[#0A2540] rounded-2xl py-5 text-center font-semibold hover:opacity-90 transition"
           >
             ✉️ Email
