@@ -6,7 +6,7 @@ const DICT = {
   en: {
     nav: { home: "Home", about: "About", services: "Services", health: "Health Insurance", tools: "Tools", blog: "Blog", contact: "Contact", admin: "Admin", start: "Start Your Journey", call: "Call Now" },
     hero: {
-     eyebrow: "Mutual Fund Distributor • Financial Planning • SIP Investments",
+     eyebrow: "Financial Planning • SIP Investments • Insurance Guidance",
 
      title: "Achieve Your Financial Goals With Expert Planning",
 
@@ -45,7 +45,7 @@ const DICT = {
   te: {
     nav: { home: "హోమ్", about: "మా గురించి", services: "సేవలు", tools: "టూల్స్", blog: "బ్లాగ్", contact: "సంప్రదించండి", admin: "అడ్మిన్", start: "మొదలు పెట్టండి", call: "ఇప్పుడే కాల్" },
     hero: {
-     eyebrow: "మ్యూచువల్ ఫండ్ డిస్ట్రిబ్యూటర్ • ఫైనాన్షియల్ ప్లానింగ్",
+     eyebrow: "ఫైనాన్షియల్ ప్లానింగ్ • SIP పెట్టుబడులు • ఇన్సూరెన్స్ గైడెన్స్",
 
      title: "మీ ఆర్థిక లక్ష్యాలను నిపుణుల ప్రణాళికతో సాధించండి ",
 

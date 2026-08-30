@@ -6,10 +6,9 @@ export const whatsappLink = (text) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text || "Hello Fortune U Group, I would like to know more about your financial planning services.")}`;
 
 /**
- * Submit a lead to Google Sheets via Apps Script web app.
- * If REACT_APP_SHEETS_WEBHOOK is not set, this MOCKS by logging to console.
- * Uses mode:"no-cors" so the request goes through without preflight CORS issues
- * (the response cannot be read, but Apps Script will receive and store the row).
+ * Submit a lead to the n8n webhook.
+ * Returns { ok: true } when the webhook accepts the request (HTTP 2xx),
+ * otherwise { ok: false } so the UI can show a proper error to the user.
  */
 export async function submitLead(type, payload) {
 
@@ -38,7 +37,7 @@ switch (type) {
   mobile: payload.mobile,
   email: payload.email,
   city: payload.city,
-  financial_goal: payload.financial_goal,
+  financial_goal: payload.financial_goal || payload.financialGoal || payload.goal_type || "",
   message: payload.message,
   insuranceType: payload.insuranceType,
 monthlyIncome: payload.monthlyIncome,
@@ -48,21 +47,20 @@ familyMembers: payload.familyMembers,
 coverageRequirement: payload.coverageRequirement,
 };
 
-  if (!webhook) {
-    console.warn("[MOCKED LEAD]", body);
-    await new Promise((r) => setTimeout(r, 400));
-    return { ok: true, mocked: true };
-  }
   try {
-    await fetch(webhook, {
+    const res = await fetch(webhook, {
       method: "POST",
       mode: "cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
+    if (!res.ok) {
+      console.error("Lead webhook returned", res.status, res.statusText);
+      return { ok: false };
+    }
     return { ok: true };
   } catch (e) {
-    console.error("Sheets submit failed", e);
+    console.error("Lead submit failed", e);
     return { ok: false };
   }
 }

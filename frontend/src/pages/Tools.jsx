@@ -10,13 +10,16 @@ import { SectionHeader } from "../components/SectionHeader";
 import SEO from "../components/SEO";
 import { useLang } from "../context/LangContext";
 
- const seriesData = [
-  { year: "Y1", wealth: 12 },
-  { year: "Y2", wealth: 25 },
-  { year: "Y3", wealth: 40 },
-  { year: "Y4", wealth: 58 },
-  { year: "Y5", wealth: 80 },
-  ];
+ const seriesData = (() => {
+  // ₹10,000/month, 20 years @ 12% p.a. (monthly compounding) — matches the
+  // ₹98.9 L illustration in the hero card. Educational illustration only.
+  const arr = [];
+  const r = 0.12 / 12;
+  for (let y = 1; y <= 20; y++) {
+    arr.push({ year: `Y${y}`, wealth: Math.round((10000 * ((Math.pow(1 + r, y * 12) - 1) / r)) / 100000) });
+  }
+  return arr;
+})();
   const fmt = (n) => {
   if (!isFinite(n)) return "—";
   if (n >= 1e7) return `₹${(n/1e7).toFixed(2)} Cr`;
@@ -270,10 +273,12 @@ const EMICalc = () => {
     const e = monthly === 0 ? P / n : (P * monthly * Math.pow(1 + monthly, n)) / (Math.pow(1 + monthly, n) - 1);
     const series = [];
     let bal = P;
+    let cumInt = 0; let cumPrin = 0;
     for (let yr = 1; yr <= y; yr++) {
       let intPaid = 0; let prinPaid = 0;
       for (let m = 0; m < 12; m++) { const i = bal * monthly; const p = e - i; intPaid += i; prinPaid += p; bal -= p; }
-      series.push({ year: `Y${yr}`, invested: Math.round((P - Math.max(bal,0))/100000), wealth: Math.round((P + (intPaid*y))/100000/y) });
+      cumInt += intPaid; cumPrin += prinPaid;
+      series.push({ year: `Y${yr}`, invested: Math.round(cumPrin / 100000), wealth: Math.round((cumPrin + cumInt) / 100000) });
     }
     return { emi: e, totalInt: e * n - P, totalPay: e * n, data: series };
   }, [P, r, y]);
@@ -350,16 +355,6 @@ const Tools = () => {
     setScore(Math.min(s, 100));
   };
   const scoreText = () => {
-
-const downloadPDF = () => {
-  const link = document.createElement("a");
-  link.href = "/financial-report.pdf";
-  link.download = "Fortune-U-Group-Financial-Report.pdf";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
-
   if (score >= 90) return "Excellent";
   if (score >= 70) return "Good";
   if (score >= 50) return "Average";
@@ -454,11 +449,9 @@ const downloadPDF = () => {
             className="px-8 py-4 rounded-full
             bg-[#D4AF37] text-[#0A2540] font-semibold shadow-lg hover:bg-[#B68D22] hover:text-white
             hover:shadow-2xl hover:scale-105 transition-all duration-300" >
-            Talk to Advisor
+            Talk to Us
            </button>
-          </Link
-          
-          >
+          </Link>
 
         </div>
 
@@ -481,7 +474,7 @@ const downloadPDF = () => {
           </p>
 
           <h2 className="mt-3 text-5xl font-bold text-[#0A2540]">
-            ₹1,18,24,202
+            ₹98,88,850
           </h2>
 
           {/* Gold Line */}
@@ -570,8 +563,8 @@ const downloadPDF = () => {
   </h2>
 
   <p className="mt-4 text-blue-100 max-w-2xl mx-auto">
-    Our financial experts can help you choose the right Mutual Funds,
-    Insurance and Loan solutions based on your goals.
+    Our team can help you choose the right mutual funds (post-ARN),
+    insurance and savings plans based on your goals.
   </p>
 
   <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -875,11 +868,11 @@ const downloadPDF = () => {
         </div>
 
         <h3 className="mt-6 text-xl font-bold text-[#0A2540]">
-          Expert Guidance
+          Personal Guidance
         </h3>
 
         <p className="mt-3 text-gray-600">
-          Connect with our advisor for personalized financial planning.
+          Connect with our team for personalized financial planning.
         </p>
       </div>
 
@@ -937,30 +930,18 @@ const downloadPDF = () => {
             Get Your Free PDF
           </h3>
 
-          <input
-            type="text"
-            placeholder="Full Name"
-            className="mt-6 w-full border rounded-xl p-4"
-          />
+          <p className="mt-4 text-gray-600 leading-7">
+            Download the Fortune U Group financial guide — no sign-up needed.
+          </p>
 
-          <input
-            type="tel"
-            placeholder="Mobile Number"
-            className="mt-4 w-full border rounded-xl p-4"
-          />
-
-          <input
-            type="email"
-            placeholder="Email Address"
-            className="mt-4 w-full border rounded-xl p-4"
-          />
-
-         <button
-          onClick={downloadPDF}
-          className="mt-6 w-full bg-[#D4AF37] hover:bg-[#C89B2A] text-[#0A2540] font-bold py-4 rounded-xl transition-all"
-    >
-         📄 Download Free PDF
-</button> 
+          <a
+            href="/Fortune_U_Group_Financial_Guide.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 block w-full bg-[#D4AF37] hover:bg-[#C89B2A] text-[#0A2540] font-bold py-4 rounded-xl transition-all text-center"
+          >
+            📄 Download Free PDF
+          </a>
 
           <button
          onClick={() =>
@@ -1063,7 +1044,7 @@ const downloadPDF = () => {
         </h3>
 
         <p className="mt-4 text-blue-100">
-          Speak with our financial advisor and receive a customized investment plan.
+          Speak with our team and receive a customized investment plan.
         </p>
 
         <button

@@ -30,11 +30,13 @@ export default function AIChatWidget() {
     question,
   }),
 });
+    if (!res.ok) throw new Error("AI service responded " + res.status);
     const data = await res.json();
-    setResponse(data.answer);
+    setResponse(data.answer || "Sorry, I could not answer that. Please try again or contact us on WhatsApp.");
 
     } catch (error) {
-      console.error("Gemini Error:", error);
+      console.error("AI chat error:", error);
+      setResponse("Sorry, the AI service is temporarily unavailable. Please try again later or message us on WhatsApp.");
     }
     setLoading(false);
   };
@@ -72,8 +74,8 @@ export default function AIChatWidget() {
           position: "fixed",
           bottom: "140px",
           right: "20px",
-          width: "360px",
-          height: "520px",
+          width: "min(360px, calc(100vw - 40px))",
+          height: "min(520px, calc(100vh - 200px))",
           background: "#fff",
           borderRadius: "15px",
           boxShadow: "0 10px 30px rgba(0,0,0,.25)",

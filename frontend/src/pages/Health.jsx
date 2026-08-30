@@ -370,7 +370,7 @@ export default function ProductsPage() {
               </p>
               <div className="flex flex-wrap gap-3 mt-8">
                 <GoldBtn href="#calculator">Get a Free Quote <ArrowRight className="w-4 h-4" /></GoldBtn>
-                <OutlineBtn href="#contact" icon={Phone}>Talk to an Advisor</OutlineBtn>
+                <OutlineBtn href="#contact" icon={Phone}>Talk to Us</OutlineBtn>
                 <WhatsAppBtn href={heroWa}>WhatsApp</WhatsAppBtn>
               </div>
               <div className="flex flex-wrap gap-2 mt-8">
@@ -686,7 +686,7 @@ export default function ProductsPage() {
           <div className="flex flex-wrap justify-center gap-3 mt-9">
             <GoldBtn href="#calculator">Get Free Quote <ArrowRight className="w-4 h-4" /></GoldBtn>
             <WhatsAppBtn href={quoteWa}>WhatsApp Us</WhatsAppBtn>
-            <OutlineBtn href="tel:+919490237465" icon={Phone}>Talk to an Advisor</OutlineBtn>
+            <OutlineBtn href="tel:+919490237465" icon={Phone}>Talk to Us</OutlineBtn>
           </div>
           <p className="mt-8 text-xs text-white/40 leading-relaxed max-w-2xl mx-auto">
             Insurance is the subject matter of solicitation. Policies are issued by the insurer, not by Fortune U Group.

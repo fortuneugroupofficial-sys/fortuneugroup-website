@@ -1,24 +1,9 @@
 import React from "react";
-import { TrendingUp, Target, PiggyBank, BarChart3, Shield, Heart, GraduationCap, Briefcase } from "lucide-react";
 import { Card } from "../components/ui/card";
 import { SectionHeader } from "../components/SectionHeader";
 import SEO from "../components/SEO";
-import { SIPRequestForm, InsuranceForm } from "../components/LeadForms";
-import { useLang } from "../context/LangContext";
-
-const services = [
-  { icon: TrendingUp, title: "Mutual Fund Distribution", points: ["SIP & Lumpsum Investments", "ELSS (Tax-Saving) Funds", "Equity, Hybrid, Debt Funds", "Goal-mapped portfolios"], color: "bg-brand-green/10 text-brand-deepgreen" },
-  { icon: PiggyBank, title: "SIP Planning", points: ["Monthly investment design", "Goal-Oriented SIPs", "Step-up SIP strategy", "Family financial goals"], color: "bg-brand-navy/10 text-brand-navy" },
-  { icon: Target, title: "Goal-Based Investment Planning", points: ["Child Education", "Home Purchase", "Vehicle Purchase", "Retirement Goals"], color: "bg-brand-green/10 text-brand-deepgreen" },
-  { icon: BarChart3, title: "Wealth Creation Planning", points: ["Long-Term Wealth Building", "Disciplined SIP plans", "Portfolio monitoring", "Goal Tracking & Reviews"], color: "bg-brand-navy/10 text-brand-navy" },
-  { icon: Briefcase, title: "Retirement Planning", points: ["Retirement Corpus Design", "Financial Independence Map", "Post-retirement income", "Periodic goal tracking"], color: "bg-brand-green/10 text-brand-deepgreen" },
-  { icon: Heart, title: "Health Insurance Guidance", points: ["Family Health Protection", "Medical Expense Coverage", "Individual & Floater Plans", "Super top-up advice"], color: "bg-brand-navy/10 text-brand-navy" },
-  { icon: Shield, title: "Term Insurance Guidance", points: ["Family financial protection", "Income replacement design", "Long-term security", "Right cover & tenure advice"], color: "bg-brand-green/10 text-brand-deepgreen" },
-  { icon: GraduationCap, title: "Financial Awareness Education", points: ["Investing Basics", "Personal Finance", "Mutual Fund Awareness", "Smart Money Management"], color: "bg-brand-navy/10 text-brand-navy" },
-];
 
 const Services = () => {
-  const { t } = useLang();
   return (
   <div data-testid="services-page" className="bg-brand-bg">
     <SEO
@@ -47,8 +32,8 @@ const Services = () => {
         </h1>
 
         <p className="mt-6 text-lg text-brand-mute leading-8 max-w-xl">
-          Mutual Funds, SIP Planning, Insurance, Loans and Financial
-          Planning — everything you need under one trusted platform.
+          SIP Planning, Mutual Fund guidance (post-ARN), Insurance and
+          Financial Planning — everything you need under one trusted platform.
         </p>
 
         <div className="flex flex-wrap gap-4 mt-8">
@@ -78,7 +63,7 @@ const Services = () => {
       <div>
 
         <img
-          src="/images/services-hero.png"
+          src="/images/services-hero.webp"
           alt="Financial Services"
           className="w-full rounded-3xl shadow-2xl"
         />
@@ -92,88 +77,88 @@ const Services = () => {
 </section>
 
    {/*Services Grid*/}
-<section class="py-20 bg-white">
-  <div class="max-w-7xl mx-auto px-6">
+<section className="py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-6">
 
-    <div class="text-center mb-14">
-      <h2 class="text-4xl font-bold text-[#0A1931]">
+    <div className="text-center mb-14">
+      <h2 className="text-4xl font-bold text-[#0A1931]">
         Our Premium Services
       </h2>
-      <p class="mt-4 text-gray-600">
+      <p className="mt-4 text-gray-600">
         Complete Financial Solutions Under One Roof
       </p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
 
       {/*Mutual Funds*/}
-      <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
-        <div class="text-5xl mb-4">💹</div>
-        <h3 class="text-xl font-bold text-[#0A1931]">Mutual Funds</h3>
-        <p class="text-gray-600 mt-2">Grow your wealth with professionally managed investment plans.</p>
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
+        <div className="text-5xl mb-4">💹</div>
+        <h3 className="text-xl font-bold text-[#0A1931]">Mutual Funds</h3>
+        <p className="text-gray-600 mt-2">Grow your wealth with professionally managed investment plans.</p>
       </div>
 
       {/*SIP Planning*/}
-      <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
-        <div class="text-5xl mb-4">📈</div>
-        <h3 class="text-xl font-bold text-[#0A1931]">SIP Planning</h3>
-        <p class="text-gray-600 mt-2">Start small and build long-term wealth through SIP investments.</p>
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
+        <div className="text-5xl mb-4">📈</div>
+        <h3 className="text-xl font-bold text-[#0A1931]">SIP Planning</h3>
+        <p className="text-gray-600 mt-2">Start small and build long-term wealth through SIP investments.</p>
       </div>
 
        {/*Wealth Creation*/}
-      <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
-        <div class="text-5xl mb-4">💰</div>
-        <h3 class="text-xl font-bold text-[#0A1931]">Wealth Creation</h3>
-        <p class="text-gray-600 mt-2">Personalized investment strategies to create long-term wealth.</p>
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
+        <div className="text-5xl mb-4">💰</div>
+        <h3 className="text-xl font-bold text-[#0A1931]">Wealth Creation</h3>
+        <p className="text-gray-600 mt-2">Personalized investment strategies to create long-term wealth.</p>
       </div>
 
       {/*Retirement Planning*/}
-      <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
-        <div class="text-5xl mb-4">🌅</div>
-        <h3 class="text-xl font-bold text-[#0A1931]">Retirement Planning</h3>
-        <p class="text-gray-600 mt-2">Build a secure and financially independent retirement.</p>
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
+        <div className="text-5xl mb-4">🌅</div>
+        <h3 className="text-xl font-bold text-[#0A1931]">Retirement Planning</h3>
+        <p className="text-gray-600 mt-2">Build a secure and financially independent retirement.</p>
       </div>
 
-      {/*Demat Account*/}
-      <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
-        <div class="text-5xl mb-4">📊</div>
-        <h3 class="text-xl font-bold text-[#0A1931]">Demat Account</h3>
-        <p class="text-gray-600 mt-2">Open a Demat account and start investing in stocks with ease.</p>
+      {/*Financial Education*/}
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
+        <div className="text-5xl mb-4">📚</div>
+        <h3 className="text-xl font-bold text-[#0A1931]">Financial Education</h3>
+        <p className="text-gray-600 mt-2">Learn how money works and make informed financial decisions.</p>
       </div>
 
       {/*Health Insurance*/}
-      <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
-        <div class="text-5xl mb-4">🛡️</div>
-        <h3 class="text-xl font-bold text-[#0A1931]">Health Insurance</h3>
-        <p class="text-gray-600 mt-2">Comprehensive protection for you and your family.</p>
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
+        <div className="text-5xl mb-4">🛡️</div>
+        <h3 className="text-xl font-bold text-[#0A1931]">Health Insurance</h3>
+        <p className="text-gray-600 mt-2">Comprehensive protection for you and your family.</p>
       </div>
 
       {/*Term Insurance*/}
-      <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
-        <div class="text-5xl mb-4">❤️</div>
-        <h3 class="text-xl font-bold text-[#0A1931]">Term Insurance</h3>
-        <p class="text-gray-600 mt-2">Secure your family's future with affordable life cover.</p>
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
+        <div className="text-5xl mb-4">❤️</div>
+        <h3 className="text-xl font-bold text-[#0A1931]">Term Insurance</h3>
+        <p className="text-gray-600 mt-2">Secure your family's future with affordable life cover.</p>
       </div>
 
-      {/*Home Loan*/}
-      <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
-        <div class="text-5xl mb-4">🏠</div>
-        <h3 class="text-xl font-bold text-[#0A1931]">Home Loan</h3>
-        <p class="text-gray-600 mt-2">Easy financing solutions to own your dream home.</p>
+      {/*ELSS / Tax Saving*/}
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
+        <div className="text-5xl mb-4">🧾</div>
+        <h3 className="text-xl font-bold text-[#0A1931]">ELSS / Tax Saving</h3>
+        <p className="text-gray-600 mt-2">Plan tax-saving investments under Section 80C (post-ARN).</p>
       </div>
 
-      {/*Business Loan*/}
-      <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
-        <div class="text-5xl mb-4">💼</div>
-        <h3 class="text-xl font-bold text-[#0A1931]">Business Loan</h3>
-        <p class="text-gray-600 mt-2">Fuel your business growth with flexible loan options.</p>
+      {/*Emergency Fund*/}
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
+        <div className="text-5xl mb-4">🚨</div>
+        <h3 className="text-xl font-bold text-[#0A1931]">Emergency Fund</h3>
+        <p className="text-gray-600 mt-2">Build a safety cushion for unexpected life events.</p>
       </div>
 
-      {/*Credit Cards*/}
-      <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
-        <div class="text-5xl mb-4">💳</div>
-        <h3 class="text-xl font-bold text-[#0A1931]">Credit Cards</h3>
-        <p class="text-gray-600 mt-2">Choose the right credit card with exclusive rewards.</p>
+      {/*Child Education*/}
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 text-center border border-gray-100 hover:-translate-y-2">
+        <div className="text-5xl mb-4">🎓</div>
+        <h3 className="text-xl font-bold text-[#0A1931]">Child Education</h3>
+        <p className="text-gray-600 mt-2">Plan early for your children's higher education goals.</p>
       </div>
 
     </div>
@@ -216,7 +201,7 @@ const Services = () => {
       <Card className="p-6 text-center">
         <div className="text-4xl mb-4">🛡️</div>
         <h3 className="font-bold text-lg text-brand-navy">
-          SEBI-Compliant
+          SEBI-Aware
         </h3>
       </Card>
 
@@ -380,10 +365,12 @@ const Services = () => {
 
       <Card className="p-6">
         <h3 className="text-xl font-semibold text-brand-navy">
-          Home Loan ఎలా Apply చేయాలి?
+          SIP ఎలా ప్రారంభించాలి?
         </h3>
         <p className="mt-2 text-brand-mute">
-          మా Financial Advisor ని సంప్రదించండి. మీ Documents verify చేసి, మీకు సరిపోయే Home Loan ఎంపికను సూచిస్తాము.
+          మమ్మల్ని సంప్రదించండి. మీ లక్ష్యాలు, ఆదాయం మరియు రిస్క్ ప్రొఫైల్‌ను అర్థం చేసుకుని,
+          సరిపోయే పెట్టుబడి ప్రణాళికను సూచిస్తాము. AMFI ARN లభించిన తర్వాత మ్యూచువల్ ఫండ్
+          యూనిట్ల పంపిణీ ప్రారంభమవుతుంది.
         </p>
       </Card>
 

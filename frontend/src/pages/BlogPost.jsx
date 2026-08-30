@@ -22,6 +22,10 @@ const BlogPost = () => {
         <div className="mt-6 text-xs tracking-[0.2em] uppercase font-bold text-brand-green">{post.category}</div>
         <h1 className="mt-3 font-display text-3xl md:text-5xl text-brand-navy font-semibold leading-tight">{post.title}</h1>
         <div className="mt-4 text-sm text-brand-mute">By {post.author} · {new Date(post.created_at).toLocaleDateString()}</div>
+        <p className="mt-4 text-xs text-brand-mute leading-relaxed bg-brand-soft rounded-xl px-4 py-3">
+          Figures in this article are illustrations for education only — not forecasts, promises or guarantees.
+          Mutual fund investments are subject to market risks. Read all scheme-related documents carefully.
+        </p>
         {post.cover_image && <img src={post.cover_image} alt={post.title} className="mt-8 w-full rounded-2xl border border-brand-line" />}
         <div className="mt-8 prose prose-sm md:prose-base max-w-none [&_img]:rounded-xl [&_img]:my-4 [&_h2]:font-display [&_h2]:text-brand-navy [&_h3]:font-display [&_blockquote]:border-l-4 [&_blockquote]:border-brand-green [&_blockquote]:pl-3 [&_blockquote]:italic [&_a]:text-brand-deepgreen [&_a]:underline whitespace-pre-line text-brand-ink leading-relaxed text-[15px]" dangerouslySetInnerHTML={{__html: post.content}} />
       </div>

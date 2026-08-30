@@ -40,7 +40,7 @@ export const Header = () => {
             <img
              src="/fortune-logo.png"
              alt="Fortune U Group"
-             className="h-32 md:h-36 w-auto"
+             className="h-10 md:h-12 w-auto"
             />
             
           </Link>
@@ -155,7 +155,7 @@ export const Footer = () => {
         <div>
           <h4 className="font-display font-semibold mb-2 text-sm tracking-wide text-[#D4AF37]">Services</h4>
           <ul className="space-y-2 text-sm text-white/70">
-            <li><Link to="/services">Mutual Fund Distribution</Link></li>
+            <li><Link to="/services">Mutual Fund Guidance (post-ARN)</Link></li>
             <li><Link to="/services">SIP Planning</Link></li>
             <li><Link to="/services">Goal-Based Investing</Link></li>
             <li><Link to="/services">Retirement Planning</Link></li>
@@ -220,26 +220,6 @@ export const Footer = () => {
 
    </div>
 </li>
-
-<li>
-   <a
-     href="https://www.instagram.com/fortuneugroup/?hl=en"
-     target="_blank"
-     rel="noreferrer"
-   >
-     Instagram
-   </a>
-</li>
-
-<li>
-   <a
-     href="https://www.youtube.com/@FortuneUGroupOfficial"
-     target="_blank"
-     rel="noreferrer"
-   >
-     YouTube
-   </a>
-</li>
           </ul>
         </div>
       </div>
@@ -250,7 +230,7 @@ export const Footer = () => {
           </p>
           <p>© {new Date().getFullYear()} Fortune U Group. All rights reserved.</p>
           <p className="mt-3 text-xs text-white/60 text-center">
-            Mutual Fund Distributor in Andhra Pradesh & Telangana | SIP Planning | Financial Planning | Retirement Planning | Child Education Planning | Demat Accounts | Insurance Guidance | Credit Card Services
+            Financial Education | SIP Planning | Financial Planning | Retirement Planning | Child Education Planning | Health & Term Insurance Guidance
           </p>
         </div>
       </div>
