@@ -263,10 +263,10 @@ const IgIcon = () => (
     <defs>
       <linearGradient id="igGrad" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor="#FEDA75" />
-        <stop offset="30%" stopColor="#FA7E1E" />
-        <stop offset="55%" stopColor="#D62976" />
-        <stop offset="80%" stopColor="#962FBF" />
-        <stop offset="100%" stopColor="#8a3ab9" />
+        <stop offset="18%" stopColor="#FA7E1E" />
+        <stop offset="45%" stopColor="#E4405F" />
+        <stop offset="70%" stopColor="#D62976" />
+        <stop offset="100%" stopColor="#BC1888" />
       </linearGradient>
     </defs>
     {/* WHITE outer circle */}
