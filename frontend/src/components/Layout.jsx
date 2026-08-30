@@ -259,9 +259,9 @@ export const Footer = () => {
 };
 
 const socialLinks = [
-  { href: "https://www.instagram.com/fortuneugroup/?hl=en", icon: <Instagram className="w-5 h-5" />, label: "Instagram", testid: "floating-instagram" },
-  { href: "https://www.youtube.com/@FortuneUGroupOfficial", icon: <Youtube className="w-5 h-5" />, label: "YouTube", testid: "floating-youtube" },
-  { href: "https://www.facebook.com/profile.php?id=61589015788132", icon: <Facebook className="w-5 h-5" />, label: "Facebook", testid: "floating-facebook" },
+  { href: "https://www.instagram.com/fortuneugroup/?hl=en", icon: <Instagram className="w-5 h-5" />, label: "Instagram", cls: "bg-gradient-to-tr from-[#FCAF45] via-[#F77737] to-[#E4405F]", testid: "floating-instagram" },
+  { href: "https://www.youtube.com/@FortuneUGroupOfficial", icon: <Youtube className="w-5 h-5" />, label: "YouTube", cls: "bg-[#FF0000]", testid: "floating-youtube" },
+  { href: "https://www.facebook.com/profile.php?id=61589015788132", icon: <Facebook className="w-5 h-5" />, label: "Facebook", cls: "bg-[#1877F2]", testid: "floating-facebook" },
 ];
 
 export const WhatsAppFab = () => (
@@ -269,7 +269,7 @@ export const WhatsAppFab = () => (
     className="fixed right-3 md:right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-2.5"
     data-testid="floating-actions"
   >
-    <span className="text-[9px] uppercase tracking-widest font-semibold text-white bg-[#D4AF37] px-2 py-1 rounded-full shadow">
+    <span className="text-[9px] uppercase tracking-widest font-semibold text-white bg-[#0A2540] px-2 py-1 rounded-full shadow">
       Follow
     </span>
     {socialLinks.map((s) => (
@@ -282,7 +282,7 @@ export const WhatsAppFab = () => (
         title={s.label}
         data-testid={s.testid}
         onClick={() => trackEvent("social_click", { network: s.label.toLowerCase(), source: "fab" })}
-        className="rounded-full shadow-xl bg-[#0A2540] text-white w-11 h-11 flex items-center justify-center hover:bg-[#D4AF37] hover:text-[#0A2540] hover:scale-110 transition-all duration-300"
+        className={`rounded-full shadow-xl text-white w-11 h-11 flex items-center justify-center hover:scale-110 transition-transform ${s.cls}`}
       >
         {s.icon}
       </a>
@@ -295,7 +295,7 @@ export const WhatsAppFab = () => (
       title="WhatsApp"
       data-testid="floating-whatsapp-fab"
       onClick={() => trackEvent("whatsapp_click", { source: "fab" })}
-      className="rounded-full shadow-xl bg-[#10B981] text-white w-11 h-11 flex items-center justify-center hover:scale-110 transition-transform"
+      className="rounded-full shadow-xl bg-[#25D366] text-white w-11 h-11 flex items-center justify-center hover:scale-110 transition-transform"
     >
       <MessageCircle className="w-5 h-5" />
     </a>
