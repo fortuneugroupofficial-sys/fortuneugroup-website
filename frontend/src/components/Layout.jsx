@@ -260,54 +260,56 @@ export const Footer = () => {
 
 const IgIcon = () => (
   <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
-    {/* WHITE outer circle */}
-    <circle cx="12" cy="12" r="11.7" fill="#FFFFFF" />
     <defs>
-      <linearGradient id="igGrad" x1="0" y1="0" x2="1" y2="1" gradientUnits="userSpaceOnUse">
+      <linearGradient id="igGrad" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor="#FEDA75" />
-        <stop offset="22%" stopColor="#FA7E1E" />
-        <stop offset="48%" stopColor="#D62976" />
-        <stop offset="76%" stopColor="#962FBF" />
+        <stop offset="25%" stopColor="#FA7E1E" />
+        <stop offset="50%" stopColor="#D62976" />
+        <stop offset="75%" stopColor="#962FBF" />
         <stop offset="100%" stopColor="#4F5BD5" />
       </linearGradient>
     </defs>
-    {/* Official gradient Instagram camera brand mark */}
-    <rect x="6.1" y="6.1" width="11.8" height="11.8" rx="3.2" fill="none" stroke="url(#igGrad)" strokeWidth="1.5" />
-    <circle cx="12" cy="12" r="3.4" fill="none" stroke="url(#igGrad)" strokeWidth="1.5" />
-    <circle cx="15.4" cy="8.6" r="1.1" fill="url(#igGrad)" />
+    {/* WHITE outer circle */}
+    <circle cx="12" cy="12" r="11.5" fill="#FFFFFF" />
+    {/* GRADIENT inner brand shape */}
+    <circle cx="12" cy="12" r="8.6" fill="url(#igGrad)" />
+    {/* WHITE camera glyph */}
+    <rect x="7.6" y="7.6" width="8.8" height="8.8" rx="2.4" fill="none" stroke="#FFFFFF" strokeWidth="1.3" />
+    <circle cx="12" cy="12" r="2.8" fill="none" stroke="#FFFFFF" strokeWidth="1.3" />
+    <circle cx="14.9" cy="9.1" r="0.85" fill="#FFFFFF" />
   </svg>
 );
 
 const YtIcon = () => (
   <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
     {/* WHITE outer circle */}
-    <circle cx="12" cy="12" r="11.7" fill="#FFFFFF" />
+    <circle cx="12" cy="12" r="11.5" fill="#FFFFFF" />
     {/* Official red rounded-rectangle YouTube play button */}
-    <path fill="#FF0000" d="M5.6 6.6h12.8a1.9 1.9 0 0 1 1.9 1.9v7a1.9 1.9 0 0 1-1.9 1.9H5.6a1.9 1.9 0 0 1-1.9-1.9v-7a1.9 1.9 0 0 1 1.9-1.9z" />
+    <path fill="#FF0000" d="M4.6 7.3h14.8a1.7 1.7 0 0 1 1.7 1.7v6a1.7 1.7 0 0 1-1.7 1.7H4.6a1.7 1.7 0 0 1-1.7-1.7V9a1.7 1.7 0 0 1 1.7-1.7z" />
     {/* WHITE play triangle */}
-    <path fill="#FFFFFF" d="M10.2 9.7v4.6l4.2-2.3z" />
+    <path fill="#FFFFFF" d="M9.9 9.3v5.4l4.6-2.7z" />
   </svg>
 );
 
 const FbIcon = () => (
   <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
     {/* WHITE outer circle */}
-    <circle cx="12" cy="12" r="11.7" fill="#FFFFFF" />
+    <circle cx="12" cy="12" r="11.5" fill="#FFFFFF" />
     {/* BRIGHT BLUE inner circle */}
     <circle cx="12" cy="12" r="8.6" fill="#1877F2" />
-    {/* SOLID WHITE "f" */}
-    <path fill="#FFFFFF" d="M14.5 8.5V6.8c0-.7.5-1 1.1-1H17V3h-2.3C12.2 3 11 4.4 11 6.6v1.9H9v2.8h2V21h3.5v-9.7h2.4l.4-2.8h-2.8z" />
+    {/* WHITE lowercase "f" */}
+    <path fill="#FFFFFF" d="M13.4 8.6V7.5c0-.6.5-1.1 1.1-1.1h.6V4.5h-1.6c-1.7 0-2.9 1.2-2.9 3.1v1H9.3v2.2h1.3V19h2.8v-9.1h1.8l.3-2.3h-2.1z" />
   </svg>
 );
 
 const WaIcon = () => (
   <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
     {/* WHITE outer circle */}
-    <circle cx="12" cy="12" r="11.7" fill="#FFFFFF" />
+    <circle cx="12" cy="12" r="11.5" fill="#FFFFFF" />
     {/* BRIGHT GREEN inner circle */}
     <circle cx="12" cy="12" r="8.6" fill="#25D366" />
-    {/* SOLID WHITE WhatsApp glyph */}
-    <path fill="#FFFFFF" d="M12 4.2a7.8 7.8 0 0 0-6.6 11.8l-1.2 3.8 3.9-1.1A7.8 7.8 0 1 0 12 4.2zm3.7 11c-.2.6-1.2 1.1-1.7 1.1-.4 0-1-.1-1.7-.3-2.6-.9-4.3-2.7-5-4.7-.3-.9-.1-1.7.3-2.3.2-.3.6-.5.9-.5.2 0 .4 0 .6 0 .2 0 .3 0 .5.4l.7 1.5c.1.3.1.4 0 .5-.2.5-.5.8-.4 1 .3.6 1.1 1.4 2 1.9.2.1.4.1.5-.1.2-.3.7-.8.9-1 .2-.2.3-.2.5-.1.2.1 1.4.7 1.7.9.2.1.4.2.4.4 0 .3-.1.8-.3 1.2z" />
+    {/* WHITE WhatsApp glyph */}
+    <path fill="#FFFFFF" d="M12 5.4a6.6 6.6 0 0 0-5.6 9.9l-.9 3.2 3.3-.9A6.6 6.6 0 1 0 12 5.4zm3.1 9.3c-.1.4-.7.8-1.2.9-.3.1-.8 0-1.3-.1-2-.6-3.4-2-4-3.6-.3-.7-.2-1.4.2-1.8.2-.2.4-.4.7-.4h.5c.2 0 .3 0 .5.3l.5 1.1c.1.2.1.3 0 .4-.2.4-.4.6-.3.8.2.4.9 1.1 1.6 1.5.2.1.3.1.4 0 .2-.2.6-.7.8-.8.1-.2.3-.1.4-.1.2.1 1.1.6 1.3.7.2.1.3.2.3.3 0 .1 0 .3-.1.3z" />
   </svg>
 );
 
