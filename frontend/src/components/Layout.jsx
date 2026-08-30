@@ -259,35 +259,57 @@ export const Footer = () => {
 };
 
 const IgIcon = () => (
-  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
+  <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
     <defs>
       <linearGradient id="igGrad" x1="0" y1="0" x2="1" y2="1" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#FFC500" />
+        <stop offset="0%" stopColor="#FEDA75" />
         <stop offset="20%" stopColor="#FA7E1E" />
-        <stop offset="45%" stopColor="#E1306C" />
+        <stop offset="45%" stopColor="#D62976" />
         <stop offset="75%" stopColor="#962FBF" />
-        <stop offset="100%" stopColor="#515BD4" />
+        <stop offset="100%" stopColor="#4F5BD5" />
       </linearGradient>
     </defs>
-    <path fill="url(#igGrad)" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.7 6.3a1.1 1.1 0 1 1-1.1 1.1 1.1 1.1 0 0 1 1.1-1.1z" />
+    {/* WHITE outer circle */}
+    <circle cx="12" cy="12" r="11.7" fill="#FFFFFF" />
+    {/* COLORED gradient inner circle */}
+    <circle cx="12" cy="12" r="8.6" fill="url(#igGrad)" />
+    {/* WHITE camera glyph */}
+    <rect x="7.4" y="7.4" width="9.2" height="9.2" rx="2.3" fill="none" stroke="#FFFFFF" strokeWidth="1.25" />
+    <circle cx="12" cy="12" r="2.7" fill="none" stroke="#FFFFFF" strokeWidth="1.25" />
+    <circle cx="15.3" cy="8.7" r="0.9" fill="#FFFFFF" />
   </svg>
 );
 
 const YtIcon = () => (
-  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
-    <path fill="#FF0000" d="M23 12.2s0-3.2-.4-4.6c-.2-.9-.9-1.6-1.8-1.8C19.2 5.4 12 5.4 12 5.4s-7.2 0-8.8.4c-.9.2-1.6.9-1.8 1.8C1 9 1 12.2 1 12.2s0 3.2.4 4.6c.2.9.9 1.6 1.8 1.8 1.6.4 8.8.4 8.8.4s7.2 0 8.8-.4c.9-.2 1.6-.9 1.8-1.8.4-1.4.4-4.6.4-4.6zM9.8 15.5v-6.6l6.3 3.3-6.3 3.3z" />
+  <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
+    {/* WHITE outer circle */}
+    <circle cx="12" cy="12" r="11.7" fill="#FFFFFF" />
+    {/* RED inner circle */}
+    <circle cx="12" cy="12" r="8.6" fill="#FF0000" />
+    {/* WHITE play triangle */}
+    <path fill="#FFFFFF" d="M9.9 8.7l5.6 3.3-5.6 3.3z" />
   </svg>
 );
 
 const FbIcon = () => (
-  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
-    <path fill="#1877F2" d="M14.5 8.5V6.8c0-.7.5-1 1.1-1H17V3h-2.3C12.2 3 11 4.4 11 6.6v1.9H9v2.8h2V21h3.5v-9.7h2.4l.4-2.8h-2.8z" />
+  <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
+    {/* WHITE outer circle */}
+    <circle cx="12" cy="12" r="11.7" fill="#FFFFFF" />
+    {/* BLUE inner circle */}
+    <circle cx="12" cy="12" r="8.6" fill="#1877F2" />
+    {/* WHITE "f" glyph */}
+    <path fill="#FFFFFF" d="M14.6 7.9V6.5c0-.8.5-1.3 1.3-1.3h.9V3h-2.2c-2 0-3.2 1.3-3.2 3.3v1.5H9.6v2.4h1.8v6.7h2.7v-6.7h2.2l.4-2.4z" />
   </svg>
 );
 
 const WaIcon = () => (
-  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
-    <path fill="#25D366" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-2-1.2 7.4 7.4 0 0 1-1.4-1.7c-.1-.2 0-.4.1-.5l.4-.4.1-.3c0-.1 0-.3-.1-.4s-.5-1.3-.7-1.8-.4-.4-.5-.4h-.4c-.2 0-.4.1-.6.3a2.1 2.1 0 0 0-.7 1.6 3.7 3.7 0 0 0 .8 2c.1.1 1.4 2.2 3.5 3 2 .9 2 .6 2.4.6a2 2 0 0 0 1.3-.6 1.7 1.7 0 0 0 .4-1.2c0-.1 0-.2-.2-.3z" />
+  <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" style={{ opacity: 1, filter: "none", display: "block" }}>
+    {/* WHITE outer circle */}
+    <circle cx="12" cy="12" r="11.7" fill="#FFFFFF" />
+    {/* GREEN inner circle */}
+    <circle cx="12" cy="12" r="8.6" fill="#25D366" />
+    {/* WHITE WhatsApp phone glyph */}
+    <path fill="#FFFFFF" d="M12 4.2a7.8 7.8 0 0 0-6.6 11.8l-1.2 3.8 3.9-1.1A7.8 7.8 0 1 0 12 4.2zm3.7 11c-.2.6-1.2 1.1-1.7 1.1-.4 0-1-.1-1.7-.3-2.6-.9-4.3-2.7-5-4.7-.3-.9-.1-1.7.3-2.3.2-.3.6-.5.9-.5.2 0 .4 0 .6 0 .2 0 .3 0 .5.4l.7 1.5c.1.3.1.4 0 .5-.2.5-.5.8-.4 1 .3.6 1.1 1.4 2 1.9.2.1.4.1.5-.1.2-.3.7-.8.9-1 .2-.2.3-.2.5-.1.2.1 1.4.7 1.7.9.2.1.4.2.4.4 0 .3-.1.8-.3 1.2z" />
   </svg>
 );
 
