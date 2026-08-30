@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MessageCircle, TrendingUp, Target, Shield, BookOpen, Users, Award, CheckCircle2, BarChart3, Heart, PiggyBank, GraduationCap, ArrowUpRight } from "lucide-react";
 import { Button } from "../components/ui/button";
@@ -6,14 +6,14 @@ import { Card } from "../components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { useLang } from "../context/LangContext";
 import { whatsappLink } from "../lib/api";
-import { TESTIMONIALS, FAQS } from "../data/content";
+
 import { SectionHeader } from "../components/SectionHeader";
 import { ConsultationForm } from "../components/LeadForms";
 import SEO from "../components/SEO";
 import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 
 const serviceCards = [
-  { icon: TrendingUp, title: "Mutual Fund Distribution", desc: "SIP, Lumpsum, ELSS, Equity, Hybrid, Debt funds." },
+  { icon: TrendingUp, title: "Mutual Fund Guidance", desc: "SIP, ELSS, equity, hybrid, debt — after AMFI ARN." },
   { icon: Target, title: "Goal-Based Investing", desc: "Map every rupee to a life goal — education, home, retirement." },
   { icon: PiggyBank, title: "SIP Planning", desc: "Disciplined monthly investing that compounds for decades." },
   { icon: GraduationCap, title: "Financial Education", desc: "Investor literacy, personal finance, smart money habits." },
@@ -22,25 +22,38 @@ const serviceCards = [
 ];
 
 const seriesData = (() => {
-  const arr = []; let invested = 0; let wealth = 0;
+  // ₹10,000/month, 20 years @ 12% p.a. (monthly compounding) — matches the
+  // ₹98.9 L illustration shown in the hero card. Educational illustration only.
+  const arr = []; let invested = 0;
+  const monthlyRate = 0.12 / 12;
   for (let y = 1; y <= 20; y++) {
     invested += 10000 * 12;
-    wealth = 10000 * 12 * ((Math.pow(1.12, y) - 1) / 0.12) * 1.12;
+    const wealth = 10000 * ((Math.pow(1 + monthlyRate, y * 12) - 1) / monthlyRate);
     arr.push({ year: `Y${y}`, invested: Math.round(invested / 100000), wealth: Math.round(wealth / 100000) });
   }
   return arr;
 })();
 
+const inr = (n) => "₹" + Math.round(n).toLocaleString("en-IN");
+
 const Home = () => {
   const { t } = useLang();
-  const testimonials = TESTIMONIALS;
-  const faqs = FAQS;
+  const [sipAmt, setSipAmt] = useState(5000);
+  const [sipYrs, setSipYrs] = useState(15);
+  const [sipRate, setSipRate] = useState(10);
+  const [sipCalculated, setSipCalculated] = useState(false);
+  const monthlyRate = sipRate / 100 / 12;
+  const n = sipYrs * 12;
+  const sipInvested = sipAmt * n;
+  const sipWealth = monthlyRate > 0 && n > 0
+    ? sipAmt * ((Math.pow(1 + monthlyRate, n) - 1) / monthlyRate) * (1 + monthlyRate)
+    : sipAmt * n;
 
   return (
     <div data-testid="home-page">
       <SEO
-  title="Mutual Fund Distributor in Tirupati | SIP Investment Advisor"
-  description="Fortune U Group provides Mutual Fund Distribution, SIP Investments, Financial Planning, Retirement Planning and Insurance Solutions in Tirupati."
+  title="Fortune U Group | Financial Planning, SIP & Insurance · Tirupati"
+  description="Fortune U Group offers SIP education, financial planning, retirement planning and insurance guidance in Tirupati. Not a SEBI-registered investment adviser."
   path="/"
   schema={{
     "@context": "https://schema.org",
@@ -49,7 +62,7 @@ const Home = () => {
     areaServed: "IN",
     url: "https://www.fortuneugroup.in",
     description:
-      "Mutual Fund Distribution, SIP, Goal-based Investing, Retirement, Insurance Guidance and Financial Education."
+      "Financial education, SIP planning, goal-based investing, retirement planning, insurance guidance and wealth education."
   }}
 />
       {/* HERO */}
@@ -88,7 +101,7 @@ const Home = () => {
               </div>
 
               <div className="mt-12 grid grid-cols-3 gap-6 max-w-xl">
-                {[{n:"100+", l:"Invesors Educated"}, {n:"6+ Yrs", l:"Market Experience"}, {n:"Goal Based", l:"Financial Planning"}].map((s, i)=>(
+                {[{n:"100+", l:"Investors Educated"}, {n:"6+ Yrs", l:"Market Experience"}, {n:"Goal Based", l:"Financial Planning"}].map((s, i)=>(
                   <div key={i} className="reveal reveal-4">
                     <div className="font-display text-2xl md:text-3xl font-semibold text-brand-navy">{s.n}</div>
                     <div className="text-xs text-brand-mute mt-1">{s.l}</div>
@@ -100,13 +113,13 @@ const Home = () => {
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-2xl 
                 overflow-hidden border border-brand-line shadow-soft bg-white reveal reveal-3">
-                <img src="/images/family-advisor.png"
-                   alt="Family Advisor"
+                <img src="/images/family-advisor.webp"
+                   alt="Family financial planning illustration"
                     className="w-full h-full object-cover"
                    />
                 <div className="p-5 grid grid-cols-2 gap-4 bg-white">
                   <div>
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-brand-yellow font-bold">Wealth (20-Yr SIP)</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-brand-yellow font-bold">Wealth (20-Yr SIP · illustrative)</div>
                     <div className="font-display text-2xl text-brand-navy font-semibold">₹98.9 L</div>
                   </div>
                   <div>
@@ -154,7 +167,7 @@ const Home = () => {
                   <div className="w-14 h-14 rounded-2xl bg-[#FFF8E1] text-[#D4AF37] flex items-center justify-center group-hover:bg-[#0A2540] group-hover:text-white transition-all duration-300">
                     <s.icon className="w-8 h-8" />
                   </div>
-                  <h3 className="mt-5 text-xl font-bold text-{#0A2540}">{s.title}</h3>
+                  <h3 className="mt-5 text-xl font-bold text-[#0A2540]">{s.title}</h3>
                   <p className="mt-3 text-gray-600 leading-7">{s.desc}</p>
                   <div className="mt-6 inline-flex items-center text-sm font-semibold text-[#0A2540] hover:text-[#D4AF37] transition-colors">
                    Learn more
@@ -236,7 +249,7 @@ const Home = () => {
 
       <Card className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300">
       <Award className="w-12 h-12 text-orange-500 mb-5" />
-       <h3 className="text-xl font-bold mb-3">Trusted Advisor</h3>
+       <h3 className="text-xl font-bold mb-3">Long-Term Support</h3>
        <p className="text-gray-600">
        Transparent guidance with regular reviews to keep you on track towards your financial goals.
        </p>
@@ -351,7 +364,7 @@ const Home = () => {
           <div>
           <SectionHeader eyebrow={t("home.consultEyebrow")} title={t("home.consultTitle")} sub={t("home.consultSub")} />
             <ul className="mt-8 space-y-3 text-sm text-brand-mute">
-              {["Personalised goal-mapping","Tax-efficient SIP mix","Insurance gap analysis","Lifetime advisor relationship"].map((s,i)=>(
+              {["Personalised goal-mapping","Tax-efficient SIP mix","Insurance gap analysis","Lifetime relationship"].map((s,i)=>(
                 <li key={i} className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-brand-g mt-0.5" /> <span>{s}</span></li>
               ))}
             </ul>
@@ -364,7 +377,7 @@ const Home = () => {
 
       {/* TESTIMONIALS */}
 
-<section className="py-20 bg-white-50">
+<section className="py-20 bg-white">
   <div className="max-w-7xl mx-auto px-5">
 
     <div className="text-center mb-14">
@@ -377,7 +390,7 @@ const Home = () => {
       </h2>
 
       <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
-        Hundreds of investors trust Fortune U Group for SIP Planning,
+        Families across India trust Fortune U Group for SIP Planning,
         Mutual Funds, Insurance and Goal-Based Financial Planning.
       </p>
     </div>
@@ -464,41 +477,59 @@ const Home = () => {
         <div className="space-y-6">
 
           <div>
-            <label className="font-semibold">
+            <label className="font-semibold block">
               Monthly SIP (₹)
             </label>
             <input
               type="number"
+              min={500}
+              step={500}
+              value={sipAmt}
+              onChange={(e) => setSipAmt(Math.max(0, Number(e.target.value) || 0))}
               placeholder="5000"
               className="w-full mt-2 border rounded-lg p-3"
             />
           </div>
 
           <div>
-            <label className="font-semibold">
+            <label className="font-semibold block">
               Investment Period (Years)
             </label>
             <input
               type="number"
+              min={1}
+              max={40}
+              value={sipYrs}
+              onChange={(e) => setSipYrs(Math.min(40, Math.max(1, Number(e.target.value) || 1)))}
               placeholder="20"
               className="w-full mt-2 border rounded-lg p-3"
             />
           </div>
 
           <div>
-            <label className="font-semibold">
-              Expected Return (%)
+            <label className="font-semibold block">
+              Expected Return (% p.a.)
             </label>
             <input
               type="number"
+              min={1}
+              max={25}
+              step={0.5}
+              value={sipRate}
+              onChange={(e) => setSipRate(Math.min(25, Math.max(1, Number(e.target.value) || 1)))}
               placeholder="12"
               className="w-full mt-2 border rounded-lg p-3"
             />
           </div>
 
-          <Button className="w-full">
+          <Button type="button" className="w-full" onClick={() => setSipCalculated(true)}>
             Calculate SIP
           </Button>
+
+          <p className="text-xs text-gray-500 leading-relaxed">
+            Illustration only — not a forecast, promise or guarantee. Mutual fund investments are
+            subject to market risks. Read all scheme-related documents carefully.
+          </p>
 
         </div>
       </Card>
@@ -513,22 +544,29 @@ const Home = () => {
 
           <div className="flex justify-between">
             <span>Total Investment</span>
-            <strong>₹12,00,000</strong>
+            <strong>{inr(sipInvested)}</strong>
           </div>
 
           <div className="flex justify-between">
             <span>Estimated Returns</span>
-            <strong className="text-">
-              ₹22,50,000
+            <strong className="text-green-600">
+              {inr(Math.max(0, sipWealth - sipInvested))}
             </strong>
           </div>
 
           <div className="border-t pt-5 flex justify-between text-xl font-bold">
             <span>Total Wealth</span>
             <span className="text-blue-700">
-              ₹34,50,000
+              {inr(sipWealth)}
             </span>
           </div>
+
+          {sipCalculated && (
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Based on {inr(sipAmt)} per month for {sipYrs} years at {sipRate}% p.a. (monthly
+              compounding). Actual returns vary and can be negative.
+            </p>
+          )}
 
         </div>
 

@@ -5,21 +5,13 @@ import SEO from "../components/SEO";
 import { Card } from "../components/ui/card";
 import { useLang } from "../context/LangContext";
 
-const values = [
-  { icon: "Trust", desc: "Investor-first conversations, always." },
-  { icon: "Transparency", desc: "Clear costs, clear advice, clear outcomes." },
-  { icon: "Long-Term Thinking", desc: "Decades, not days. Compounding does the magic." },
-  { icon: "Investor Education", desc: "We teach you the 'why', not just the 'what'." },
-  { icon: "Client-Centric", desc: "Your goals lead our recommendations." },
-];
-
 const About = () => {
   const { t } = useLang();
   return (
   <div data-testid="about-page" className="bg-brand-bg">
     <SEO
-  title="About Fortune U Group | Financial Planning & Investment Advisory"
-  description="Learn about Fortune U Group, your trusted partner for Mutual Funds, SIP Investments, Financial Planning, Retirement Planning and Wealth Creation solutions."
+  title="About Fortune U Group | Financial Planning & Wealth Education"
+  description="Learn about Fortune U Group — financial education, SIP planning, goal-based investing, retirement planning and insurance guidance for Indian families."
   path="/about"
   />
     <section className="pt-4 md:pt-6 pb-20 bg-white">
@@ -40,8 +32,8 @@ const About = () => {
 
         <p className="mt-6 text-lg text-gray-600 leading-8">
           Fortune U Group helps individuals and families achieve their
-          financial goals through Mutual Funds, SIPs, Insurance, Loans and
-          personalized financial planning with complete transparency.
+          financial goals through mutual fund guidance (post-ARN), SIPs,
+          insurance and personalized financial planning with complete transparency.
         </p>
 
         <div className="mt-8 flex gap-4 flex-wrap">
@@ -95,8 +87,8 @@ const About = () => {
       <div>
 
         <img
-          src="/images/about-advisor.jpg"
-          alt="Financial Advisor"
+          src="/images/about-advisor.webp"
+          alt="Financial planning illustration"
           className="rounded-3xl shadow-2xl w-full"
         />
 
@@ -133,7 +125,7 @@ const About = () => {
 
       <div>
         <img
-          src="/images/about-story.jpg"
+          src="/images/about-story.webp"
           alt="Our Story"
           className="rounded-3xl shadow-xl w-full"
         />
@@ -154,8 +146,8 @@ const About = () => {
         </p>
 
         <p className="text-gray-600 leading-8 mb-5">
-          Our mission is to simplify investing, insurance, loans and wealth
-          planning through honest advice, goal-based planning and long-term
+          Our mission is to simplify investing, insurance and wealth
+          planning through honest guidance, goal-based planning and long-term
           relationships.
         </p>
 
@@ -208,9 +200,9 @@ const About = () => {
 
         <p className="mt-5 text-gray-600 leading-8">
           To simplify financial planning and empower individuals and families
-          with expert guidance in Mutual Funds, SIPs, Insurance, Loans and
-          Wealth Creation. We believe every family deserves honest,
-          transparent and goal-based financial advice.
+          with honest guidance in Mutual Funds (post-ARN), SIPs, Insurance and
+          Wealth Creation. We believe every family deserves transparent,
+          goal-based financial planning.
         </p>
 
       </div>

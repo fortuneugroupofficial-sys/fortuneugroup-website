@@ -1,14 +1,17 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const GA4_ID = process.env.REACT_APP_GA4_ID;
+// Falls back to the GA4 id already configured in public/index.html so SPA
+// page views are tracked even when the Vercel env var is not set.
+const GA4_ID = process.env.REACT_APP_GA4_ID || "G-5P0R5EM9C6";
 
 const Analytics = () => {
   const location = useLocation();
 
-  // Load gtag.js once
+  // Load gtag.js once (skip if public/index.html already loaded it)
   useEffect(() => {
     if (!GA4_ID) return;
+    if (typeof window.gtag === "function") return;
     if (document.getElementById("ga4-loader")) return;
     const s = document.createElement("script");
     s.id = "ga4-loader";

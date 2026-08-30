@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { whatsappLink, WHATSAPP_NUMBER, BUSINESS_EMAIL, submitLead } from "../lib/api";
+import React, { useState } from "react";
+import { WHATSAPP_NUMBER, BUSINESS_EMAIL, submitLead } from "../lib/api";
 import { trackEvent } from "../components/Analytics";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
@@ -27,14 +26,12 @@ const Contact = () => {
   const [f, setF] = useState({ name: "", mobile: "", email: "", city:"", financial_goal:"", message: "" });
   const [loading, setLoading] = useState(false);
    const { t } = useLang();
-  const location = useLocation();
-
-
 
    const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      await submitLead("contact", f);
+      const res = await submitLead("contact", f);
+      if (!res.ok) throw new Error("submit failed");
       trackEvent("generate_lead", { form_type: "contact" });
       toast.success("Thanks! We'll reach out shortly.");
       setF({ name: "", mobile: "", email: "", city: "", financial_goal: "", message: "" });
@@ -44,9 +41,8 @@ const Contact = () => {
   return (
   <>
     <SEO
-      title="Contact Fortune U Group | Mutual Fund Advisor in Tirupati"
-      description="Contact Fortune U Group for expert guidance on Mutual Funds, SIP Investments, 
-      Financial Planning, Retirement Planning and Insurance solutions."
+      title="Contact Fortune U Group | Financial Planning & Insurance"
+      description="Contact Fortune U Group for guidance on SIP investments, financial planning, retirement planning and insurance solutions in Tirupati."
       path="/contact"
     />
 

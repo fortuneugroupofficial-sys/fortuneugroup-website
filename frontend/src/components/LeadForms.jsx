@@ -21,8 +21,10 @@ export const ConsultationForm = () => {
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      await submitLead("consultation", f); trackEvent("generate_lead", { form_type: "consultation" });
-      toast.success("Thanks! Our advisor will contact you shortly.");
+      const res = await submitLead("consultation", f);
+      if (!res.ok) throw new Error("submit failed");
+      trackEvent("generate_lead", { form_type: "consultation" });
+      toast.success("Thanks! Our team will contact you shortly.");
       setF({ name: "", mobile: "", email: "", city: "", financial_goal: "" });
     } catch (err) { toast.error("Something went wrong. Please try again."); }
     finally { setLoading(false); 
@@ -66,12 +68,13 @@ export const SIPRequestForm = () => {
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      await submitLead("sip", {
+      const res = await submitLead("sip", {
   ...f,
   monthlyIncome: Number(f.monthly_income),
   sipBudget: Number(f.sip_budget),
   financialGoal: f.goal_type,
 });
+      if (!res.ok) throw new Error("submit failed");
        trackEvent("generate_lead", { form_type: "sip" });
       toast.success("SIP plan request received!");
       setF({ name: "", mobile: "", monthly_income: "", sip_budget: "", goal_type: "" });
@@ -113,15 +116,16 @@ export const InsuranceForm = () => {
     e.preventDefault(); setLoading(true);
     try {
       
-      await submitLead("insurance", {
+      const res = await submitLead("insurance", {
   ...f,
   age: Number(f.age),
   familyMembers: Number(f.family_members),
   coverageRequirement: f.coverage_requirement
 });
-      console.log("INSURANCE SUBMIT", f); trackEvent("generate_lead", { form_type: "insurance" });
-      toast.success("Request received! Our insurance advisor will call you.");
-      setF({ name: "", mobile: "", age: "", "familyMembers": "", coverage_requirement: "" });
+      if (!res.ok) throw new Error("submit failed");
+      trackEvent("generate_lead", { form_type: "insurance" });
+      toast.success("Request received! Our insurance team will call you.");
+      setF({ name: "", mobile: "", age: "", family_members: "", coverage_requirement: "" });
     } catch { toast.error("Could not submit. Try again."); }
     finally { setLoading(false); }
   };
