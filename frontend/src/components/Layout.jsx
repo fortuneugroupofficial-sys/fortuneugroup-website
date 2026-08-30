@@ -258,8 +258,28 @@ export const Footer = () => {
   );
 };
 
+const socialLinks = [
+  { href: "https://www.instagram.com/fortuneugroup/?hl=en", icon: <Instagram className="w-5 h-5" />, label: "Instagram", cls: "bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#dc2743]", testid: "floating-instagram" },
+  { href: "https://www.youtube.com/@FortuneUGroupOfficial", icon: <Youtube className="w-5 h-5" />, label: "YouTube", cls: "bg-[#FF0000]", testid: "floating-youtube" },
+  { href: "https://www.facebook.com/profile.php?id=61589015788132", icon: <Facebook className="w-5 h-5" />, label: "Facebook", cls: "bg-[#1877F2]", testid: "floating-facebook" },
+];
+
 export const WhatsAppFab = () => (
   <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end" data-testid="floating-actions">
+    {socialLinks.map((s) => (
+      <a
+        key={s.label}
+        href={s.href}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={s.label}
+        data-testid={s.testid}
+        onClick={() => trackEvent("social_click", { network: s.label.toLowerCase(), source: "fab" })}
+        className={`rounded-full shadow-2xl text-white p-4 hover:scale-110 transition-transform ${s.cls}`}
+      >
+        {s.icon}
+      </a>
+    ))}
     <a
       href={`tel:+${WHATSAPP_NUMBER}`}
       onClick={()=>trackEvent("call_click",{source:"fab"})} data-testid="floating-call-fab"
