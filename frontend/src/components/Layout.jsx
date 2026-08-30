@@ -13,6 +13,7 @@ import {
 import { useLang } from "../context/LangContext";
 import { whatsappLink, BUSINESS_EMAIL, WHATSAPP_NUMBER } from "../lib/api";
 import { trackEvent } from "./Analytics";
+import { SocialDock } from "./SocialIcons";
 import { Button } from "./ui/button";
 
 const navItems = [
@@ -238,27 +239,7 @@ export const Footer = () => {
   );
 };
 
-export const WhatsAppFab = () => (
-  <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end" data-testid="floating-actions">
-    <a
-      href={`tel:+${WHATSAPP_NUMBER}`}
-      onClick={()=>trackEvent("call_click",{source:"fab"})} data-testid="floating-call-fab"
-      className="rounded-full shadow-2xl bg-brand-navy text-white p-4 hover:scale-110 transition-transform sm:hidden"
-      aria-label="Call Now"
-    >
-      <Phone className="w-6 h-6" />
-    </a>
-    <a
-       href="https://wa.me/919490237465"
-      target="_blank" rel="noreferrer"
-      onClick={()=>trackEvent("whatsapp_click",{source:"fab"})} data-testid="floating-whatsapp-fab"
-      className="rounded-full shadow-2xl bg-[#25D366] text-white p-4 hover:scale-110 transition-transform"
-      aria-label="WhatsApp"
-    >
-      <MessageCircle className="w-6 h-6" />
-    </a>
-  </div>
-);
+export const WhatsAppFab = () => <SocialDock />;
 
 const Layout = ({ children }) => (
   <div className="min-h-screen flex flex-col bg-brand-bg">
