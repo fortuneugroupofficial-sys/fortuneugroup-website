@@ -47,7 +47,7 @@ export default function AIChatWidget() {
         onClick={() => setIsOpen(true)}
         style={{
           position: "fixed",
-          bottom: "140px",
+          bottom: "90px",
           right: "20px",
           width: "65px",
           height: "65px",
@@ -70,7 +70,7 @@ export default function AIChatWidget() {
       <div
         style={{
           position: "fixed",
-          bottom: "140px",
+          bottom: "90px",
           right: "20px",
           width: "360px",
           height: "520px",
