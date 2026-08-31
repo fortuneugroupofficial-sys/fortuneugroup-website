@@ -135,6 +135,7 @@
       box.className = "notice";
       box.textContent = "Sending…";
       try {
+      fetch(`${C.apiBase}/api/v1/leads`, ...)   // → https://fortunegroup-website.onrender.com/api/v1/leads
         const res = await fetch(C.webhookConsult, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
