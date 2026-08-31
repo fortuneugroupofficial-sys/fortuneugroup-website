@@ -20,6 +20,6 @@ window.FUG = {
   youtube: "https://www.youtube.com/@FortuneUGroupOfficial",
   facebook: "https://www.facebook.com/profile.php?id=61589015788132",
   webhookConsult: "https://n8n.fortuneugroup.in/webhook/book-consultation",
-};
 
-apiBase: "https://fortunegroup-website.onrender.com",
+  apiBase: "https://fortunegroup-website.onrender.com",
+};
