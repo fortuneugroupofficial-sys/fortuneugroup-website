@@ -9,8 +9,7 @@ services:
     runtime: static        # Static Site runtime (free, CDN-backed, never sleeps)
     branch: main
     # index.html is at the repo root -> publish root folder
-    static:
-      publish: .
+    staticPublishPath: ./
     # Same security headers we used to set in vercel.json
     headers:
       - path: /*
