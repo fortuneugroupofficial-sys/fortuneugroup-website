@@ -1,0 +1,13 @@
+# Keep the Docker image clean (not used by the Static Site runtime)
+.git
+.gitconfig
+frontend
+memory
+.emergent
+test_reports
+tests
+tools
+HOW-TO-GO-LIVE.md
+test_result.md
+design_guidelines.json
+vercel.json
