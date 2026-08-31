@@ -136,8 +136,7 @@
       box.textContent = "Sending…";
       try {
               const res = await fetch(`${C.apiBase}/api/v1/leads`, {
-        const res = await fetch(C.webhookConsult, {
-          method: "POST",
+                 method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ source: "fortuneugroup-website", ...data }),
         });
